@@ -29,7 +29,7 @@
   label{display:block; font-size:13px; color:var(--ink-soft); margin-bottom:5px;}
   input{width:100%; padding:11px 12px; font-size:16px; font-family:var(--mono); border:1px solid var(--line); border-radius:8px; background:var(--paper); color:var(--ink);}
   input:focus{outline:2px solid var(--moss); border-color:var(--moss);}
-  .duo{display:flex; gap:10px;} .duo .field{flex:1; min-width:0;}
+  .duo{display:flex; gap:10px; align-items:flex-end;} .duo .field{flex:1; min-width:0; display:flex; flex-direction:column;} .duo .field > label{min-height:42px; display:flex; align-items:flex-end; margin-bottom:5px;} .duo .field > input{height:44px; min-height:44px;}
   .seg{display:flex; border:1px solid var(--line); border-radius:8px; overflow:hidden;}
   .seg button{flex:1; padding:8px 6px; font-size:12.5px; border:0; background:#fff; color:var(--ink-soft); cursor:pointer; font-family:var(--sans);}
   .seg button.on{background:var(--moss); color:#F4F1E8;}
