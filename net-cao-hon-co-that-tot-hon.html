@@ -162,6 +162,8 @@
 
   <div class="offers-in" id="offersIn"></div>
 
+  <p class="hint" style="max-width:none; margin:10px 0 14px;"><b>Chưa biết mức đóng bảo hiểm?</b> Có thể hỏi HR: “Mức lương làm căn cứ đóng BHXH/BHYT/BHTN của vị trí này là bao nhiêu?”. Phần nào chưa rõ cứ để trống.</p>
+
   <div id="empty" class="empty">Nhập gross cho ít nhất một offer để bắt đầu.</div>
 
   <div class="results hidden" id="results">
@@ -237,7 +239,7 @@
         +'<div class="field"><label>OT (giờ / tuần)</label><input type="text" data-i="'+i+'" data-k="ot" inputmode="decimal" placeholder="0" value="'+(o.ot==null?"":esc(o.ot))+'" /></div>'
         +'<div class="field"><label>Thử việc: % lương · số tháng</label><div class="duo"><input type="text" data-i="'+i+'" data-k="probPct" inputmode="decimal" placeholder="% vd 85" value="'+(o.probPct==null?"":esc(o.probPct))+'" /><input type="text" data-i="'+i+'" data-k="probMon" inputmode="decimal" placeholder="th vd 2" value="'+(o.probMon==null?"":esc(o.probMon))+'" /></div></div>'
         +'</div>'
-        +'<p style="font-size:12px;color:var(--ink-soft);margin:2px 0 0;line-height:1.45;">Chưa biết mức khai bảo hiểm? Hỏi HR: “Mức lương làm căn cứ đóng BHXH/BHTN của vị trí này là bao nhiêu?” Bỏ trống phần nào chưa rõ - tool tính với phần đã có.</p>'
+        +''
         +'</div></div>';
     }).join("");
   }
