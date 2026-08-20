@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trả thấp có thật là rẻ?</title>
+<style>
+  @font-face { font-family:'Newsreader'; src:local('Newsreader'); }
+  :root{
+    --paper:#F6F4EE; --paper-2:#EFEBE0; --ink:#23211C; --ink-soft:#5A5648;
+    --moss:#2F5E54; --moss-soft:#3C7064; --clay:#9B4A3A;
+    --line:#D9D3C4; --warn-bg:#F3E6CF; --warn-line:#C8A24E; --radius:10px;
+    --serif:'Newsreader', Georgia, 'Times New Roman', serif;
+    --sans:'Spline Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono:'Spline Sans Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.55;}
+  .wrap{max-width:680px; margin:0 auto; padding:28px 18px 60px;}
+  h1{font-family:var(--serif); font-weight:600; font-size:30px; line-height:1.2; margin:6px 0 10px;}
+  .sub{color:var(--ink-soft); font-size:15px; margin:0 0 18px;}
+  .sub p{margin:0 0 6px;} .sub p:last-child{margin:0;}
+  .card{background:#fff; border:1px solid var(--line); border-radius:var(--radius); padding:18px 16px; margin-bottom:16px;}
+  .field{margin:0 0 14px;}
+  label{display:block; font-size:13px; color:var(--ink-soft); margin-bottom:5px;}
+  input{width:100%; padding:11px 12px; font-size:16px; font-family:var(--mono); border:1px solid var(--line); border-radius:8px; background:var(--paper); color:var(--ink);}
+  input:focus{outline:2px solid var(--moss); border-color:var(--moss);}
+  .duo{display:flex; gap:10px;} .duo .field{flex:1; min-width:0;}
+  .seg{display:flex; border:1px solid var(--line); border-radius:8px; overflow:hidden;}
+  .seg button{flex:1; padding:8px 6px; font-size:12.5px; border:0; background:#fff; color:var(--ink-soft); cursor:pointer; font-family:var(--sans);}
+  .seg button.on{background:var(--moss); color:#F4F1E8;}
+  .seg.mini{margin-top:6px;} .seg.mini button{padding:6px 6px; font-size:12px;}
+  .lnum{font-size:12px; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); margin:26px 0 8px;}
+  .lnum b{color:var(--ink); letter-spacing:0;}
+  .row{display:flex; justify-content:space-between; gap:12px; padding:7px 0; border-bottom:1px dashed var(--line); font-size:14px;}
+  .row .v{font-family:var(--mono); white-space:nowrap;}
+  .tot{display:flex; justify-content:space-between; gap:12px; padding:10px 0 2px; font-weight:600; font-size:15px;}
+  .tot .v{font-family:var(--mono);}
+  .hint{font-size:12.5px; color:var(--ink-soft); line-height:1.5; margin:8px 0 0;}
+  .verdict{background:var(--moss); color:#F4F1E8; border-radius:var(--radius); padding:20px 18px; margin-top:20px;}
+  .verdict h3{font-family:var(--serif); font-size:21px; margin:0 0 10px;}
+  .verdict p{margin:0 0 10px; font-size:14.5px;} .verdict p:last-child{margin:0;}
+  .verdict .hl{font-family:var(--mono); font-weight:600;}
+  .warn{background:var(--warn-bg); border:1px solid var(--warn-line); border-radius:8px; padding:10px 12px; font-size:13px; margin-top:12px; color:var(--ink);}
+  .empty{color:var(--ink-soft); font-size:14px; padding:14px 0;}
+  .toolbar{display:flex; gap:8px; margin-top:22px; flex-wrap:wrap; align-items:center;}
+  button.act{font-family:var(--sans); font-size:13.5px; padding:9px 14px; border-radius:8px; border:1px solid var(--line); background:#fff; color:var(--ink); cursor:pointer;}
+  button.act.primary{background:var(--moss); border-color:var(--moss); color:#F4F1E8;}
+  .savestate{font-size:12.5px; color:var(--ink-soft);}
+  .foot{font-size:12px; color:var(--ink-soft); border-top:1px solid var(--line); margin-top:34px; padding-top:14px; line-height:1.55;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Trả thấp có thật là rẻ?</h1>
+  <div class="sub"><p>Tuyển mới, review lương hay giữ người - chốt thấp hơn 2 triệu mỗi tháng nhìn như tiết kiệm 24 triệu mỗi năm.</p><p>Nhưng nếu vì mức đó mà người ta rời đi thì sao?</p><p>Một lần mất người tương đương mấy năm "tiết kiệm" như vậy?</p><p>Điền số thực tế của chỗ bạn vào để tính. Nút bên dưới đổi giữa vai trò trả lương và vai trò nhận lương.</p></div>
+
+  <div class="card" id="inputs">
+    <div class="field"><label>Bạn đang ngồi ghế nào?</label>
+      <div class="seg" id="personaSeg">
+        <button data-v="company">Phía công ty (người trả lương)</button>
+        <button data-v="candidate">Người đi làm (người nhận lương)</button>
+      </div>
+    </div>
+    <div class="field"><label>Hoàn cảnh</label>
+      <div class="seg" id="contextSeg">
+        <button data-v="hire">Tuyển mới</button>
+        <button data-v="review">Review lương</button>
+        <button data-v="keep">Giữ người</button>
+      </div>
+    </div>
+    <div class="field"><label id="labelMarket">Giá thị trường / mức được đề nghị</label><input type="text" data-k="market" inputmode="numeric" placeholder="vd 22,000,000" />
+      <div class="seg mini" data-seg="marketType"><button data-v="gross">Gross (trước trừ)</button><button data-v="net">Net (về tay)</button></div>
+    </div>
+    <div class="field"><label id="labelOffer">Mức đang trả / định trả</label><input type="text" data-k="offer" inputmode="numeric" placeholder="vd 20,000,000" />
+      <div class="seg mini" data-seg="offerType"><button data-v="gross">Gross (trước trừ)</button><button data-v="net">Net (về tay)</button></div>
+    </div>
+    <div class="field"><label>Mức công ty khai đóng bảo hiểm (bỏ trống = khai đủ trên lương)</label><input type="text" data-k="insBase" inputmode="numeric" placeholder="vd 7,500,000" /></div>
+    <div class="duo">
+      <div class="field"><label>Ghế trống nếu người nghỉ (tháng)</label><input type="text" data-k="vacant" inputmode="decimal" placeholder="vd 2" /></div>
+      <div class="field"><label>Người mới làm quen việc (tháng)</label><input type="text" data-k="ramp" inputmode="decimal" placeholder="vd 3" /></div>
+    </div>
+    <div class="duo">
+      <div class="field"><label>Năng suất giai đoạn thử việc (%)</label><input type="text" data-k="rampPct" inputmode="numeric" placeholder="vd 60" /></div>
+      <div class="field"><label>Chi phí một lần khác (phí tuyển, đào tạo lại…)</label><input type="text" data-k="hireFee" inputmode="numeric" placeholder="vd 10,000,000" /></div>
+    </div>
+    <p class="hint">Cách nhập theo hoàn cảnh - tuyển mới: mức ứng viên đề nghị + mức định trả. Kỳ review: giá thị trường của vị trí + mức đang trả. Người nộp đơn nghỉ: mức nơi khác mời họ (hoặc giá thị trường) + mức đang trả. Mức ứng viên đề nghị thường cao hơn giá thị trường một nhịp - nếu chỉ có con số đó, kết quả đang nghiêng về kịch bản bất lợi nhất cho công ty; muốn chắc hơn, xem 3–5 tin tuyển cùng vị trí cùng khu vực. Nếu chọn Net, tool quy ngược ra gross theo thuế và bảo hiểm hiện hành, dùng mức khai đóng bạn nhập ở trên - mức khai xem trên phiếu lương hoặc VssID (chưa tính người phụ thuộc - số ≈). Phí dịch vụ tuyển dụng bên ngoài thường bằng 1–2 tháng lương vị trí. Bỏ trống phần chưa rõ - tool tính với phần đã có.</p>
+  </div>
+
+  <p class="lnum">Dòng 1 · <b>Khoản tiết kiệm mỗi năm</b></p>
+  <div class="card" id="l1"><p class="empty">Nhập hai mức lương để bắt đầu.</p></div>
+
+  <p class="lnum">Dòng 2 · <b>Chi phí một lần nếu phải thay người</b></p>
+  <div class="card" id="l2"><p class="empty">-</p></div>
+
+  <div class="verdict" id="verdict" style="display:none;"></div>
+
+  <div class="toolbar">
+    <button class="act primary" id="saveBtn">Lưu</button>
+    <button class="act" id="exportBtn">Xuất .txt</button>
+    <button class="act" id="backupBtn">Sao lưu .json</button>
+    <button class="act" id="importBtn">Nhập .json</button>
+    <input type="file" id="importFile" accept="application/json" style="display:none;" />
+    <button class="act" id="resetBtn">Xoá hết</button>
+    <span class="savestate" id="saveState"></span>
+  </div>
+
+  <p class="foot">Mốc tham chiếu: nghiên cứu được SHRM (Hiệp hội Quản trị Nhân sự Hoa Kỳ) công bố và được trích dẫn rộng rãi ước chi phí thay thế một nhân viên ≈ 6–9 tháng lương của vị trí; mốc này co giãn theo độ khó tuyển: vị trí phổ thông dễ thay thì thấp hơn hẳn, vị trí hiếm hoặc cấp cao thì cao hơn nhiều. Phần phía trả lương gánh thêm ngoài lương gross: bảo hiểm 21,5% + kinh phí công đoàn 2% (trên nền đóng, có trần). Tool tính phần ĐO ĐƯỢC từ chính giả định của bạn; phần không đo được - kiến thức rời đi theo người, đội ngũ dao động, khách quen theo người, sự cống hiến mà bạn biết rõ nếu là nhân sự có ý định rời đi - chỉ làm con số thật lớn hơn. Tool tính trên lương tháng để tính điểm hoà vốn. Dữ liệu bạn nhập được gửi tới API để tính kết quả và không được lưu vào cơ sở dữ liệu của tool. Mọi số mang tính mô phỏng để so sánh, không thay thế phân tích nhân sự hay tài chính đầy đủ.</p>
+</div>
+
+<script>
+(function(){
+  var KEY="tra-thap-la-re-v1";
+  var API_URL="https://linkedin-tools-api-test.vercel.app/api/retention-cost";
+  var state={persona:"company", context:"hire", market:null, marketType:"gross", offer:null, offerType:"gross",
+             vacant:null, ramp:null, rampPct:null, hireFee:null, insBase:null};
+  var dirty=false, resetArmed=false, debounceTimer=null, requestSeq=0, lastExportText="";
+
+  function grp(v){
+    var s=String(v==null?"":v).replace(/[^\d]/g,"");
+    return s.replace(/\B(?=(\d{3})+(?!\d))/g,",");
+  }
+
+  function markDirty(){dirty=true; setSaveState();}
+  function setSaveState(msg){
+    document.getElementById("saveState").textContent=msg!=null?msg:(dirty?"● Có thay đổi chưa lưu":"");
+  }
+
+  function renderControls(){
+    document.querySelectorAll("#personaSeg button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-v")===state.persona);});
+    document.querySelectorAll("#contextSeg button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-v")===state.context);});
+    var LB={hire:["Mức ứng viên đề nghị / giá thị trường","Mức công ty định trả"],
+            review:["Giá thị trường của vị trí","Mức đang trả"],
+            keep:["Mức nơi khác mời họ / giá thị trường","Mức đang trả"]};
+    var lb=LB[state.context]||LB.hire;
+    document.getElementById("labelMarket").textContent=lb[0];
+    document.getElementById("labelOffer").textContent=lb[1];
+    document.querySelectorAll('[data-seg="marketType"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-v")===state.marketType);});
+    document.querySelectorAll('[data-seg="offerType"] button').forEach(function(b){b.classList.toggle("on",b.getAttribute("data-v")===state.offerType);});
+  }
+
+  function showLoading(){
+    document.getElementById("l1").innerHTML='<p class="empty">Đang tính…</p>';
+    document.getElementById("l2").innerHTML='<p class="empty">-</p>';
+    document.getElementById("verdict").style.display="none";
+  }
+
+  function showApiError(){
+    document.getElementById("l1").innerHTML='<div class="warn">Không kết nối được máy tính phía server. Kiểm tra mạng rồi thử lại.</div>';
+    document.getElementById("l2").innerHTML='<p class="empty">-</p>';
+    document.getElementById("verdict").style.display="none";
+    lastExportText="";
+  }
+
+  function applyResult(data){
+    if(data.labels&&data.labels.length===2){
+      document.getElementById("labelMarket").textContent=data.labels[0];
+      document.getElementById("labelOffer").textContent=data.labels[1];
+    }
+    document.getElementById("l1").innerHTML=data.l1Html||'<p class="empty">Nhập hai mức lương để bắt đầu.</p>';
+    document.getElementById("l2").innerHTML=data.l2Html||'<p class="empty">-</p>';
+    var v=document.getElementById("verdict");
+    if(data.showVerdict&&data.verdictHtml){v.innerHTML=data.verdictHtml; v.style.display="";}
+    else {v.innerHTML=""; v.style.display="none";}
+    lastExportText=data.exportText||"";
+  }
+
+  async function calculateNow(){
+    var seq=++requestSeq;
+    try{
+      var res=await fetch(API_URL,{
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(state),
+        cache:"no-store"
+      });
+      if(!res.ok) throw new Error("HTTP "+res.status);
+      var data=await res.json();
+      if(seq!==requestSeq) return null;
+      applyResult(data);
+      return data;
+    }catch(_){
+      if(seq===requestSeq) showApiError();
+      return null;
+    }
+  }
+
+  function scheduleCalculation(){
+    renderControls();
+    clearTimeout(debounceTimer);
+    showLoading();
+    debounceTimer=setTimeout(calculateNow,180);
+  }
+
+  document.getElementById("personaSeg").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-v]"); if(!b)return;
+    state.persona=b.getAttribute("data-v"); markDirty(); scheduleCalculation();
+  });
+  document.getElementById("contextSeg").addEventListener("click",function(e){
+    var b=e.target.closest("button[data-v]"); if(!b)return;
+    state.context=b.getAttribute("data-v"); markDirty(); scheduleCalculation();
+  });
+
+  var host=document.getElementById("inputs");
+  host.addEventListener("click",function(e){
+    var b=e.target.closest("[data-seg] button"); if(!b)return;
+    var k=b.closest("[data-seg]").getAttribute("data-seg");
+    state[k]=b.getAttribute("data-v"); markDirty(); scheduleCalculation();
+  });
+  host.addEventListener("input",function(e){
+    var el=e.target.closest("input[data-k]"); if(!el)return;
+    var k=el.getAttribute("data-k");
+    if(k==="market"||k==="offer"||k==="hireFee"||k==="insBase"){
+      var caret=el.selectionStart, before=el.value.length;
+      el.value=grp(el.value);
+      var after=el.value.length;
+      try{el.setSelectionRange(caret+(after-before),caret+(after-before));}catch(_){}
+    }
+    state[k]=el.value; markDirty(); scheduleCalculation();
+  });
+
+  document.getElementById("saveBtn").addEventListener("click",function(){
+    try{localStorage.setItem(KEY,JSON.stringify(state)); dirty=false; setSaveState("Đã lưu ✓");}
+    catch(_){setSaveState("Không lưu được ở chế độ xem trước - mở file bằng Safari/Chrome để lưu.");}
+  });
+
+  function download(name,text,type){
+    try{
+      var blob=new Blob([text],{type:type||"text/plain;charset=utf-8"});
+      var a=document.createElement("a");
+      a.href=URL.createObjectURL(blob); a.download=name;
+      document.body.appendChild(a); a.click();
+      setTimeout(function(){URL.revokeObjectURL(a.href); a.remove();},500);
+      setSaveState("Đã xuất "+name+" ✓");
+    }catch(_){setSaveState("Tải file bị chặn ở chế độ xem trước - mở file bằng Safari/Chrome rồi thử lại.");}
+  }
+
+  document.getElementById("exportBtn").addEventListener("click",async function(){
+    var data=await calculateNow();
+    if(data&&data.exportText) download("tra-thap-co-that-la-re.txt",data.exportText);
+    else setSaveState("Chưa lấy được kết quả để xuất.");
+  });
+  document.getElementById("backupBtn").addEventListener("click",function(){
+    download("tra-thap-co-that-la-re.json",JSON.stringify(state,null,2),"application/json");
+  });
+  document.getElementById("importBtn").addEventListener("click",function(){document.getElementById("importFile").click();});
+  document.getElementById("importFile").addEventListener("change",function(e){
+    var f=e.target.files&&e.target.files[0]; if(!f)return;
+    var rd=new FileReader();
+    rd.onload=function(){
+      try{
+        var d=JSON.parse(rd.result);
+        Object.keys(state).forEach(function(k){if(d[k]!=null)state[k]=d[k];});
+        fillInputs(); markDirty(); scheduleCalculation(); setSaveState("Đã nhập bản sao lưu ✓ (bấm Lưu để giữ)");
+      }catch(_){setSaveState("File không đọc được - cần đúng file .json đã sao lưu từ tool này.");}
+    };
+    rd.readAsText(f); e.target.value="";
+  });
+
+  function fillInputs(){
+    host.querySelectorAll("input[data-k]").forEach(function(i){var k=i.getAttribute("data-k"); i.value=state[k]==null?"":state[k];});
+  }
+
+  document.getElementById("resetBtn").addEventListener("click",function(){
+    var b=document.getElementById("resetBtn");
+    if(!resetArmed){resetArmed=true; b.textContent="Bấm lần nữa để xoá"; setTimeout(function(){resetArmed=false;b.textContent="Xoá hết";},2500); return;}
+    resetArmed=false; b.textContent="Xoá hết";
+    state={persona:"company", context:"hire", market:null, marketType:"gross", offer:null, offerType:"gross", vacant:null, ramp:null, rampPct:null, hireFee:null, insBase:null};
+    try{localStorage.removeItem(KEY);}catch(_){}
+    host.querySelectorAll("input[data-k]").forEach(function(i){i.value="";});
+    dirty=false; setSaveState(""); scheduleCalculation();
+  });
+
+  window.addEventListener("beforeunload",function(e){if(dirty){e.preventDefault(); e.returnValue="";}});
+
+  try{
+    var saved=localStorage.getItem(KEY);
+    if(saved){
+      var d=JSON.parse(saved);
+      Object.keys(state).forEach(function(k){if(d[k]!=null)state[k]=d[k];});
+      fillInputs();
+    }
+  }catch(_){}
+
+  renderControls();
+  calculateNow();
+})();
+</script>
+</body>
+</html>
