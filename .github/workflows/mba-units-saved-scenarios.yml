@@ -1,0 +1,81 @@
+name: MBA units and saved scenarios
+on:
+  push:
+    paths:
+      - '.github/workflows/mba-units-saved-scenarios.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Standardize units and add saved scenarios
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('mba/index.html')
+          s=p.read_text(encoding='utf-8')
+
+          # Standardize all user-visible compact money units to "triệu".
+          for old,new in {
+            '87,4m':'87,4 triệu','80,8m':'80,8 triệu','72,0m':'72,0 triệu','68m':'68 triệu',
+            '64,5m':'64,5 triệu','49,2m':'49,2 triệu','46m':'46 triệu','42m':'42 triệu',
+            '38,2m':'38,2 triệu','34m':'34 triệu','20,0m':'20,0 triệu','18,0m':'18,0 triệu',
+            '16,7m':'16,7 triệu','14,6m':'14,6 triệu','14,0m':'14,0 triệu','10,0m':'10,0 triệu',
+            '8,0m':'8,0 triệu','7,6m':'7,6 triệu','5,0m':'5,0 triệu','3,4m':'3,4 triệu',
+            '2,6m':'2,6 triệu','2,5m':'2,5 triệu','1,8m':'1,8 triệu','1,4m':'1,4 triệu'
+          }.items():
+            s=s.replace(old,new)
+
+          s=s.replace('Chi hàng tháng','Chi phí hàng tháng')
+          s=s.replace('Before / After','Trước / Sau')
+
+          # Add styles for saved scenarios and keep money values on one line.
+          css_anchor='.compare b{font-family:var(--mono)}'
+          css_extra=".compare b{font-family:var(--mono);white-space:nowrap}.savedScenario{border:1px solid var(--line);border-radius:11px;padding:15px;margin-top:10px;background:#fbf9f3}.savedScenario h3{font-size:18px;margin-bottom:5px}.savedScenario p{font-size:12px;color:var(--muted);margin:3px 0}.savedScenario .savedActions{display:flex;gap:8px;margin-top:12px}.savedScenario .savedActions button{padding:7px 10px;font-size:12px}.emptySaved{font-size:13px;color:var(--muted);margin:0}"
+          if css_anchor in s:
+            s=s.replace(css_anchor,css_extra,1)
+
+          # Add saved-scenario area below decision choices.
+          decision_anchor='</button></div></section>\n<section class="screen" id="hire">'
+          decision_insert='</button></div><div class="section" id="savedScenarioSection"><h2>Kịch bản đã lưu</h2><div id="savedScenarios"><p class="emptySaved">Chưa có kịch bản nào được lưu.</p></div></div></section>\n<section class="screen" id="hire">'
+          if decision_anchor not in s:
+            raise SystemExit('decision anchor not found')
+          s=s.replace(decision_anchor,decision_insert,1)
+
+          # Clarify save action.
+          s=s.replace('<button class="btn" onclick="toast(\'Đã lưu kịch bản prototype.\')">Lưu kịch bản</button>','<button class="btn" onclick="saveScenario()">Lưu để xem lại</button>')
+
+          # Make go() render saved scenarios when returning to Decision.
+          old_go="function go(id){$$('.screen').forEach(x=>x.classList.remove('on'));$('#'+id).classList.add('on');scrollTo(0,0)}"
+          new_go="function go(id){$$('.screen').forEach(x=>x.classList.remove('on'));$('#'+id).classList.add('on');if(id==='decision')renderSavedScenarios();scrollTo(0,0)}"
+          if old_go not in s:
+            raise SystemExit('go function not found')
+          s=s.replace(old_go,new_go,1)
+
+          # Track latest scenario during calculation.
+          old_hire="function hireCalc(){if(!$('#hireCost').value){toast('Nhập chi phí dự kiến mỗi tháng trước khi tính.');return}let c=num($('#hireCost').value),x=c/.706,np=14.6e6-c,nbe=68e6+x,orders=Math.ceil(x/50000/30);$('#hireTitle').textContent=fmtM(c);$('#newFixed').textContent=fmtM(34e6+c);$('#newBE').textContent=fmtM(nbe);$('#newProfit').textContent=fmtM(np);$('#extraRev').textContent=fmtM(x)+' doanh thu/tháng';$('#extraOrders').textContent='≈ '+orders+' đơn/ngày nếu mỗi đơn vẫn còn lại khoảng 50.000đ sau chi phí trực tiếp.';go('hireResult')}"
+          new_hire="let lastHireScenario=null;function hireCalc(){if(!$('#hireCost').value){toast('Nhập chi phí dự kiến mỗi tháng trước khi tính.');return}let c=num($('#hireCost').value),x=c/.706,np=14.6e6-c,nbe=68e6+x,orders=Math.ceil(x/50000/30);lastHireScenario={id:Date.now(),type:'hire',title:'Thuê thêm người',cost:c,currentBE:68e6,newBE:nbe,currentProfit:14.6e6,newProfit:np,extraRevenue:x,extraOrders:orders};$('#hireTitle').textContent=fmtM(c);$('#newFixed').textContent=fmtM(34e6+c);$('#newBE').textContent=fmtM(nbe);$('#newProfit').textContent=fmtM(np);$('#extraRev').textContent=fmtM(x)+' doanh thu/tháng';$('#extraOrders').textContent='≈ '+orders+' đơn/ngày nếu mỗi đơn vẫn còn lại khoảng 50.000đ sau chi phí trực tiếp.';go('hireResult')}"
+          if old_hire not in s:
+            raise SystemExit('hireCalc not found')
+          s=s.replace(old_hire,new_hire,1)
+
+          # Add local-first scenario persistence.
+          insertion="""function getSavedScenarios(){try{return JSON.parse(localStorage.getItem('mba_saved_scenarios_v01')||'[]')}catch(e){return[]}}function renderSavedScenarios(){let host=$('#savedScenarios');if(!host)return;let items=getSavedScenarios();if(!items.length){host.innerHTML='<p class=\"emptySaved\">Chưa có kịch bản nào được lưu.</p>';return}host.innerHTML=items.slice().reverse().map(x=>'<div class=\"savedScenario\"><h3>'+x.title+' - +'+fmtM(x.cost)+'/tháng</h3><p>Điểm hòa vốn: '+fmtM(x.currentBE)+' → '+fmtM(x.newBE)+'</p><p>Lợi nhuận: '+fmtM(x.currentProfit)+' → '+fmtM(x.newProfit)+'</p><p>Cần thêm khoảng '+fmtM(x.extraRevenue)+' doanh thu/tháng, tương đương khoảng '+x.extraOrders+' đơn/ngày.</p><div class=\"savedActions\"><button class=\"btn secondary\" onclick=\"openSavedScenario('+x.id+')\">Mở lại</button><button class=\"btn secondary\" onclick=\"deleteSavedScenario('+x.id+')\">Xóa</button></div></div>').join('')}function saveScenario(){if(!lastHireScenario){toast('Chưa có kịch bản để lưu.');return}let items=getSavedScenarios();items.push(lastHireScenario);localStorage.setItem('mba_saved_scenarios_v01',JSON.stringify(items));toast('Đã lưu để bạn xem lại trong mục Kịch bản đã lưu.');setTimeout(()=>go('decision'),450)}function openSavedScenario(id){let x=getSavedScenarios().find(v=>v.id===id);if(!x)return;$('#hireCost').value=Number(x.cost).toLocaleString('en-US');hireCalc()}function deleteSavedScenario(id){let items=getSavedScenarios().filter(v=>v.id!==id);localStorage.setItem('mba_saved_scenarios_v01',JSON.stringify(items));renderSavedScenarios();toast('Đã xóa kịch bản.')}"""
+          end_anchor='st();ft();unit();sales();'
+          if end_anchor not in s:
+            raise SystemExit('script end anchor not found')
+          s=s.replace(end_anchor,insertion+end_anchor,1)
+
+          p.write_text(s,encoding='utf-8')
+          PY
+          rm .github/workflows/mba-units-saved-scenarios.yml
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add mba/index.html .github/workflows/mba-units-saved-scenarios.yml
+          git commit -m "Standardize MBA units and persist saved scenarios"
+          git push
