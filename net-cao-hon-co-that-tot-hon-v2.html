@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Net cao hơn có thật tốt hơn? - MVP</title>
+<title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
@@ -162,8 +162,8 @@
 <script>
 "use strict";
 (function(){
-  var KEY="net-cao-hon-mvp-v1";
-  var API_URL="https://linkedin-tools-api-test.vercel.app/api/offer-value-mvp";
+  var KEY="net-cao-hon-v2-benefits";
+  var API_URL="https://linkedin-tools-api-test.vercel.app/api/offer-value-v2";
   var canStore=(function(){try{var t="__t";localStorage.setItem(t,"1");localStorage.removeItem(t);return true}catch(e){return false}})();
   function blank(n){return {name:n,gross:null,payType:"gross",base:"full",customBase:null,days:null,commute:null,ot:null,probPct:null,probMon:null,guaranteedBonusMonths:null,targetBonusMonths:null,fixedAllowance:null,paidLeaveDays:null};}
   var state={deps:null,region:"I",sickDays:null,mat:"show",offers:[blank("Offer A"),blank("Offer B")]};
@@ -233,8 +233,8 @@
   document.getElementById("saveBtn").addEventListener("click",doSave);
 
   function download(name,text,type){try{var blob=new Blob([text],{type:type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url)},1000);setSaveState("Đã tạo file tải về")}catch(err){setSaveState("Trình duyệt chặn tải")}}
-  document.getElementById("exportBtn").addEventListener("click",async function(){var data=await calculateNow();if(!data||!data.hasResults||!data.exportText){setSaveState("Chưa có offer để xuất");return}download("so-2-offer-mvp.txt",data.exportText,"text/plain")});
-  document.getElementById("backupBtn").addEventListener("click",function(){download("net-cao-hon-mvp-sao-luu.json",JSON.stringify(state,null,2),"application/json")});
+  document.getElementById("exportBtn").addEventListener("click",async function(){var data=await calculateNow();if(!data||!data.hasResults||!data.exportText){setSaveState("Chưa có offer để xuất");return}download("so-2-offer-v2.txt",data.exportText,"text/plain")});
+  document.getElementById("backupBtn").addEventListener("click",function(){download("net-cao-hon-v2-sao-luu.json",JSON.stringify(state,null,2),"application/json")});
   document.getElementById("importBtn").addEventListener("click",function(){document.getElementById("importInput").click()});
   document.getElementById("importInput").addEventListener("change",function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);if(d&&d.offers&&d.offers.length===2){state=d;syncCtx();renderInputs();markDirty();scheduleCalculation();setSaveState("Đã nhập file")}else setSaveState("File không đúng định dạng")}catch(err){setSaveState("File không đọc được")}};r.onerror=function(){setSaveState("Không đọc được file")};r.readAsText(f);e.target.value=""});
 
