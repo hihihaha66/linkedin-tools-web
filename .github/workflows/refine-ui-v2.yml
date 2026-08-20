@@ -1,0 +1,54 @@
+name: Refine UI v2
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/refine-ui-v2.yml'
+permissions:
+  contents: write
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update typography and context layout
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          files=['index.html','tra-thap-co-that-la-re.html','net-cao-hon-co-that-tot-hon.html']
+          font_link='''<link rel="preconnect" href="https://fonts.googleapis.com">\n<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">'''
+          for fn in files:
+              p=Path(fn)
+              s=p.read_text(encoding='utf-8')
+              import re
+              s=re.sub(r'\s*<link rel="preconnect" href="https://fonts.googleapis.com">\s*<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\s*<link href="https://fonts.googleapis.com/css2\?[^\"]+" rel="stylesheet">', '\n'+font_link+'\n', s, count=1)
+              if 'fonts.googleapis.com' not in s:
+                  s=s.replace('<style>', font_link+'\n<style>', 1)
+              s=s.replace("--serif:'Be Vietnam Pro','Segoe UI',Arial,sans-serif;", "--serif:'Source Serif 4',Georgia,'Times New Roman',serif;")
+              s=s.replace('--serif:"Be Vietnam Pro","Segoe UI",Arial,sans-serif;', "--serif:'Source Serif 4',Georgia,'Times New Roman',serif;")
+              s=s.replace('--serif:"Segoe UI", Arial, sans-serif;', "--serif:'Source Serif 4',Georgia,'Times New Roman',serif;")
+              s=s.replace("--sans:'Be Vietnam Pro','Segoe UI',Arial,sans-serif;", "--sans:'Be Vietnam Pro','Segoe UI',Arial,sans-serif;")
+              s=s.replace("--mono:'IBM Plex Mono',Consolas,'Courier New',monospace;", "--mono:'IBM Plex Mono',Consolas,'Courier New',monospace;")
+              s=s.replace('—','-')
+              p.write_text(s,encoding='utf-8')
+
+          p=Path('net-cao-hon-co-that-tot-hon.html')
+          s=p.read_text(encoding='utf-8')
+          old=".ctx{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:18px;}\n  .ctx .field{flex:1; min-width:150px; margin:0;}"
+          new=".ctx{display:grid; grid-template-columns:.9fr 1.3fr 1fr 1.05fr; gap:14px; align-items:end; margin-bottom:18px;}\n  .ctx .field{min-width:0; margin:0; display:flex; flex-direction:column;}\n  .ctx .field > label{min-height:42px; display:flex; align-items:flex-end; margin-bottom:6px;}\n  .ctx input[type=number], .ctx select, .ctx .seg{height:40px; min-height:40px;}\n  .ctx .seg button{height:38px; padding:0 8px; display:flex; align-items:center; justify-content:center;}"
+          if old in s:
+              s=s.replace(old,new)
+          else:
+              s=s.replace('.ctx{display:flex; gap:14px; flex-wrap:wrap; margin-bottom:18px;}', new.split('\n')[0])
+              s=s.replace('.ctx .field{flex:1; min-width:150px; margin:0;}', '\n'.join(new.split('\n')[1:]))
+          s=s.replace('@media (max-width:540px){ .col .big{font-size:22px;} .events .erow{grid-template-columns:1.4fr 1fr 1fr;} }', '@media (max-width:760px){.ctx{grid-template-columns:repeat(2,minmax(0,1fr));}}\n  @media (max-width:540px){.ctx{grid-template-columns:1fr;} .col .big{font-size:22px;} .events .erow{grid-template-columns:1.4fr 1fr 1fr;} }')
+          p.write_text(s,encoding='utf-8')
+          PY
+      - name: Commit changes and remove workflow
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/refine-ui-v2.yml
+          git add index.html tra-thap-co-that-la-re.html net-cao-hon-co-that-tot-hon.html
+          git commit -m "Refine typography and align context controls"
+          git push
