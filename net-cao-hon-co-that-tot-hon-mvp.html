@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Net cao hơn có thật tốt hơn? - MVP</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F4EE; --paper-2:#EFEBE0; --ink:#23211C; --ink-soft:#5A5648;
+    --moss:#2F5E54; --moss-soft:#3C7064; --clay:#9B4A3A; --clay-soft:#B76A59;
+    --line:#D9D3C4; --gold:#8A6D2F; --radius:10px;
+    --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+    --sans:'Be Vietnam Pro','Segoe UI',Arial,sans-serif;
+    --mono:'IBM Plex Mono',Consolas,'Courier New',monospace;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:920px;margin:0 auto;padding:28px 20px 80px;}
+  header h1{font-family:var(--serif);font-weight:700;font-size:clamp(27px,5.5vw,40px);line-height:1.12;margin:0 0 8px;letter-spacing:-0.01em;}
+  header p.sub{margin:0;color:var(--ink-soft);font-size:15px;max-width:70ch;}
+  .rule{height:1px;background:var(--line);border:0;margin:22px 0;}
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 18px;align-items:center;}
+  .save-state{font-family:var(--mono);font-size:12px;color:var(--ink-soft);}
+  button.btn{font-family:var(--sans);font-size:14px;cursor:pointer;padding:10px 16px;border-radius:8px;border:1px solid var(--moss);background:var(--moss);color:#fff;}
+  button.btn.ghost{background:transparent;color:var(--moss);}
+  button.btn.tiny{padding:6px 10px;font-size:13px;}
+  button.btn.danger{border-color:var(--clay);color:var(--clay);background:transparent;}
+  button.btn.hidden{display:none;}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--moss);margin:0 0 4px;}
+  h2.sec{font-family:var(--serif);font-weight:600;font-size:22px;margin:0 0 4px;}
+  p.hint{color:var(--ink-soft);font-size:14px;margin:0 0 16px;max-width:70ch;}
+  .ctx{display:grid;grid-template-columns:.9fr 1.3fr 1fr 1.05fr;gap:14px;align-items:end;margin-bottom:18px;}
+  .ctx .field{min-width:0;margin:0;display:flex;flex-direction:column;}
+  .ctx .field>label{min-height:42px;display:flex;align-items:flex-end;margin-bottom:6px;}
+  .ctx input[type=number],.ctx select,.ctx .seg{height:40px;min-height:40px;}
+  .ctx .seg button{height:38px;padding:0 8px;display:flex;align-items:center;justify-content:center;}
+  .offers-in{display:flex;gap:16px;flex-wrap:wrap;}
+  .offer-in{flex:1;min-width:290px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+  .offer-in .name-in{width:100%;font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);border:0;border-bottom:1px solid var(--line);background:transparent;padding:2px 0 8px;margin-bottom:16px;}
+  .offer-in .name-in:focus{outline:none;border-bottom-color:var(--moss);}
+  label{display:block;font-size:13px;color:var(--ink-soft);margin:0 0 5px;}
+  .field{margin:0 0 14px;}
+  input[type=text],input[type=number],select{width:100%;padding:10px 12px;font-family:var(--mono);font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px;}
+  select{font-family:var(--sans);}
+  input:focus,select:focus{outline:2px solid var(--moss-soft);outline-offset:1px;background:#fff;}
+  .suffix-row{position:relative;}
+  .suffix-row .suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:13px;color:var(--ink-soft);pointer-events:none;}
+  .suffix-row input{padding-right:44px;}
+  .seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--paper);}
+  .seg button{flex:1;border:0;background:transparent;padding:10px 8px;font-family:var(--sans);font-size:13.5px;color:var(--ink-soft);cursor:pointer;border-right:1px solid var(--line);line-height:1.25;}
+  .seg button:last-child{border-right:0;}
+  .seg button.on{background:var(--moss);color:#fff;font-weight:500;}
+  .sub-input{margin-top:10px;}
+  .duo{display:flex;gap:10px;}
+  .duo .field,.duo input{flex:1;min-width:0;}
+  .benefit-title{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--moss);border-top:1px solid var(--line);padding-top:13px;margin:2px 0 10px;}
+  .benefit-note{font-size:11.5px;color:var(--ink-soft);line-height:1.5;margin:-2px 0 0;}
+  .results{margin-top:6px;}.results.hidden{display:none;}
+  .layer{margin-bottom:20px;}
+  .layer .lnum{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--moss);margin:0 0 8px;display:flex;align-items:baseline;gap:8px;}
+  .layer .lnum b{font-size:15px;color:var(--ink);font-family:var(--serif);font-weight:600;letter-spacing:0;text-transform:none;}
+  .cols{display:flex;gap:14px;flex-wrap:wrap;}
+  .col{flex:1;min-width:230px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
+  .col.win{border-color:var(--moss);border-width:1.5px;}
+  .col .cname{font-family:var(--serif);font-size:17px;font-weight:600;margin:0 0 2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .col .flag{font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:20px;background:rgba(47,94,84,.12);color:var(--moss);}
+  .col .big,.basis .big{font-family:var(--mono);font-size:24px;line-height:1.15;color:var(--ink);margin-top:8px;}
+  .col .big .u,.basis .big .u{font-size:14px;color:var(--ink-soft);}
+  .col .cap,.basis .cap{font-size:13px;color:var(--ink-soft);margin-top:2px;}
+  .col .brk{margin-top:12px;padding-top:12px;border-top:1px solid var(--line);}
+  .col .brk .line{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:3px 0;}
+  .col .brk .line .v{font-family:var(--mono);white-space:nowrap;}
+  .col .brk .line.muted{color:var(--ink-soft);}
+  .delta{background:var(--paper-2);border-radius:8px;padding:13px 15px;margin-top:12px;font-size:14px;}
+  .delta b{font-family:var(--mono);font-weight:600;}.delta .up{color:var(--clay)}.delta .down{color:var(--moss)}
+  .basis{flex:1;min-width:230px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px;}
+  .basis h4{font-family:var(--serif);font-size:16px;margin:0 0 3px;font-weight:600;}
+  .basis .subt{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px;}
+  .basis .row{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:4px 0;border-bottom:1px dotted var(--line);}
+  .basis .row:last-child{border-bottom:0;}.basis .row .v{font-family:var(--mono);white-space:nowrap;}
+  .basis .tot{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-weight:600;display:flex;justify-content:space-between;gap:12px;font-size:13.5px;}
+  .basis .tot .v{font-family:var(--mono);white-space:nowrap;}
+  .events{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+  .events .erow{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;padding:11px 15px;border-bottom:1px solid var(--line);font-size:14px;align-items:baseline;}
+  .events .erow:last-child{border-bottom:0;}.events .erow.head{background:var(--paper-2);font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);}
+  .events .erow .lbl{color:var(--ink)}.events .erow .lbl small{display:block;color:var(--ink-soft);font-size:12px;}.events .erow .va,.events .erow .vb{font-family:var(--mono)}.events .erow .capped{color:var(--clay);font-size:11px;}
+  .verdict{margin-top:18px;padding:20px;border-radius:var(--radius);background:var(--moss);color:#fff;}
+  .verdict h3{font-family:var(--serif);margin:0 0 10px;font-size:20px;font-weight:600;}.verdict p{margin:0 0 10px;font-size:14.5px;opacity:.96}.verdict p:last-child{margin-bottom:0}.verdict .hl{font-family:var(--mono);font-weight:600;}
+  .disclaim{font-size:13px;color:var(--ink-soft);background:var(--paper-2);border-radius:8px;padding:13px 15px;margin-top:18px;}
+  .src{font-size:12px;color:var(--ink-soft);margin-top:22px;border-top:1px solid var(--line);padding-top:14px;line-height:1.6}.src b{color:var(--ink-soft)}
+  .empty{color:var(--ink-soft);font-size:14px;background:#fff;border:1px dashed var(--line);border-radius:var(--radius);padding:22px;text-align:center;}
+  @media(max-width:760px){.ctx{grid-template-columns:repeat(2,minmax(0,1fr));}}
+  @media(max-width:540px){.ctx{grid-template-columns:1fr}.duo{flex-direction:column;gap:0}.col .big{font-size:22px}.events .erow{grid-template-columns:1.4fr 1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Net cao hơn có thật tốt hơn?</h1>
+    <p class="sub">So offer không chỉ là so tiền về tay. Ngoài lương tháng còn có thưởng, phụ cấp, ngày phép, thời gian đi lại, OT và mức đóng bảo hiểm. Bản này đặt thêm gói thu nhập theo năm cạnh tiền tháng để bạn nhìn rõ hơn mỗi bên đang cho gì và lấy lại gì.</p>
+  </header>
+
+  <div class="toolbar">
+    <button class="btn" id="saveBtn">Lưu</button>
+    <button class="btn ghost tiny" id="exportBtn">↓ Xuất kết quả (.txt)</button>
+    <button class="btn ghost tiny" id="backupBtn">↓ Sao lưu (.json)</button>
+    <button class="btn ghost tiny" id="importBtn">↑ Nhập</button>
+    <input type="file" id="importInput" accept="application/json" style="display:none" />
+    <button class="btn danger tiny" id="clearBtn">Xoá hết</button>
+    <span class="save-state" id="saveState"></span>
+  </div>
+
+  <hr class="rule" />
+
+  <p class="eyebrow">Bối cảnh chung</p>
+  <div class="ctx">
+    <div class="field"><label for="deps">Người phụ thuộc (tính thuế)</label><input type="number" id="deps" inputmode="numeric" placeholder="0" /></div>
+    <div class="field"><label for="region">Vùng lương tối thiểu (trần thất nghiệp)</label><select id="region"><option value="I">Vùng I (HN, HCM nội thành…)</option><option value="II">Vùng II</option><option value="III">Vùng III</option><option value="IV">Vùng IV</option></select></div>
+    <div class="field"><label for="sickDays">Số ngày nghỉ ốm (ước tính)</label><input type="number" id="sickDays" inputmode="numeric" placeholder="5" /></div>
+    <div class="field"><label>Xét chế độ thai sản (LĐ nữ)</label><div class="seg" id="matSeg"><button data-v="show" class="on">Có</button><button data-v="hide">Không</button></div></div>
+  </div>
+
+  <p class="eyebrow">Hai offer</p>
+  <h2 class="sec">Nhập từng bên</h2>
+  <p class="hint">Gross hay net đều được - chọn đúng loại ở mỗi offer. Nếu nhập net, tool sẽ tự quy đổi để tính thuế và bảo hiểm. Thưởng nhập theo số tháng lương; target được tách riêng vì không phải khoản chắc chắn.</p>
+
+  <div class="offers-in" id="offersIn"></div>
+  <p class="hint" style="max-width:none;margin:10px 0 14px;"><b>Chưa biết mức đóng bảo hiểm?</b> Có thể hỏi HR: “Mức lương làm căn cứ đóng BHXH/BHYT/BHTN của vị trí này là bao nhiêu?”. Phần nào chưa rõ cứ để trống.</p>
+
+  <div id="empty" class="empty">Nhập gross cho ít nhất một offer để bắt đầu.</div>
+
+  <div class="results hidden" id="results">
+    <div class="layer"><p class="lnum">Lớp 1 · <b>Tiền về tay mỗi tháng</b></p><div class="cols" id="l1cols"></div><div class="delta" id="l1delta"></div></div>
+
+    <div class="layer">
+      <p class="lnum">Lớp 2 · <b>Gói thu nhập theo năm</b></p>
+      <p class="hint" style="margin-top:-2px;">Tách phần chắc chắn và phần target. Thuế năm là ước tính; bonus/phụ cấp được coi là thu nhập chịu thuế nhưng không cộng vào nền đóng bảo hiểm.</p>
+      <div class="cols" id="annualcols"></div><div class="delta" id="annualdelta"></div>
+    </div>
+
+    <div class="layer">
+      <p class="lnum">Lớp 3 · <b>Giờ bạn bỏ ra để có gói đó</b></p>
+      <p class="hint" style="margin-top:-2px;">Giờ làm chuẩn 176h/tháng; đi lại và OT quy về tháng. Ngày phép hưởng lương được trừ khỏi tổng giờ làm năm để nhìn giá trị thời gian sát hơn.</p>
+      <div class="cols" id="tcols"></div><div class="delta" id="tdelta"></div>
+    </div>
+
+    <div class="layer"><p class="lnum">Lớp 4 · <b>Mức làm căn cứ quyền lợi</b></p><p class="hint" style="margin-top:-2px;">Quyền lợi bảo hiểm tính trên mức công ty khai đóng, không phải lúc nào cũng bằng gross. Khai thấp hơn lương thật thì các quyền lợi bên dưới cũng tính trên nền thấp hơn.</p><div class="cols" id="l2basis"></div></div>
+
+    <div class="layer"><p class="lnum">Lớp 5 · <b>Nếu có biến cố</b></p><p class="hint" style="margin-top:-2px;">Số ước tính theo luật 2026 và chỉ có ý nghĩa khi đủ điều kiện hưởng tương ứng.</p><div class="events" id="l3events"></div></div>
+
+    <div class="verdict" id="verdict"></div>
+  </div>
+
+  <div class="disclaim">Đây là công cụ mô phỏng để so sánh, không thay thế tư vấn payroll/pháp lý. Phần gói năm giả định thưởng theo số tháng lương gross tương đương; phụ cấp là khoản cố định chịu thuế nhưng không cộng vào nền BH. Thực tế có thể khác theo hợp đồng, chính sách thưởng và cách tính payroll của từng công ty.</div>
+
+  <p class="src"><b>Tham số theo luật hiện hành (cập nhật 7/2026):</b> NLĐ đóng 10,5% (BHXH 8% + BHYT 1,5% + BHTN 1%); DN đóng 21,5%. Giảm trừ thuế: bản thân 15,5 triệu + 6,2 triệu/người phụ thuộc (NQ 110/2025). Trần đóng BHXH/BHYT 50,6 triệu/tháng; trần đóng BHTN 20× lương tối thiểu vùng. Trợ cấp thất nghiệp = 60% bình quân 6 tháng đóng BHTN, trần 5× lương tối thiểu vùng. Thai sản 100% × 6 tháng. Ốm đau = (lương đóng ÷ 24) × 75% × số ngày nghỉ. Số tham khảo - kiểm chứng lại trên VssID, hợp đồng và chính sách thưởng.</p>
+</div>
+
+<script>
+"use strict";
+(function(){
+  var KEY="net-cao-hon-mvp-v1";
+  var API_URL="https://linkedin-tools-api-test.vercel.app/api/offer-value-mvp";
+  var canStore=(function(){try{var t="__t";localStorage.setItem(t,"1");localStorage.removeItem(t);return true}catch(e){return false}})();
+  function blank(n){return {name:n,gross:null,payType:"gross",base:"full",customBase:null,days:null,commute:null,ot:null,probPct:null,probMon:null,guaranteedBonusMonths:null,targetBonusMonths:null,fixedAllowance:null,paidLeaveDays:null};}
+  var state={deps:null,region:"I",sickDays:null,mat:"show",offers:[blank("Offer A"),blank("Offer B")]};
+  var dirty=false,requestSeq=0,debounceTimer=null;
+
+  function grp(raw){var s=String(raw==null?"":raw).replace(/[^\d]/g,"");if(s==="")return "";s=s.replace(/^0+(?=\d)/,"");return s.replace(/\B(?=(\d{3})+(?!\d))/g,",");}
+  function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+
+  function renderInputs(){
+    document.getElementById("offersIn").innerHTML=state.offers.map(function(o,i){
+      var cw=o.base==="custom"?'<div class="sub-input suffix-row"><input type="text" data-i="'+i+'" data-k="customBase" inputmode="numeric" placeholder="vd 7,500,000" value="'+grp(o.customBase==null?"":o.customBase)+'" /><span class="suffix">đ</span></div>':'';
+      return '<div class="offer-in">'
+        +'<input class="name-in" data-i="'+i+'" data-k="name" value="'+esc(o.name)+'" />'
+        +'<div class="field"><label>Con số trong offer là</label><div class="seg" data-seg="pay" data-i="'+i+'"><button data-v="gross" class="'+(o.payType!=="net"?"on":"")+'">Gross (trước trừ)</button><button data-v="net" class="'+(o.payType==="net"?"on":"")+'">Net (về tay)</button></div></div>'
+        +'<div class="field suffix-row"><label>Lương '+(o.payType==="net"?"net":"gross")+' / tháng</label><input type="text" data-i="'+i+'" data-k="gross" inputmode="numeric" placeholder="vd 20,000,000" value="'+grp(o.gross==null?"":o.gross)+'" /><span class="suffix">đ</span></div>'
+        +'<div class="field"><label>Công ty khai đóng bảo hiểm trên</label><div class="seg" data-seg="base" data-i="'+i+'"><button data-v="full" class="'+(o.base==="full"?"on":"")+'">Đủ trên gross</button><button data-v="custom" class="'+(o.base==="custom"?"on":"")+'">Mức thấp hơn</button></div>'+cw+'</div>'
+        +'<div class="duo"><div class="field"><label>Buổi lên VP / tuần</label><input type="text" data-i="'+i+'" data-k="days" inputmode="decimal" placeholder="vd 5.5" value="'+(o.days==null?"":esc(o.days))+'" /></div><div class="field"><label>Di chuyển 1 chiều (phút)</label><input type="text" data-i="'+i+'" data-k="commute" inputmode="decimal" placeholder="vd 45" value="'+(o.commute==null?"":esc(o.commute))+'" /></div></div>'
+        +'<div class="duo"><div class="field"><label>OT (giờ / tuần)</label><input type="text" data-i="'+i+'" data-k="ot" inputmode="decimal" placeholder="0" value="'+(o.ot==null?"":esc(o.ot))+'" /></div><div class="field"><label>Thử việc: % lương · số tháng</label><div class="duo"><input type="text" data-i="'+i+'" data-k="probPct" inputmode="decimal" placeholder="% vd 85" value="'+(o.probPct==null?"":esc(o.probPct))+'" /><input type="text" data-i="'+i+'" data-k="probMon" inputmode="decimal" placeholder="th vd 2" value="'+(o.probMon==null?"":esc(o.probMon))+'" /></div></div></div>'
+        +'<div class="benefit-title">Gói năm & phúc lợi</div>'
+        +'<div class="duo"><div class="field"><label>Thưởng đảm bảo / năm (tháng lương)</label><input type="text" data-i="'+i+'" data-k="guaranteedBonusMonths" inputmode="decimal" placeholder="vd 1" value="'+(o.guaranteedBonusMonths==null?"":esc(o.guaranteedBonusMonths))+'" /></div><div class="field"><label>Thưởng target / năm (tháng lương)</label><input type="text" data-i="'+i+'" data-k="targetBonusMonths" inputmode="decimal" placeholder="vd 2" value="'+(o.targetBonusMonths==null?"":esc(o.targetBonusMonths))+'" /></div></div>'
+        +'<div class="duo"><div class="field suffix-row"><label>Phụ cấp cố định / tháng</label><input type="text" data-i="'+i+'" data-k="fixedAllowance" inputmode="numeric" placeholder="vd 1,000,000" value="'+grp(o.fixedAllowance==null?"":o.fixedAllowance)+'" /><span class="suffix">đ</span></div><div class="field"><label>Nghỉ phép hưởng lương / năm</label><input type="text" data-i="'+i+'" data-k="paidLeaveDays" inputmode="decimal" placeholder="vd 12" value="'+(o.paidLeaveDays==null?"":esc(o.paidLeaveDays))+'" /></div></div>'
+        +'<p class="benefit-note">Tháng 13 chắc chắn nhận: nhập 1 ở “thưởng đảm bảo”. Bonus phụ thuộc KPI/kinh doanh: nhập ở “target”.</p>'
+        +'</div>';
+    }).join("");
+  }
+
+  function applyResult(data){
+    var empty=document.getElementById("empty"),results=document.getElementById("results");
+    if(!data||!data.hasResults){empty.style.display="";results.classList.add("hidden");return}
+    empty.style.display="none";results.classList.remove("hidden");
+    document.getElementById("l1cols").innerHTML=data.l1cols||"";
+    var d1=document.getElementById("l1delta");d1.innerHTML=data.l1delta||"";d1.style.display=data.showL1Delta?"":"none";
+    document.getElementById("annualcols").innerHTML=data.annualcols||"";
+    var ad=document.getElementById("annualdelta");ad.innerHTML=data.annualdelta||"";ad.style.display=data.showAnnualDelta?"":"none";
+    document.getElementById("tcols").innerHTML=data.tcols||"";
+    var td=document.getElementById("tdelta");td.innerHTML=data.tdelta||"";td.style.display=data.showTDelta?"":"none";
+    document.getElementById("l2basis").innerHTML=data.l2basis||"";
+    document.getElementById("l3events").innerHTML=data.l3events||"";
+    document.getElementById("verdict").innerHTML=data.verdictHtml||"";
+  }
+  function showApiError(){document.getElementById("empty").style.display="";document.getElementById("empty").textContent="Không kết nối được máy tính phía server. Kiểm tra mạng rồi thử lại.";document.getElementById("results").classList.add("hidden")}
+  async function calculateNow(){var seq=++requestSeq;try{var res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(state),cache:"no-store"});if(!res.ok)throw new Error("HTTP "+res.status);var data=await res.json();if(seq!==requestSeq)return null;document.getElementById("empty").textContent="Nhập gross cho ít nhất một offer để bắt đầu.";applyResult(data);return data}catch(e){if(seq===requestSeq)showApiError();return null}}
+  function scheduleCalculation(){clearTimeout(debounceTimer);debounceTimer=setTimeout(calculateNow,180)}
+
+  document.getElementById("deps").addEventListener("input",function(e){state.deps=e.target.value;markDirty();scheduleCalculation()});
+  document.getElementById("region").addEventListener("change",function(e){state.region=e.target.value;markDirty();scheduleCalculation()});
+  document.getElementById("sickDays").addEventListener("input",function(e){state.sickDays=e.target.value;markDirty();scheduleCalculation()});
+  document.getElementById("matSeg").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;state.mat=b.getAttribute("data-v");[].forEach.call(this.children,function(x){x.classList.toggle("on",x===b)});markDirty();scheduleCalculation()});
+
+  var host=document.getElementById("offersIn");
+  host.addEventListener("input",function(e){
+    var el=e.target,i=el.getAttribute("data-i"),k=el.getAttribute("data-k");if(i==null||!k)return;i=parseInt(i,10);
+    if(k==="gross"||k==="customBase"||k==="fixedAllowance"){
+      var pos=el.selectionStart||0,db=(el.value.slice(0,pos).match(/\d/g)||[]).length,ff=grp(el.value);el.value=ff;
+      var seen=0,np=ff.length;for(var c=0;c<ff.length;c++){if(/\d/.test(ff[c])){seen++;if(seen===db){np=c+1;break}}}if(db===0)np=0;try{el.setSelectionRange(np,np)}catch(_){}
+      state.offers[i][k]=ff.replace(/,/g,"");
+    }else state.offers[i][k]=el.value;
+    markDirty();scheduleCalculation();
+  });
+  host.addEventListener("click",function(e){var b=e.target.closest("[data-seg] button");if(!b)return;var seg=b.closest("[data-seg]"),i=parseInt(seg.getAttribute("data-i"),10),kind=seg.getAttribute("data-seg");if(kind==="base")state.offers[i].base=b.getAttribute("data-v");else if(kind==="pay")state.offers[i].payType=b.getAttribute("data-v");else return;markDirty();renderInputs();scheduleCalculation()});
+
+  function markDirty(){dirty=true;updateSaveUI()}
+  function setSaveState(m){document.getElementById("saveState").textContent=m}
+  function updateSaveUI(){var btn=document.getElementById("saveBtn");if(!canStore){btn.classList.add("hidden");setSaveState(dirty?"Chế độ tạm - bấm ↓ Sao lưu để giữ":"Chế độ tạm");return}btn.classList.remove("hidden");if(dirty){btn.textContent="Lưu";setSaveState("● Có thay đổi chưa lưu")}else{btn.textContent="Đã lưu ✓";setSaveState("Đã lưu trên máy này")}}
+  function doSave(){if(!canStore){setSaveState("Chế độ tạm - bấm ↓ Sao lưu để giữ");return}try{localStorage.setItem(KEY,JSON.stringify(state));dirty=false;updateSaveUI()}catch(e){setSaveState("Không lưu được - thử ↓ Sao lưu")}}
+  function load(){if(!canStore)return;try{var raw=localStorage.getItem(KEY);if(raw){var d=JSON.parse(raw);if(d&&d.offers&&d.offers.length===2)state=d}}catch(e){}}
+  document.getElementById("saveBtn").addEventListener("click",doSave);
+
+  function download(name,text,type){try{var blob=new Blob([text],{type:type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(function(){URL.revokeObjectURL(url)},1000);setSaveState("Đã tạo file tải về")}catch(err){setSaveState("Trình duyệt chặn tải")}}
+  document.getElementById("exportBtn").addEventListener("click",async function(){var data=await calculateNow();if(!data||!data.hasResults||!data.exportText){setSaveState("Chưa có offer để xuất");return}download("so-2-offer-mvp.txt",data.exportText,"text/plain")});
+  document.getElementById("backupBtn").addEventListener("click",function(){download("net-cao-hon-mvp-sao-luu.json",JSON.stringify(state,null,2),"application/json")});
+  document.getElementById("importBtn").addEventListener("click",function(){document.getElementById("importInput").click()});
+  document.getElementById("importInput").addEventListener("change",function(e){var f=e.target.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var d=JSON.parse(r.result);if(d&&d.offers&&d.offers.length===2){state=d;syncCtx();renderInputs();markDirty();scheduleCalculation();setSaveState("Đã nhập file")}else setSaveState("File không đúng định dạng")}catch(err){setSaveState("File không đọc được")}};r.onerror=function(){setSaveState("Không đọc được file")};r.readAsText(f);e.target.value=""});
+
+  var clearArmed=false,clearTimer=null;
+  document.getElementById("clearBtn").addEventListener("click",function(){var btn=this;if(!clearArmed){clearArmed=true;btn.textContent="Bấm lại để xoá";clearTimer=setTimeout(function(){clearArmed=false;btn.textContent="Xoá hết"},3000);return}clearTimeout(clearTimer);clearArmed=false;btn.textContent="Xoá hết";state={deps:null,region:"I",sickDays:null,mat:"show",offers:[blank("Offer A"),blank("Offer B")]};if(canStore){try{localStorage.removeItem(KEY)}catch(e){}}syncCtx();renderInputs();dirty=false;updateSaveUI();calculateNow();setSaveState("Đã xoá")});
+  window.addEventListener("beforeunload",function(e){if(dirty&&canStore){e.preventDefault();e.returnValue=""}});
+  function syncCtx(){document.getElementById("deps").value=state.deps==null?"":state.deps;document.getElementById("region").value=state.region;document.getElementById("sickDays").value=state.sickDays==null?"":state.sickDays;[].forEach.call(document.getElementById("matSeg").children,function(x){x.classList.toggle("on",x.getAttribute("data-v")===state.mat)})}
+
+  load();syncCtx();renderInputs();dirty=false;updateSaveUI();calculateNow();
+})();
+</script>
+</body>
+</html>
