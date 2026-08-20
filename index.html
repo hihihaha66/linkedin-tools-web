@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LinkedIn Tools</title>
+
+  <style>
+    :root{
+      --paper:#F6F4EE;
+      --paper-2:#EFEBE0;
+      --ink:#23211C;
+      --ink-soft:#5A5648;
+      --moss:#2F5E54;
+      --line:#D9D3C4;
+      --serif:Georgia,"Times New Roman",serif;
+      --sans:system-ui,-apple-system,"Segoe UI",sans-serif;
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      background:var(--paper);
+      color:var(--ink);
+      font-family:var(--sans);
+      line-height:1.55;
+    }
+
+    .wrap{
+      max-width:900px;
+      margin:0 auto;
+      padding:64px 22px 80px;
+    }
+
+    .eyebrow{
+      color:var(--moss);
+      font-size:12px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      margin-bottom:10px;
+    }
+
+    h1{
+      font-family:var(--serif);
+      font-size:clamp(38px,7vw,62px);
+      line-height:1.05;
+      margin:0 0 18px;
+      font-weight:600;
+    }
+
+    .intro{
+      max-width:650px;
+      color:var(--ink-soft);
+      font-size:16px;
+      margin-bottom:42px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2,minmax(0,1fr));
+      gap:18px;
+    }
+
+    .card{
+      display:block;
+      text-decoration:none;
+      color:inherit;
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:24px;
+      transition:.18s ease;
+    }
+
+    .card:hover{
+      transform:translateY(-3px);
+      border-color:var(--moss);
+      box-shadow:0 10px 28px rgba(35,33,28,.07);
+    }
+
+    .tag{
+      display:inline-block;
+      color:var(--moss);
+      background:rgba(47,94,84,.08);
+      border-radius:999px;
+      padding:4px 9px;
+      font-size:11px;
+      margin-bottom:16px;
+    }
+
+    .card h2{
+      font-family:var(--serif);
+      font-size:25px;
+      line-height:1.2;
+      margin:0 0 10px;
+      font-weight:600;
+    }
+
+    .card p{
+      margin:0;
+      color:var(--ink-soft);
+      font-size:14px;
+    }
+
+    .open{
+      margin-top:22px;
+      color:var(--moss);
+      font-size:13px;
+      font-weight:600;
+    }
+
+    footer{
+      margin-top:48px;
+      padding-top:18px;
+      border-top:1px solid var(--line);
+      color:var(--ink-soft);
+      font-size:12px;
+    }
+
+    @media(max-width:650px){
+      .wrap{padding-top:40px;}
+      .grid{grid-template-columns:1fr;}
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrap">
+
+    <div class="eyebrow">LinkedIn Tools</div>
+
+    <h1>Một vài phép tính<br>trước khi quyết.</h1>
+
+    <p class="intro">
+      Những tool nhỏ để đặt các con số cạnh nhau trước khi ra quyết định về
+      offer, lương và chi phí nhân sự. Tool không kết luận hộ bạn - chỉ giúp
+      nhìn rõ hơn thứ đang được đổi lấy thứ gì.
+    </p>
+
+    <section class="grid">
+
+      <a class="card" href="tra-thap-co-that-la-re.html">
+        <span class="tag">Pay & Retention</span>
+        <h2>Trả thấp có thật là rẻ?</h2>
+        <p>
+          Một khoản tiết kiệm lương mỗi tháng cần bao lâu để bù lại
+          chi phí của một lần thay người?
+        </p>
+        <div class="open">Mở tool →</div>
+      </a>
+
+      <a class="card" href="net-cao-hon-co-that-tot-hon.html">
+        <span class="tag">Offer Comparison</span>
+        <h2>Net cao hơn có thật tốt hơn?</h2>
+        <p>
+          Đặt hai offer cạnh nhau theo tiền về tay, thời gian,
+          nền bảo hiểm và quyền lợi thay vì chỉ nhìn một con số lương.
+        </p>
+        <div class="open">Mở tool →</div>
+      </a>
+
+    </section>
+
+    <footer>
+      Các công cụ mang tính mô phỏng và hỗ trợ so sánh. Dữ liệu nhập vào tool
+      không được lưu vào cơ sở dữ liệu của website.
+    </footer>
+
+  </main>
+</body>
+</html>
