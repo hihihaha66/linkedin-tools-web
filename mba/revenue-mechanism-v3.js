@@ -1,0 +1,92 @@
+const REVENUE_MECHANISM_API='https://linkedin-tools-api-test.vercel.app/api/mba-revenue-mechanism';
+const MECHANISM_OPTIONS=[
+  ['recurring','Thu một khoản định kỳ','Membership, SaaS, thuê phòng tháng, hợp đồng duy trì...'],
+  ['rental_time','Cho thuê theo thời gian','Sân, phòng, xe, máy hoặc thiết bị có công suất hữu hạn...'],
+  ['usage','Tính theo mức sử dụng','GB, km, lượt gọi API, kWh, phút, giờ máy...'],
+  ['per_use','Bán dịch vụ theo lượt / lần','Buổi, phiên, ca, cuộc hẹn hoặc một lần thực hiện dịch vụ...'],
+  ['total','Tôi chỉ biết tổng khoản thu','Nhập tổng doanh thu trước, bổ sung cách tính chi tiết sau.']
+];
+const MECH_RECURRING_UNITS=[
+  ['person','Người / thành viên','người'],['account','Tài khoản / thuê bao','tài khoản'],['business','Khách hàng / doanh nghiệp','khách hàng'],['room','Phòng / căn / chỗ thuê','phòng'],['seat','Chỗ ngồi / vị trí','chỗ ngồi'],['contract','Hợp đồng / gói','hợp đồng'],['license','Giấy phép sử dụng','giấy phép'],['device','Thiết bị / máy','thiết bị'],['vehicle','Xe / phương tiện','xe'],['location','Chi nhánh / địa điểm','địa điểm'],['custom','Khác / Tự nhập','']
+];
+const MECH_ASSETS=[
+  ['court','Sân','sân'],['room','Phòng','phòng'],['vehicle','Xe / phương tiện','xe'],['device','Máy / thiết bị','thiết bị'],['seat','Chỗ ngồi / vị trí','chỗ ngồi'],['table','Bàn / quầy','bàn'],['storage','Kho / tủ / ô','ô'],['space','Mặt bằng / khu vực','khu vực'],['custom','Khác / Tự nhập','']
+];
+const MECH_TIME_UNITS=[['hour','Giờ','giờ'],['day','Ngày','ngày'],['shift','Ca','ca'],['week','Tuần','tuần'],['month','Tháng','tháng'],['custom','Khác / Tự nhập','']];
+const MECH_USAGE_UNITS=[['storage','Dung lượng','GB'],['distance','Quãng đường','km'],['api','Lượt gọi API','lượt gọi API'],['energy','Điện năng','kWh'],['minute','Phút','phút'],['machine_hour','Giờ máy','giờ máy'],['use','Lượt sử dụng','lượt sử dụng'],['custom','Khác / Tự nhập','']];
+const MECH_SERVICE_UNITS=[['visit','Lượt','lượt'],['session','Buổi','buổi'],['slot','Phiên','phiên'],['time','Lần','lần'],['shift','Ca','ca'],['appointment','Cuộc hẹn','cuộc hẹn'],['case','Hồ sơ / ca xử lý','hồ sơ'],['custom','Khác / Tự nhập','']];
+
+(function initRevenueMechanismV3(){
+  if(typeof MODEL_META!=='undefined'&&MODEL_META.recurring){MODEL_META.recurring.label='Thu theo thời gian / định kỳ';MODEL_META.recurring.title='Thiết lập cách nguồn thu tạo tiền';MODEL_META.recurring.text='Chọn đúng cơ chế tạo doanh thu trước. MBA sẽ hỏi tiếp đúng đơn vị, công suất và mức giá cần thiết.'}
+  const card=document.querySelector('.model[onclick*="selectModel(\'recurring\')"]');if(card){const h=card.querySelector('h3'),p=card.querySelector('p');if(h)h.textContent='Thu theo thời gian / định kỳ';if(p)p.textContent='Membership, SaaS, cho thuê sân/phòng/xe, tính theo mức sử dụng hoặc bán dịch vụ theo lượt.'}
+  wrapMechanismStructure();wrapMechanismPlan();wrapMechanismCalculation();wrapMechanismPreviewAndTarget();
+})();
+
+function mechRow(no,q,help,body){return'<div class="recurringFlowRow"><div class="recurringFlowRowHead"><div class="recurringFlowNo">'+no+'</div><div><div class="recurringFlowQuestion">'+q+'</div>'+(help?'<div class="recurringFlowHelp">'+help+'</div>':'')+'</div></div>'+body+'</div>'}
+function mechGrid(id,items,selected){return'<div class="choiceGrid recurringWide" data-choice="'+id+'">'+items.map(([v,t,sub])=>'<button type="button" class="choice '+(selected===v?'selected':'')+'" data-value="'+v+'">'+t+(sub?'<small>'+sub+'</small>':'')+'</button>').join('')+'</div>'}
+function mechSuggested(items,v){return items.find(x=>x[0]===v)?.[2]||''}
+function mechNameInput(id,value,placeholder,help=''){return'<div class="recurringUnitName"><div class="field"><label>Bạn muốn MBA gọi đơn vị này là gì?</label><input id="'+id+'" value="'+escAttr(value||'')+'" placeholder="'+placeholder+'">'+(help?'<div class="hint">'+help+'</div>':'')+'</div></div>'}
+
+function wrapMechanismStructure(){
+  const previousFields=fieldsForModel;
+  fieldsForModel=function(model,c){
+    if(model!=='recurring')return previousFields(model,c);
+    const m=c.revenueMechanism||((c.revenueBasis==='active')?'recurring':c.revenueBasis)||'';let html='<div class="recurringFlow">';
+    html+=mechRow('01','Nguồn thu này kiếm tiền bằng cách nào?','Chọn cơ chế gần nhất với thực tế. Đây là lựa chọn quyết định toàn bộ câu hỏi và phép tính phía sau.',mechGrid('revenueMechanism',MECHANISM_OPTIONS,m));
+    html+='<div class="recurringBranch '+(m==='recurring'?'on':'')+'" data-mech-branch="recurring">';
+    html+=mechRow('02','Bạn thu khoản định kỳ theo chu kỳ nào?','Chỉ áp dụng cho nguồn thu định kỳ.',choiceBlock('', 'mechanismBilling',[['month','Theo tháng'],['year','Theo năm'],['both','Có cả tháng và năm'],['custom','Khác / Tự nhập']],c.billing||'')+customInput('mechanismBillingCustom','Chu kỳ của bạn là bao nhiêu tháng?',c.billingCustom,'Ví dụ: 3'));
+    html+=mechRow('03','Bạn thu tiền cho mỗi cái gì?','Ví dụ một người, tài khoản, phòng hoặc hợp đồng.',mechGrid('mechanismRecurringUnit',MECH_RECURRING_UNITS,c.billingUnit||'')+mechNameInput('mechanismRecurringName',c.billingUnitName||'', 'Ví dụ: phòng'));
+    html+='</div>';
+    html+='<div class="recurringBranch '+(m==='rental_time'?'on':'')+'" data-mech-branch="rental_time">';
+    html+=mechRow('02','Bạn cho thuê cái gì?','Đây là tài sản hoặc công suất hữu hạn mà khách đặt để sử dụng.',mechGrid('mechanismAsset',MECH_ASSETS,c.assetType||'')+mechNameInput('mechanismAssetName',c.assetName||'', 'Ví dụ: sân'));
+    html+=mechRow('03','Bạn tính tiền theo khoảng thời gian nào?','Giờ và ngày được đưa lên trước vì phổ biến với sân, phòng, xe và thiết bị.',mechGrid('mechanismTimeUnit',MECH_TIME_UNITS,c.timeUnit||'')+mechNameInput('mechanismTimeName',c.timeUnitName||'', 'Ví dụ: giờ'));
+    html+='</div>';
+    html+='<div class="recurringBranch '+(m==='usage'?'on':'')+'" data-mech-branch="usage">';
+    html+=mechRow('02','Bạn tính phí theo mức sử dụng nào?','Dùng khi doanh thu tăng theo lượng khách thực sự tiêu thụ, không phải theo một slot tài sản được đặt.',mechGrid('mechanismUsageUnit',MECH_USAGE_UNITS,c.usageUnit||'')+mechNameInput('mechanismUsageName',c.usageUnitName||'', 'Ví dụ: GB'));
+    html+='</div>';
+    html+='<div class="recurringBranch '+(m==='per_use'?'on':'')+'" data-mech-branch="per_use">';
+    html+=mechRow('02','Bạn bán dịch vụ theo đơn vị nào?','Phù hợp với tư vấn, salon, khám, lớp học, sửa chữa hoặc dịch vụ tính theo từng lần thực hiện.',mechGrid('mechanismServiceUnit',MECH_SERVICE_UNITS,c.serviceUnit||'')+mechNameInput('mechanismServiceName',c.serviceUnitName||'', 'Ví dụ: buổi'));
+    html+='</div>';
+    html+='<div class="recurringBranch '+(m==='total'?'on':'')+'" data-mech-branch="total">'+mechRow('02','Bạn chỉ cần nhập tổng khoản thu','MBA chưa cần biết số lượng × đơn giá. Bạn vẫn xem được lợi nhuận, còn hòa vốn theo đơn vị sẽ được bổ sung khi có thêm dữ liệu.','<div class="recurringBranchNote">Đây là lựa chọn dự phòng khi bạn chưa biết hoặc chưa muốn mô hình hóa chi tiết.</div>')+'</div>';
+    html+='</div>';return html;
+  };
+
+  const previousRefresh=refreshCustomVisibility;
+  refreshCustomVisibility=function(){previousRefresh();refreshMechanismStructure()};
+  const previousCollect=collectConfig;
+  collectConfig=function(model){const c=previousCollect(model);if(model!=='recurring')return c;const m=readChoice('revenueMechanism');c.revenueMechanism=m;c.revenueBasis=m;
+    ['billingUnit','billingUnitName','billingUnitCustom','assetType','assetName','timeUnit','timeUnitName','usageUnit','usageUnitName','serviceUnit','serviceUnitName'].forEach(k=>delete c[k]);
+    if(m==='recurring'){c.billing=readChoice('mechanismBilling');c.billingCustom=val('mechanismBillingCustom');c.billingUnit=readChoice('mechanismRecurringUnit');c.billingUnitName=val('mechanismRecurringName');c.billingUnitCustom=c.billingUnitName}
+    else{delete c.billing;delete c.billingCustom}
+    if(m==='rental_time'){c.assetType=readChoice('mechanismAsset');c.assetName=val('mechanismAssetName');c.timeUnit=readChoice('mechanismTimeUnit');c.timeUnitName=val('mechanismTimeName')}
+    if(m==='usage'){c.usageUnit=readChoice('mechanismUsageUnit');c.usageUnitName=val('mechanismUsageName')}
+    if(m==='per_use'){c.serviceUnit=readChoice('mechanismServiceUnit');c.serviceUnitName=val('mechanismServiceName')}
+    return c};
+  const previousValidate=validateConfig;
+  validateConfig=function(model,c){if(model!=='recurring')return previousValidate(model,c);const m=c.revenueMechanism;if(!m)return'Chọn cách nguồn thu này kiếm tiền.';
+    if(m==='recurring'){if(!c.billing)return'Chọn chu kỳ thu khoản định kỳ.';if(c.billing==='custom'&&(!c.billingCustom||Number(c.billingCustom)<=0))return'Nhập số tháng trong một chu kỳ.';if(!c.billingUnit||!c.billingUnitName)return'Chọn và đặt tên thứ đang trả khoản định kỳ.'}
+    if(m==='rental_time'&&(!c.assetType||!c.assetName||!c.timeUnit||!c.timeUnitName))return'Chọn tài sản cho thuê và đơn vị thời gian tính giá.';
+    if(m==='usage'&&(!c.usageUnit||!c.usageUnitName))return'Chọn và đặt tên đơn vị mức sử dụng.';
+    if(m==='per_use'&&(!c.serviceUnit||!c.serviceUnitName))return'Chọn và đặt tên đơn vị dịch vụ.';return''};
+  const previousSummary=summaryFor;
+  summaryFor=function(s){if(s.model!=='recurring')return previousSummary(s);const c=s.config||{},m=c.revenueMechanism||c.revenueBasis;if(m==='recurring')return'Thu định kỳ · '+(c.billingUnitName||'đơn vị')+' · '+labelBilling(c);if(m==='rental_time')return'Cho thuê theo thời gian · '+(c.assetName||'tài sản')+' / '+(c.timeUnitName||'thời gian');if(m==='usage')return'Tính theo mức sử dụng · '+(c.usageUnitName||'đơn vị');if(m==='per_use')return'Bán theo lượt / lần · '+(c.serviceUnitName||'lượt');if(m==='total')return'Dùng tổng khoản thu';return'Chưa chọn cách nguồn thu tạo tiền'};
+}
+
+function refreshMechanismStructure(){const screen=$('#streamSetup');if(!screen||!screen.classList.contains('on'))return;const m=readChoice('revenueMechanism');$$('[data-mech-branch]').forEach(x=>x.classList.toggle('on',x.dataset.mechBranch===m));
+  [['mechanismRecurringUnit','mechanismRecurringName',MECH_RECURRING_UNITS],['mechanismAsset','mechanismAssetName',MECH_ASSETS],['mechanismTimeUnit','mechanismTimeName',MECH_TIME_UNITS],['mechanismUsageUnit','mechanismUsageName',MECH_USAGE_UNITS],['mechanismServiceUnit','mechanismServiceName',MECH_SERVICE_UNITS]].forEach(([choice,id,items])=>{const v=readChoice(choice),el=$('#'+id);if(!el||!v)return;const s=mechSuggested(items,v);if(!el.value||el.dataset.autoName==='1'){el.value=s;el.dataset.autoName='1'}if(!el.dataset.mechanismBound){el.addEventListener('input',()=>el.dataset.autoName='0');el.dataset.mechanismBound='1'}})}
+
+function wrapMechanismPlan(){const previousIntro=planIntro;planIntro=function(s){if(s.model!=='recurring')return previousIntro(s);const m=s.config?.revenueMechanism||s.config?.revenueBasis;if(m==='rental_time')return'MBA sẽ tính số thời gian thực sự bán được từ số tài sản, công suất và tỷ lệ được thuê.';if(m==='usage')return'MBA dùng mức sử dụng × đơn giá để tính doanh thu.';if(m==='per_use')return'MBA dùng số lượt / buổi / phiên × giá để tính doanh thu.';if(m==='total')return'Bạn chỉ cần nhập tổng khoản thu và chi phí để có kết quả đầu tiên.';return'MBA theo dõi số đơn vị đang trả khoản định kỳ, mức phí và biến động tăng giảm.'};
+  recurringPlanFields=function(s,input){const c=s.config||{},m=c.revenueMechanism||c.revenueBasis||'';
+    if(m==='recurring'){const u=c.billingUnitName||'đơn vị',billing=c.billing||'month';let h='<div class="recurringPlanIntro"><b>Thu một khoản định kỳ</b> · Đơn vị: '+esc(u)+' · '+esc(labelBilling(c))+'.</div>';if(billing==='both')h+=numberField('monthlyUnits','Số '+u+' ở gói tháng',input.monthlyUnits,'100',u)+moneyField('monthlyPrice','Mỗi '+u+' trả bao nhiêu mỗi tháng?',input.monthlyPrice,'199,000')+numberField('yearlyUnits','Số '+u+' ở gói năm',input.yearlyUnits,'50',u)+moneyField('yearlyPrice','Mỗi '+u+' trả bao nhiêu mỗi năm?',input.yearlyPrice,'1,990,000');else h+=numberField('activeUnits','Hiện có bao nhiêu '+u+' đang tạo khoản thu?',input.activeUnits,'100',u)+moneyField('pricePerCycle',billing==='year'?'Mỗi '+u+' trả bao nhiêu mỗi năm?':billing==='custom'?'Mỗi '+u+' trả bao nhiêu mỗi chu kỳ?':'Mỗi '+u+' trả bao nhiêu mỗi tháng?',input.pricePerCycle,billing==='year'?'1,990,000':'199,000');h+=numberField('addedUnits','Mỗi tháng tăng thêm khoảng bao nhiêu '+u+'?',input.addedUnits,'0',u+'/tháng')+numberField('lostUnits','Mỗi tháng giảm khoảng bao nhiêu '+u+'?',input.lostUnits,'0',u+'/tháng')+moneyField('variablePerUnit','Mỗi '+u+' làm phát sinh thêm bao nhiêu chi phí mỗi tháng?',input.variablePerUnit,'0','Chỉ nhập phần tăng theo từng '+u+'.')+moneyField('fixedCosts','Chi phí cố định mỗi tháng',input.fixedCosts,'20,000,000');return h}
+    if(m==='rental_time'){const a=c.assetName||'tài sản',t=c.timeUnitName||'giờ';return'<div class="recurringPlanIntro"><b>Cho thuê theo thời gian</b> · '+esc(a)+' · tính giá theo '+esc(t)+'.</div>'+numberField('assetCount','Có bao nhiêu '+a+' có thể cho thuê?',input.assetCount,'4',a)+numberField('capacityPerAsset','Mỗi '+a+' có thể bán tối đa bao nhiêu '+t+' trong một tháng?',input.capacityPerAsset,'360',t+'/'+a+'/tháng','Ví dụ sân mở 12 giờ/ngày × 30 ngày = 360 giờ/sân/tháng.')+numberField('utilizationRate','Bạn dự kiến bán được khoảng bao nhiêu % công suất?',input.utilizationRate,'60','%')+moneyField('pricePerTimeUnit','Giá thuê cho mỗi '+t,input.pricePerTimeUnit,'200,000')+moneyField('variablePerTimeUnit','Chi phí trực tiếp phát sinh cho mỗi '+t+' được thuê',input.variablePerTimeUnit,'0','Ví dụ điện, nhân sự trực hoặc vật tư chỉ phát sinh khi có khách.')+moneyField('fixedCosts','Chi phí cố định mỗi tháng',input.fixedCosts,'40,000,000')}
+    if(m==='usage'){const u=c.usageUnitName||'đơn vị sử dụng';return'<div class="recurringPlanIntro"><b>Tính theo mức sử dụng</b> · Đơn vị: '+esc(u)+'.</div>'+numberField('usageAmount','Mức '+u+' dự kiến mỗi tháng',input.usageAmount,'50000',u+'/tháng')+moneyField('pricePerUsage','Giá cho mỗi '+u,input.pricePerUsage,'200')+moneyField('variablePerUsage','Chi phí phát sinh cho mỗi '+u,input.variablePerUsage,'0')+moneyField('fixedCosts','Chi phí cố định mỗi tháng',input.fixedCosts,'10,000,000')}
+    if(m==='per_use'){const u=c.serviceUnitName||'lượt';return'<div class="recurringPlanIntro"><b>Bán dịch vụ theo lượt / lần</b> · Đơn vị: '+esc(u)+'.</div>'+numberField('volume','Số '+u+' dự kiến mỗi tháng',input.volume,'100',u+'/tháng')+moneyField('pricePerUse','Giá cho mỗi '+u,input.pricePerUse,'500,000')+moneyField('variablePerUse','Chi phí trực tiếp cho mỗi '+u,input.variablePerUse,'100,000')+moneyField('fixedCosts','Chi phí cố định mỗi tháng',input.fixedCosts,'20,000,000')}
+    if(m==='total')return'<div class="recurringPlanIntro"><b>Tôi chỉ biết tổng khoản thu</b> · MBA sẽ chưa quy hòa vốn về số lượng.</div>'+moneyField('totalRevenue','Tổng khoản thu dự kiến mỗi tháng',input.totalRevenue,'50,000,000')+moneyField('fixedCosts','Chi phí cố định mỗi tháng',input.fixedCosts,'20,000,000')+moneyField('otherCosts','Chi phí khác mỗi tháng',input.otherCosts,'0');
+    return'<div class="recurringMissing"><h3>Chưa chọn cách nguồn thu tạo tiền</h3><p>Hãy vào Thiết lập nguồn thu để chọn một trong 5 cách tính trước khi nhập số liệu.</p><button type="button" class="btn secondary" onclick="editSource(\''+s.id+'\')">Thiết lập nguồn thu</button></div>'};
+}
+
+function wrapMechanismCalculation(){const previous=calculatePlan;calculatePlan=async function(){const s=currentStream();if(s?.model!=='recurring')return previous();const p=currentProfile(),input=readPlanInput();if(s.planning?.result?.status==='ok'&&typeof askMbaConfirm==='function'){const ok=await askMbaConfirm({title:'Lưu cập nhật số liệu?',message:'Nguồn thu này đã có kết quả trước đó.',detail:'Kết quả cũ sẽ được thay bằng số liệu mới sau khi bạn xác nhận.',confirmText:'Lưu cập nhật'});if(!ok)return}
+    const btn=$('#calculateBtn');if(typeof mbaSaving!=='undefined')mbaSaving=true;btn.disabled=true;btn.textContent='Đang tính...';try{const r=await fetch(REVENUE_MECHANISM_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'calculate',config:s.config,input})});if(!r.ok)throw new Error('HTTP '+r.status);const data=await r.json();if(data.status!=='ok'){toast(data.message||'Chưa thể tính với dữ liệu này.');return}s.planning={mode:'quick',input,result:data,updatedAt:now()};if(p){p.businessPlan=null;p.updatedAt=now()}persist();if(typeof mbaDirtyScreen!=='undefined')mbaDirtyScreen=null;renderPlanResult(s,data);go('planResult')}catch(e){toast('Không kết nối được với bộ máy tính. Thử lại sau ít phút.')}finally{btn.disabled=false;btn.textContent='Lưu & xem kết quả';if(typeof mbaSaving!=='undefined')mbaSaving=false;if(typeof applyExplicitSaveCopy==='function')applyExplicitSaveCopy();if(typeof captureDirtyBaseline==='function')setTimeout(()=>captureDirtyBaseline(currentScreenId()),0)}}}
+
+function wrapMechanismPreviewAndTarget(){const oldPreview=previewRequest;previewRequest=async function(stream,input){if(stream?.model!=='recurring')return oldPreview(stream,input);const r=await fetch(REVENUE_MECHANISM_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'preview',config:stream.config,input})});if(!r.ok)throw new Error('HTTP '+r.status);return r.json()};
+  const oldTarget=calculateProfitTarget;calculateProfitTarget=async function(){const s=currentStream();if(s?.model!=='recurring')return oldTarget();const amount=parseMoney($('#targetProfitInput')?.value);if(!amount){toast('Nhập mức lợi nhuận bạn muốn đạt.');return}const btn=$('#targetCalcBtn');btn.disabled=true;btn.textContent='Đang tính...';const input=JSON.parse(JSON.stringify(s.planning?.input||{}));try{const r=await fetch(REVENUE_MECHANISM_API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'target',config:s.config,input,targetProfit:amount})});if(!r.ok)throw new Error('HTTP '+r.status);const data=await r.json();if(data.status!=='ok'){toast(data.message||'Chưa thể quy mục tiêu về đơn vị hiện tại.');return}s.planning.targetProfit=amount;s.planning.targetResult=data;s.updatedAt=now();currentProfile().updatedAt=now();persist();renderSavedTarget(data,amount);if(typeof captureDirtyBaseline==='function')captureDirtyBaseline('planResult')}catch(e){toast('Không kết nối được với bộ máy tính mục tiêu.')}finally{btn.disabled=false;btn.textContent='Lưu mục tiêu & tính'}}}
