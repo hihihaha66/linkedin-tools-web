@@ -1,0 +1,43 @@
+name: Preserve MBA channel flow
+on:
+  push:
+    paths:
+      - '.github/workflows/mba-channel-v05.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Patch model to channel flow
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('mba/index.html')
+          s=p.read_text(encoding='utf-8')
+          s=s.replace("onclick=\"choose('food')\"","onclick=\"choose('foodChannel')\"",1)
+          s=s.replace("onclick=\"choose('goods')\"","onclick=\"choose('goodsChannel')\"",1)
+          marker='<section class="screen" id="food">'
+          insert='''<section class="screen" id="foodChannel"><div class="head"><div class="eyebrow">Bán đồ ăn / đồ uống</div><h1><span class="bn">Business này</span> bán qua những kênh nào?</h1><p>Chọn tất cả kênh đang hoặc dự định dùng. Kênh bán không phải một business model riêng, nhưng có thể làm thay đổi phí và cấu trúc chi phí.</p></div><div class="form"><div class="opts" id="foodChannels"><button class="opt" onclick="this.classList.toggle('a')">Tại quán</button><button class="opt" onclick="this.classList.toggle('a')">Mang đi</button><button class="opt" onclick="this.classList.toggle('a')">GrabFood</button><button class="opt" onclick="this.classList.toggle('a')">ShopeeFood</button><button class="opt" onclick="this.classList.toggle('a')">App khác</button><button class="opt" onclick="toggleCustomChannel('food',this)">Khác / Tự nhập</button></div><div id="foodCustomChannel" class="custom"><label>Tên kênh</label><input id="foodCustomChannelValue" placeholder="Ví dụ: Zalo, hotline, đối tác giao hàng riêng"></div><div class="note">MVP đang dùng một mức giá trị đơn và chi phí bình quân cho các kênh. Multi-source sau này sẽ cho tách riêng từng nguồn/kênh khi economics khác nhau.</div><div class="actions"><button class="btn secondary" onclick="go('router')">Quay lại</button><button class="btn" onclick="continueChannels('foodChannels','food')">Tiếp tục</button></div></div></section>
+<section class="screen" id="goodsChannel"><div class="head"><div class="eyebrow">Bán hàng hóa</div><h1><span class="bn">Business này</span> bán qua những kênh nào?</h1><p>Chọn tất cả kênh đang hoặc dự định dùng. MBA sẽ dùng thông tin này để định hướng các loại phí cần tính ở chế độ chi tiết.</p></div><div class="form"><div class="opts" id="goodsChannels"><button class="opt" onclick="this.classList.toggle('a')">Cửa hàng</button><button class="opt" onclick="this.classList.toggle('a')">Shopee</button><button class="opt" onclick="this.classList.toggle('a')">TikTok Shop</button><button class="opt" onclick="this.classList.toggle('a')">Facebook / Instagram</button><button class="opt" onclick="this.classList.toggle('a')">Website</button><button class="opt" onclick="toggleCustomChannel('goods',this)">Khác / Tự nhập</button></div><div id="goodsCustomChannel" class="custom"><label>Tên kênh</label><input id="goodsCustomChannelValue" placeholder="Ví dụ: Zalo, đại lý, livestream riêng"></div><div class="note">Nếu bán nhiều kênh, MVP dùng số bình quân chung. Multi-source sẽ tách phí và lợi nhuận khi từng kênh thực sự có economics khác nhau.</div><div class="actions"><button class="btn secondary" onclick="go('router')">Quay lại</button><button class="btn" onclick="continueChannels('goodsChannels','goods')">Tiếp tục</button></div></div></section>
+'''
+          if marker not in s: raise SystemExit('food marker not found')
+          s=s.replace(marker,insert+marker,1)
+          s=s.replace("onclick=\"go('router')\">Quay lại</button><button class=\"btn\" onclick=\"calcFood()\"","onclick=\"go('foodChannel')\">Quay lại</button><button class=\"btn\" onclick=\"calcFood()\"",1)
+          s=s.replace("onclick=\"go('router')\">Quay lại</button><button class=\"btn\" onclick=\"calcGoods()\"","onclick=\"go('goodsChannel')\">Quay lại</button><button class=\"btn\" onclick=\"calcGoods()\"",1)
+          js="""function toggleCustomChannel(kind,b){b.classList.toggle('a');$('#'+kind+'CustomChannel').classList.toggle('on',b.classList.contains('a'))}function continueChannels(group,next){let chosen=$$('#'+group+' .opt.a');if(!chosen.length){toast('Chọn ít nhất một kênh để tiếp tục.');return}let kind=group==='foodChannels'?'food':'goods',custom=$('#'+kind+'CustomChannelValue')?.value.trim();if(chosen.some(x=>x.textContent.includes('Tự nhập'))&&!custom){toast('Nhập tên kênh của bạn hoặc bỏ chọn Khác / Tự nhập.');return}localStorage.setItem('mba_'+group,JSON.stringify(chosen.map(x=>x.textContent.includes('Tự nhập')?custom:x.textContent.trim())));go(next)}"""
+          anchor='function bindMoney()'
+          if anchor not in s: raise SystemExit('js anchor not found')
+          s=s.replace(anchor,js+anchor,1)
+          p.write_text(s,encoding='utf-8')
+          PY
+          rm .github/workflows/mba-channel-v05.yml
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add mba/index.html .github/workflows/mba-channel-v05.yml
+          git commit -m "Preserve model channel flow in MBA v0.5"
+          git push
