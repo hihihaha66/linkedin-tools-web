@@ -106,10 +106,28 @@ openPlanning=function(id){
   }
 })();
 
+function loadRentalCapacityPeriod(){
+  if(!document.querySelector('link[data-rental-capacity-period]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';link.href='rental-capacity-period.css';link.dataset.rentalCapacityPeriod='1';
+    document.head.appendChild(link);
+  }
+  if(document.querySelector('script[data-rental-capacity-period]'))return;
+  const script=document.createElement('script');
+  script.src='rental-capacity-period.js';script.dataset.rentalCapacityPeriod='1';
+  document.body.appendChild(script);
+}
+
 function loadRevenueMechanismV3(){
-  if(document.querySelector('script[data-revenue-mechanism-v3]'))return;
+  const existing=document.querySelector('script[data-revenue-mechanism-v3]');
+  if(existing){
+    if(typeof MECHANISM_OPTIONS!=='undefined')loadRentalCapacityPeriod();
+    else existing.addEventListener('load',loadRentalCapacityPeriod,{once:true});
+    return;
+  }
   const script=document.createElement('script');
   script.src='revenue-mechanism-v3.js';script.dataset.revenueMechanismV3='1';
+  script.addEventListener('load',loadRentalCapacityPeriod,{once:true});
   document.body.appendChild(script);
 }
 
@@ -169,14 +187,21 @@ function loadRevenueMechanismV3(){
 })();
 
 (function loadUnifiedSourceEditor(){
-  if(!document.querySelector('link[data-unified-source-editor]')){
-    const link=document.createElement('link');
-    link.rel='stylesheet';link.href='unified-source-editor.css';link.dataset.unifiedSourceEditor='1';
-    document.head.appendChild(link);
-  }
-  if(!document.querySelector('script[data-unified-source-editor]')){
-    const script=document.createElement('script');
-    script.src='unified-source-editor.js';script.dataset.unifiedSourceEditor='1';
-    document.body.appendChild(script);
-  }
+  let tries=0;
+  const timer=setInterval(()=>{
+    tries++;
+    if(window.__mbaRentalCapacityReady || tries>240){
+      clearInterval(timer);
+      if(!document.querySelector('link[data-unified-source-editor]')){
+        const link=document.createElement('link');
+        link.rel='stylesheet';link.href='unified-source-editor.css';link.dataset.unifiedSourceEditor='1';
+        document.head.appendChild(link);
+      }
+      if(!document.querySelector('script[data-unified-source-editor]')){
+        const script=document.createElement('script');
+        script.src='unified-source-editor.js';script.dataset.unifiedSourceEditor='1';
+        document.body.appendChild(script);
+      }
+    }
+  },50);
 })();
