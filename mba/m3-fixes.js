@@ -105,3 +105,11 @@ openPlanning=function(id){
     document.body.appendChild(script);
   }
 })();
+
+(function loadRecurringUx(){
+  if(!document.querySelector('script[data-recurring-ux]')){
+    const script=document.createElement('script');
+    script.src='recurring-ux.js';script.dataset.recurringUx='1';
+    document.body.appendChild(script);
+  }
+})();
