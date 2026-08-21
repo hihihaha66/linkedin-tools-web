@@ -1,6 +1,7 @@
 let mbaDirtyScreen=null;
 let mbaSaving=false;
 let mbaRenameProfileId=null;
+let mbaDirtyBaselines={};
 
 (function initExplicitSave(){
   let tries=0;
@@ -16,17 +17,66 @@ function setupExplicitSave(){
   if(window.__mbaExplicitSaveReady)return;window.__mbaExplicitSaveReady=true;
   ensureRenameModal();
   applyExplicitSaveCopy();
+  captureDirtyBaseline(currentScreenId());
   bindDirtyTracking();
   wrapNavigationGuard();
   wrapExplicitSaveActions();
   wrapProfileRenameUI();
-  window.addEventListener('beforeunload',e=>{if(mbaDirtyScreen){e.preventDefault();e.returnValue=''}});
+  window.addEventListener('beforeunload',e=>{refreshDirtyState();if(mbaDirtyScreen){e.preventDefault();e.returnValue=''}});
 }
 
 function currentScreenId(){return document.querySelector('.screen.on')?.id||''}
 function editableScreen(id){return ['newProfile','streamSetup','plan','sharedCosts','planResult'].includes(id)}
-function markDirty(){const id=currentScreenId();if(!editableScreen(id)||mbaSaving)return;if(id==='planResult'&&!$('#targetForm')?.classList.contains('on'))return;mbaDirtyScreen=id;updateDirtyUI()}
-function clearDirty(){mbaDirtyScreen=null;updateDirtyUI()}
+function inactiveConditional(el){
+  const selectors=['.customArea','.affiliateModeArea','.affiliateEventCustom','.targetForm','.customAllocation'];
+  return selectors.some(sel=>{const box=el.closest(sel);return box&&!box.classList.contains('on')});
+}
+function serializeEditableScreen(id){
+  if(!editableScreen(id))return'';
+  const screen=$('#'+id);if(!screen)return'';
+  const controls=[];
+  screen.querySelectorAll('input,textarea,select').forEach((el,index)=>{
+    if(inactiveConditional(el))return;
+    const key=el.id||el.dataset.planKey||el.name||('control_'+index);
+    let value=el.value;
+    if(el.type==='checkbox'||el.type==='radio')value=el.checked?'1':'0';
+    controls.push([key,String(value??'')]);
+  });
+  const selections=[];
+  screen.querySelectorAll('.choice.selected,[data-allocation].selected,[data-allocation-mode].selected').forEach((el,index)=>{
+    if(inactiveConditional(el))return;
+    const group=el.closest('[data-choice],[data-multi],[data-plan-choice]');
+    const groupKey=group?.dataset.choice||group?.dataset.multi||group?.dataset.planChoice||el.dataset.allocation?'allocation':el.dataset.allocationMode?'allocationMode':('selection_'+index);
+    const value=el.dataset.value||el.dataset.allocation||el.dataset.allocationMode||el.textContent.trim();
+    selections.push([groupKey,String(value)]);
+  });
+  return JSON.stringify({controls,selections});
+}
+function captureDirtyBaseline(id=currentScreenId()){
+  if(!editableScreen(id))return;
+  mbaDirtyBaselines[id]=serializeEditableScreen(id);
+  if(mbaDirtyScreen===id)mbaDirtyScreen=null;
+  updateDirtyUI();
+}
+function refreshDirtyState(id=currentScreenId()){
+  if(mbaSaving||!editableScreen(id)){if(mbaDirtyScreen===id){mbaDirtyScreen=null;updateDirtyUI()}return false}
+  const current=serializeEditableScreen(id);
+  if(!(id in mbaDirtyBaselines)){mbaDirtyBaselines[id]=current;mbaDirtyScreen=null;updateDirtyUI();return false}
+  const changed=current!==mbaDirtyBaselines[id];
+  mbaDirtyScreen=changed?id:null;
+  updateDirtyUI();
+  return changed;
+}
+function markDirty(){
+  const id=currentScreenId();if(!editableScreen(id)||mbaSaving)return;
+  if(id==='planResult'&&!$('#targetForm')?.classList.contains('on'))return;
+  setTimeout(()=>refreshDirtyState(id),0);
+}
+function clearDirty({capture=true}={}){
+  mbaDirtyScreen=null;
+  if(capture)captureDirtyBaseline(currentScreenId());
+  else updateDirtyUI();
+}
 function updateDirtyUI(){
   document.querySelectorAll('.explicitSaveNotice').forEach(x=>x.classList.remove('on'));
   if(mbaDirtyScreen){const screen=$('#'+mbaDirtyScreen);let notice=screen?.querySelector('.explicitSaveNotice');if(!notice&&screen){const actions=screen.querySelector('.actions');if(actions){notice=document.createElement('div');notice.className='explicitSaveNotice';notice.textContent='Có thay đổi chưa lưu. Chỉ khi bạn bấm Lưu thì dữ liệu mới được ghi trên thiết bị.';actions.insertAdjacentElement('beforebegin',notice)}}notice?.classList.add('on')}
@@ -39,31 +89,32 @@ function bindDirtyTracking(){
   },true);
 }
 async function confirmDiscard(){
+  refreshDirtyState();
   if(!mbaDirtyScreen||mbaSaving)return true;
   const promise=askMbaConfirm({title:'Bỏ thay đổi chưa lưu?',message:'Bạn đang có thay đổi chưa được lưu trên màn hình này.',detail:'Nếu rời đi, các dữ liệu đã lưu trước đó vẫn được giữ nguyên, còn phần bạn vừa sửa sẽ bị bỏ.',confirmText:'Bỏ thay đổi',danger:true});
   const cancel=$('#mbaConfirmCancel');if(cancel)cancel.textContent='Ở lại';
   const ok=await promise;
   if(cancel)cancel.textContent='Không, quay lại';
-  if(ok)clearDirty();
+  if(ok)clearDirty({capture:false});
   return ok;
 }
 function wrapNavigationGuard(){
   const previousGo=go;
   go=function(id){
-    const from=currentScreenId();
-    if(mbaDirtyScreen&&from!==id&&!mbaSaving){confirmDiscard().then(ok=>{if(ok){previousGo(id);applyExplicitSaveCopy()}});return}
-    previousGo(id);if(from!==id&&!mbaSaving)clearDirty();applyExplicitSaveCopy();
+    const from=currentScreenId();refreshDirtyState(from);
+    if(mbaDirtyScreen&&from!==id&&!mbaSaving){confirmDiscard().then(ok=>{if(ok){previousGo(id);applyExplicitSaveCopy();setTimeout(()=>captureDirtyBaseline(id),0)}});return}
+    previousGo(id);if(from!==id&&!mbaSaving)mbaDirtyScreen=null;applyExplicitSaveCopy();setTimeout(()=>captureDirtyBaseline(id),0);
   };
 
   const previousNewProfile=newProfile;
-  newProfile=function(){if(mbaDirtyScreen&&!mbaSaving){confirmDiscard().then(ok=>{if(ok)previousNewProfile()});return}previousNewProfile()};
+  newProfile=function(){refreshDirtyState();if(mbaDirtyScreen&&!mbaSaving){confirmDiscard().then(ok=>{if(ok)previousNewProfile()});return}previousNewProfile()};
 
   const previousOpenProfile=openProfile;
-  openProfile=function(id){if(mbaDirtyScreen&&!mbaSaving){confirmDiscard().then(ok=>{if(ok)previousOpenProfile(id)});return}previousOpenProfile(id)};
+  openProfile=function(id){refreshDirtyState();if(mbaDirtyScreen&&!mbaSaving){confirmDiscard().then(ok=>{if(ok)previousOpenProfile(id)});return}previousOpenProfile(id)};
 
   if(typeof profileSwitchTo==='function'){
     const previousSwitch=profileSwitchTo;
-    profileSwitchTo=function(id){if(mbaDirtyScreen&&!mbaSaving){confirmDiscard().then(ok=>{if(ok)previousSwitch(id)});return}previousSwitch(id)};
+    profileSwitchTo=function(id){refreshDirtyState();if(mbaDirtyScreen&&!mbaSaving){confirmDiscard().then(ok=>{if(ok)previousSwitch(id)});return}previousSwitch(id)};
   }
 }
 function wrapExplicitSaveActions(){
@@ -71,13 +122,13 @@ function wrapExplicitSaveActions(){
     const name=$('#newProfileName')?.value.trim();if(!name){toast('Nhập tên việc kinh doanh / dự án trước khi lưu.');$('#newProfileName')?.focus();return}
     mbaSaving=true;
     const p={id:uid('profile'),name,status:'draft',currency:'VND',createdAt:now(),updatedAt:now(),sharedCosts:[],streams:[],timeContext:{planningPeriod:'month',viewPeriod:'month',actualRange:null}};
-    state.profiles.push(p);state.currentProfileId=p.id;draftName=name;persist();clearDirty();mbaSaving=false;go('modelRouter');toast('Đã lưu Hồ sơ kinh doanh trên thiết bị.')
+    state.profiles.push(p);state.currentProfileId=p.id;draftName=name;persist();mbaDirtyScreen=null;mbaSaving=false;go('modelRouter');toast('Đã lưu Hồ sơ kinh doanh trên thiết bị.')
   };
 
   const previousSaveStream=saveStream;
   saveStream=async function(){
     mbaSaving=true;const before=currentScreenId();
-    try{await Promise.resolve(previousSaveStream())}finally{mbaSaving=false;if(currentScreenId()!==before)clearDirty();applyExplicitSaveCopy()}
+    try{await Promise.resolve(previousSaveStream())}finally{mbaSaving=false;if(currentScreenId()!==before){mbaDirtyScreen=null}else{captureDirtyBaseline(before)}applyExplicitSaveCopy()}
   };
 
   const previousCalculatePlan=calculatePlan;
@@ -85,18 +136,18 @@ function wrapExplicitSaveActions(){
     const p=currentProfile(),backup=p?.businessPlan?JSON.parse(JSON.stringify(p.businessPlan)):null;mbaSaving=true;const before=currentScreenId();
     try{await Promise.resolve(previousCalculatePlan())}finally{
       mbaSaving=false;
-      if(currentScreenId()!==before)clearDirty();
-      else if(p&&backup&&!p.businessPlan){p.businessPlan=backup;persist()}
+      if(currentScreenId()!==before)mbaDirtyScreen=null;else captureDirtyBaseline(before);
+      if(p&&backup&&!p.businessPlan){p.businessPlan=backup;persist()}
       applyExplicitSaveCopy();
     }
   };
 
   const previousCalculateBusiness=calculateBusiness;
-  calculateBusiness=async function(){mbaSaving=true;const before=currentScreenId();try{await Promise.resolve(previousCalculateBusiness())}finally{mbaSaving=false;if(currentScreenId()!==before)clearDirty();applyExplicitSaveCopy()}};
+  calculateBusiness=async function(){mbaSaving=true;const before=currentScreenId();try{await Promise.resolve(previousCalculateBusiness())}finally{mbaSaving=false;if(currentScreenId()!==before)mbaDirtyScreen=null;else captureDirtyBaseline(before);applyExplicitSaveCopy()}};
 
   if(typeof calculateProfitTarget==='function'){
     const previousTarget=calculateProfitTarget;
-    calculateProfitTarget=async function(){const beforeValue=parseMoney($('#targetProfitInput')?.value);mbaSaving=true;try{await Promise.resolve(previousTarget())}finally{mbaSaving=false;const s=currentStream();if(beforeValue>0&&Number(s?.planning?.targetProfit||0)===beforeValue)clearDirty();applyExplicitSaveCopy()}};
+    calculateProfitTarget=async function(){const beforeValue=parseMoney($('#targetProfitInput')?.value);mbaSaving=true;try{await Promise.resolve(previousTarget())}finally{mbaSaving=false;const s=currentStream();if(beforeValue>0&&Number(s?.planning?.targetProfit||0)===beforeValue)captureDirtyBaseline('planResult');applyExplicitSaveCopy()}};
   }
 }
 function applyExplicitSaveCopy(){
