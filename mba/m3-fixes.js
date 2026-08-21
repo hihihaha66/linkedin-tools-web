@@ -139,3 +139,11 @@ openPlanning=function(id){
     document.body.appendChild(script);
   }
 })();
+
+(function loadMoneyFormatter(){
+  if(!document.querySelector('script[data-money-format]')){
+    const script=document.createElement('script');
+    script.src='money-format.js';script.dataset.moneyFormat='1';
+    document.body.appendChild(script);
+  }
+})();
