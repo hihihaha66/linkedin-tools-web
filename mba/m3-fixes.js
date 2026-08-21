@@ -79,3 +79,16 @@ openPlanning=function(id){
     document.body.appendChild(script);
   }
 })();
+
+(function loadAffiliateV2(){
+  if(!document.querySelector('link[data-affiliate-v2]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';link.href='affiliate-v2.css';link.dataset.affiliateV2='1';
+    document.head.appendChild(link);
+  }
+  if(!document.querySelector('script[data-affiliate-v2]')){
+    const script=document.createElement('script');
+    script.src='affiliate-v2.js';script.dataset.affiliateV2='1';
+    document.body.appendChild(script);
+  }
+})();
