@@ -113,3 +113,16 @@ openPlanning=function(id){
     document.body.appendChild(script);
   }
 })();
+
+(function loadExplicitSave(){
+  if(!document.querySelector('link[data-explicit-save]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';link.href='explicit-save.css';link.dataset.explicitSave='1';
+    document.head.appendChild(link);
+  }
+  if(!document.querySelector('script[data-explicit-save]')){
+    const script=document.createElement('script');
+    script.src='explicit-save.js';script.dataset.explicitSave='1';
+    document.body.appendChild(script);
+  }
+})();
