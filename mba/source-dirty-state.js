@@ -109,17 +109,17 @@ function setupSourceDirtyState(){
   openUnifiedSourceEditor=function(id){
     originalOpen(id);
     const token=mbaUnifiedSource;if(token){token._dirtyReady=false;token._dirtyBaseline=''}
-    setTimeout(()=>{if(mbaUnifiedSource!==token)return;installWatchers();captureBaseline(true);updateButton()},260);
+    setTimeout(()=>{if(mbaUnifiedSource!==token)return;installWatchers();captureBaseline(true);updateButton()},30);
   };
 
   const originalSelect=selectModel;
   selectModel=function(model){
     originalSelect(model);
-    setTimeout(()=>{installWatchers();updateButton()},80);
+    setTimeout(()=>{installWatchers();updateButton()},50);
   };
 
   installWatchers();
-  if(mbaUnifiedSource?.active){setTimeout(()=>{captureBaseline(true);updateButton()},220)}
+  if(mbaUnifiedSource?.active){setTimeout(()=>{captureBaseline(true);updateButton()},30)}
 }
 
 function dirtyStable(value){
