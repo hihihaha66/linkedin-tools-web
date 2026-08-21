@@ -147,3 +147,11 @@ openPlanning=function(id){
     document.body.appendChild(script);
   }
 })();
+
+(function loadRevenueMechanismPrototype(){
+  if(!document.querySelector('script[data-revenue-mechanism-v3]')){
+    const script=document.createElement('script');
+    script.src='revenue-mechanism-v3.js';script.dataset.revenueMechanismV3='1';
+    document.body.appendChild(script);
+  }
+})();
