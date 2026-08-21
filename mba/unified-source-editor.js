@@ -50,6 +50,9 @@ function rewriteUnifiedSourceCards(){
   $$('#sourceList .sourceCard').forEach((card,i)=>{
     const s=p.streams[i],actions=card.querySelector('.sourceActions');if(!s||!actions)return;
     const has=s.planning?.result?.status==='ok';
+    const stateKey=s.id+'|'+(has?'planned':'setup');
+    if(actions.dataset.unifiedSourceKey===stateKey&&actions.querySelector('.unifiedUpdateSource'))return;
+    actions.dataset.unifiedSourceKey=stateKey;
     actions.classList.add('unifiedSourceActions');
     actions.innerHTML='<button type="button" class="unifiedUpdateSource" onclick="openUnifiedSourceEditor(\''+s.id+'\')">'+(has?'Cập nhật nguồn thu':'Thiết lập nguồn thu')+'</button><button type="button" class="delete" onclick="deleteSource(\''+s.id+'\')">Xóa nguồn thu</button>';
   });
