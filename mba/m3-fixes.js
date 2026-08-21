@@ -45,3 +45,16 @@ openPlanning=function(id){
     document.body.appendChild(script);
   }
 })();
+
+(function loadBusinessProfileSwitcher(){
+  if(!document.querySelector('link[data-profile-switcher]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';link.href='profile-switcher.css';link.dataset.profileSwitcher='1';
+    document.head.appendChild(link);
+  }
+  if(!document.querySelector('script[data-profile-switcher]')){
+    const script=document.createElement('script');
+    script.src='profile-switcher.js';script.dataset.profileSwitcher='1';
+    document.body.appendChild(script);
+  }
+})();
