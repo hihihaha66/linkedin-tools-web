@@ -66,3 +66,16 @@ openPlanning=function(id){
     document.body.appendChild(script);
   }
 })();
+
+(function loadTimeContext(){
+  if(!document.querySelector('link[data-time-context]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';link.href='time-context.css';link.dataset.timeContext='1';
+    document.head.appendChild(link);
+  }
+  if(!document.querySelector('script[data-time-context]')){
+    const script=document.createElement('script');
+    script.src='time-context.js';script.dataset.timeContext='1';
+    document.body.appendChild(script);
+  }
+})();
