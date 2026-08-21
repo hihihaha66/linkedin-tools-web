@@ -126,3 +126,16 @@ openPlanning=function(id){
     document.body.appendChild(script);
   }
 })();
+
+(function loadStructureNavigation(){
+  if(!document.querySelector('link[data-structure-navigation]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';link.href='structure-navigation.css';link.dataset.structureNavigation='1';
+    document.head.appendChild(link);
+  }
+  if(!document.querySelector('script[data-structure-navigation]')){
+    const script=document.createElement('script');
+    script.src='structure-navigation.js';script.dataset.structureNavigation='1';
+    document.body.appendChild(script);
+  }
+})();
