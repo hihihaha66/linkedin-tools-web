@@ -148,10 +148,10 @@ openPlanning=function(id){
   }
 })();
 
-(function loadRevenueMechanismPrototype(){
-  if(!document.querySelector('script[data-revenue-mechanism-v3]')){
+(function loadSourceCardUx(){
+  if(!document.querySelector('script[data-source-card-ux]')){
     const script=document.createElement('script');
-    script.src='revenue-mechanism-v3.js';script.dataset.revenueMechanismV3='1';
+    script.src='source-card-ux.js';script.dataset.sourceCardUx='1';
     document.body.appendChild(script);
   }
 })();
