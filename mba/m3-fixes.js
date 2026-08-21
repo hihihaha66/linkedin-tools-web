@@ -92,3 +92,16 @@ openPlanning=function(id){
     document.body.appendChild(script);
   }
 })();
+
+(function loadSafeSourceActions(){
+  if(!document.querySelector('link[data-source-actions]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';link.href='source-actions.css';link.dataset.sourceActions='1';
+    document.head.appendChild(link);
+  }
+  if(!document.querySelector('script[data-source-actions]')){
+    const script=document.createElement('script');
+    script.src='source-actions.js';script.dataset.sourceActions='1';
+    document.body.appendChild(script);
+  }
+})();
