@@ -32,3 +32,16 @@ openPlanning=function(id){
     }
   });
 };
+
+(function loadMbaUxUpgrade(){
+  if(!document.querySelector('link[data-mba-ux]')){
+    const link=document.createElement('link');
+    link.rel='stylesheet';link.href='m2-ux.css';link.dataset.mbaUx='1';
+    document.head.appendChild(link);
+  }
+  if(!document.querySelector('script[data-mba-ux]')){
+    const script=document.createElement('script');
+    script.src='m2-ux.js';script.dataset.mbaUx='1';
+    document.body.appendChild(script);
+  }
+})();
