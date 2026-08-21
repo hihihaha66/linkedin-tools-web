@@ -104,3 +104,25 @@ function updateFoodCostTotal(out){
 
 function foodMoneyNumber(v){const x=Number(String(v??'').replace(/,/g,''));return Number.isFinite(x)?Math.max(0,x):0}
 function foodFormatVnd(v){return Math.round(v||0).toLocaleString('vi-VN')+'đ'}
+
+(function loadFoodEconomicsAndDirtyState(){
+  let tries=0;
+  const timer=setInterval(()=>{
+    tries++;
+    if(!window.__mbaFoodMonthlyCostsReady&&tries<240)return;
+    clearInterval(timer);
+
+    if(!document.querySelector('link[data-food-economics-v3]')){
+      const link=document.createElement('link');link.rel='stylesheet';link.href='food-economics-v3.css';link.dataset.foodEconomicsV3='1';document.head.appendChild(link);
+    }
+
+    const loadDirty=()=>{
+      if(document.querySelector('script[data-source-dirty-state]'))return;
+      const dirty=document.createElement('script');dirty.src='source-dirty-state.js';dirty.dataset.sourceDirtyState='1';document.body.appendChild(dirty);
+    };
+
+    const existing=document.querySelector('script[data-food-economics-v3]');
+    if(existing){if(window.__mbaFoodEconomicsV3Ready)loadDirty();else existing.addEventListener('load',loadDirty,{once:true});return}
+    const script=document.createElement('script');script.src='food-economics-v3.js';script.dataset.foodEconomicsV3='1';script.addEventListener('load',loadDirty,{once:true});document.body.appendChild(script);
+  },50);
+})();
