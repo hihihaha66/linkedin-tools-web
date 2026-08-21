@@ -205,3 +205,23 @@ function loadRevenueMechanismV3(){
     }
   },50);
 })();
+
+(function loadFoodMonthlyCosts(){
+  let tries=0;
+  const timer=setInterval(()=>{
+    tries++;
+    if(window.__mbaUnifiedSourceReady || tries>280){
+      clearInterval(timer);
+      if(!document.querySelector('link[data-food-monthly-costs]')){
+        const link=document.createElement('link');
+        link.rel='stylesheet';link.href='food-monthly-costs.css';link.dataset.foodMonthlyCosts='1';
+        document.head.appendChild(link);
+      }
+      if(!document.querySelector('script[data-food-monthly-costs]')){
+        const script=document.createElement('script');
+        script.src='food-monthly-costs.js';script.dataset.foodMonthlyCosts='1';
+        document.body.appendChild(script);
+      }
+    }
+  },50);
+})();
