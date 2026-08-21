@@ -2,7 +2,6 @@ const PREVIEW_API_URL='https://linkedin-tools-api-test.vercel.app/api/mba-previe
 const TARGET_API_URL='https://linkedin-tools-api-test.vercel.app/api/mba-target';
 let previewTimer=null,previewSeq=0;
 
-// Mục tiêu lợi nhuận không còn nằm trong form Nhập nhanh.
 targetField=function(){return''};
 
 const _uxOpenPlanning=openPlanning;
@@ -29,9 +28,26 @@ function enhanceMoneyUnderstanding(root){
     const wrap=input.closest('.amount');if(!wrap)return;
     let helper=wrap.nextElementSibling?.classList?.contains('moneyMeaning')?wrap.nextElementSibling:null;
     if(!helper){helper=document.createElement('div');helper.className='moneyMeaning';wrap.insertAdjacentElement('afterend',helper)}
-    const update=()=>{const value=parseMoney(input.value);helper.textContent=value>0?'MBA đang hiểu: '+humanMoney(value):''};
-    input.addEventListener('input',update);update();
+    const update=()=>{const value=parseMoney(input.value);helper.textContent=value>0?'Số tiền bằng chữ: '+moneyInVietnameseWords(value):''};
+    if(!input.dataset.moneyWordsBound){input.addEventListener('input',update);input.dataset.moneyWordsBound='1'}update();
   });
+}
+function moneyInVietnameseWords(v){
+  const value=Math.round(Math.abs(Number(v)||0));if(!value)return'không đồng';
+  const digits=['không','một','hai','ba','bốn','năm','sáu','bảy','tám','chín'];
+  function readThree(n,full){
+    const h=Math.floor(n/100),t=Math.floor((n%100)/10),u=n%10;const parts=[];
+    if(h>0||full){parts.push(digits[h]+' trăm')}
+    if(t>1){parts.push(digits[t]+' mươi');if(u===1)parts.push('mốt');else if(u===4)parts.push('tư');else if(u===5)parts.push('lăm');else if(u>0)parts.push(digits[u])}
+    else if(t===1){parts.push('mười');if(u===5)parts.push('lăm');else if(u>0)parts.push(digits[u])}
+    else if(u>0){if(h>0||full)parts.push('lẻ');parts.push(digits[u])}
+    return parts.join(' ');
+  }
+  const units=['','nghìn','triệu','tỷ','nghìn tỷ','triệu tỷ'];let n=value,groups=[];
+  while(n>0){groups.push(n%1000);n=Math.floor(n/1000)}
+  const out=[];
+  for(let i=groups.length-1;i>=0;i--){const g=groups[i];if(!g)continue;const hasHigher=out.length>0;const full=hasHigher&&g<100;const words=readThree(g,full);if(words)out.push(words+(units[i]?' '+units[i]:''))}
+  const text=out.join(' ').replace(/\s+/g,' ').trim()+' đồng';return text.charAt(0).toUpperCase()+text.slice(1);
 }
 function humanMoney(v){
   const a=Math.abs(v),sign=v<0?'- ':'';
@@ -55,9 +71,16 @@ async function requestPlanPreview(){
   const input=readPlanInput();delete input.targetProfit;const seq=++previewSeq;box.classList.add('previewLoading');
   try{const data=await previewRequest(s,input);if(seq!==previewSeq)return;renderPreviewBox(data,$('#previewLines'),$('#previewWarnings'))}catch(e){if(seq===previewSeq){$('#previewLines').innerHTML='<div class="previewEmpty">Chưa tải được preview. Bạn vẫn có thể bấm Xem kết quả.</div>';$('#previewWarnings').innerHTML=''}}finally{if(seq===previewSeq)box.classList.remove('previewLoading')}
 }
+function previewLineHtml(line){
+  let text=String(line||'').trim();
+  const revenuePatterns=[/ doanh thu hoa hồng$/,/ doanh thu sau hoàn\/hủy$/,/ doanh thu quảng cáo$/,/ doanh thu sau hoàn tiền$/,/ doanh thu\/tháng$/,/ doanh thu$/];
+  for(const pattern of revenuePatterns){if(pattern.test(text)&&text.includes('=')){text=text.replace(pattern,'').trim();return'<span class="previewLabel">Doanh thu:</span> '+esc(text)+' <span class="previewPeriod">/tháng</span>'}}
+  if(/ lợi nhuận\/tháng$/.test(text)){text=text.replace(/ lợi nhuận\/tháng$/,'').trim();return'<span class="previewLabel">Lợi nhuận:</span> '+esc(text)+' <span class="previewPeriod">/tháng</span>'}
+  return esc(text).replace(/\/tháng\b/g,'<span class="previewPeriod">/tháng</span>');
+}
 function renderPreviewBox(data,lineHost,warningHost){
   const lines=data?.preview?.lines||[];
-  lineHost.innerHTML=lines.length?lines.map(x=>'<div class="previewLine">'+esc(x)+'</div>').join(''):'<div class="previewEmpty">Nhập thêm số để MBA cho bạn xem phép tính ngay tại đây.</div>';
+  lineHost.innerHTML=lines.length?lines.map(x=>'<div class="previewLine">'+previewLineHtml(x)+'</div>').join(''):'<div class="previewEmpty">Nhập thêm số để MBA cho bạn xem phép tính ngay tại đây.</div>';
   renderWarnings(data?.warnings||[],warningHost);
 }
 function renderWarnings(warnings,host){
@@ -79,7 +102,7 @@ function ensureResultUX(){
 }
 async function loadResultExplanation(s){
   const input=JSON.parse(JSON.stringify(s.planning?.input||{}));delete input.targetProfit;
-  try{const data=await previewRequest(s,input);const lines=data?.preview?.lines||[];$('#resultMathLines').innerHTML=lines.length?lines.map(x=>'<p>'+esc(x)+'</p>').join(''):'<p class="hint">MBA đã tính từ các số bạn nhập ở Kế hoạch nhanh.</p>';renderWarnings(data?.warnings||[],$('#resultSanity'))}catch(e){$('#resultMathLines').innerHTML='<p class="hint">MBA đã tính từ các số bạn nhập ở Kế hoạch nhanh.</p>';$('#resultSanity').innerHTML=''}
+  try{const data=await previewRequest(s,input);const lines=data?.preview?.lines||[];$('#resultMathLines').innerHTML=lines.length?lines.map(x=>'<p>'+previewLineHtml(x)+'</p>').join(''):'<p class="hint">MBA đã tính từ các số bạn nhập ở Kế hoạch nhanh.</p>';renderWarnings(data?.warnings||[],$('#resultSanity'))}catch(e){$('#resultMathLines').innerHTML='<p class="hint">MBA đã tính từ các số bạn nhập ở Kế hoạch nhanh.</p>';$('#resultSanity').innerHTML=''}
 }
 function renderTargetSection(s){
   const box=$('#profitTargetBox');if(!box)return;const saved=s.planning?.targetResult,target=s.planning?.targetProfit||0;
@@ -99,7 +122,6 @@ function renderSavedTarget(data,amount){
 }
 function formatNumber(v){return new Intl.NumberFormat('vi-VN',{maximumFractionDigits:1}).format(Number(v)||0)}
 
-// Áp dụng phần "MBA đang hiểu" cho chi phí dùng chung ở M3.
 if(typeof renderSharedCosts==='function'){
   const _uxRenderSharedCosts=renderSharedCosts;
   renderSharedCosts=function(){_uxRenderSharedCosts();enhanceMoneyUnderstanding($('#sharedCosts'))};
