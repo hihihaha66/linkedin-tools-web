@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="m3.css">
 </head>
 <body>
 <header class="top">
@@ -17,17 +18,17 @@
 </header>
 <main class="wrap">
 <section class="screen on" id="landing">
-  <div class="hero"><div class="eyebrow">MBA - Mini Business Assistant</div><h1>Những con số bạn cần để biết việc kinh doanh của mình đang ổn hay không.</h1><p>MBA hiểu việc kinh doanh theo từng nguồn thu. Mỗi nguồn được hỏi theo đúng cách nó tạo ra tiền, sau đó mới tính lợi nhuận, hòa vốn và mục tiêu.</p></div>
+  <div class="hero"><div class="eyebrow">MBA - Mini Business Assistant</div><h1>Những con số bạn cần để biết việc kinh doanh của mình đang ổn hay không.</h1><p>MBA hiểu việc kinh doanh theo từng nguồn thu. Mỗi nguồn được hỏi theo đúng cách nó tạo ra tiền, rồi ghép lại để bạn thấy kết quả của toàn Hồ sơ kinh doanh.</p></div>
   <div class="journeys">
-    <button class="card journey" onclick="startPlanning()"><div class="n">01 / LẬP KẾ HOẠCH</div><h3>Tôi đang tính mở một việc kinh doanh</h3><p>Tạo Hồ sơ kinh doanh, thêm từng nguồn thu và nhập nhanh những con số cốt lõi để biết mức bán tối thiểu và lợi nhuận dự kiến.</p><strong>Bắt đầu lập kế hoạch →</strong></button>
+    <button class="card journey" onclick="startPlanning()"><div class="n">01 / LẬP KẾ HOẠCH</div><h3>Tôi đang tính mở một việc kinh doanh</h3><p>Tạo Hồ sơ kinh doanh, thêm từng nguồn thu, nhập Kế hoạch nhanh và tổng hợp chi phí dùng chung để biết toàn bộ kế hoạch đang lời hay lỗ.</p><strong>Bắt đầu lập kế hoạch →</strong></button>
     <button class="card journey" onclick="journeyNotReady('Đang kinh doanh')"><div class="n">02 / ĐANG KINH DOANH</div><h3>Tôi đang kinh doanh</h3><p>Milestone tiếp theo sẽ cho bạn đưa dữ liệu bán hàng, chi phí và sao kê vào chính Hồ sơ kinh doanh đã tạo.</p><strong>Xem hồ sơ hiện có →</strong></button>
     <button class="card journey" onclick="journeyNotReady('Cân nhắc quyết định')"><div class="n">03 / QUYẾT ĐỊNH</div><h3>Tôi đang cân nhắc một quyết định</h3><p>Các mô phỏng tăng giá, thuê người hay tăng quảng cáo sẽ dùng dữ liệu thật trong hồ sơ, không dùng số mẫu.</p><strong>Xem hồ sơ hiện có →</strong></button>
   </div>
-  <div class="footerNote">M2 đã có phép tính kế hoạch cho từng nguồn thu. Dữ liệu hồ sơ lưu trên thiết bị; công thức tính được xử lý ở backend riêng.</div>
+  <div class="footerNote">M3 đã ghép nhiều nguồn thu, chi phí dùng chung và kết quả toàn hồ sơ. Dữ liệu hồ sơ lưu trên thiết bị; công thức tính được xử lý ở backend riêng.</div>
 </section>
 
 <section class="screen" id="profiles">
-  <div class="head"><div class="eyebrow">Hồ sơ kinh doanh</div><h1>Việc kinh doanh của bạn</h1><p>Mỗi hồ sơ có thể có một hoặc nhiều nguồn thu. Các hồ sơ đã tạo ở M1 vẫn được giữ nguyên.</p></div>
+  <div class="head"><div class="eyebrow">Hồ sơ kinh doanh</div><h1>Việc kinh doanh của bạn</h1><p>Mỗi hồ sơ có thể có một hoặc nhiều nguồn thu. Các hồ sơ và Kế hoạch nhanh đã tạo trước đó vẫn được giữ nguyên.</p></div>
   <div id="profileList" class="profileList"></div>
   <div class="actions" style="max-width:900px;margin-left:auto;margin-right:auto"><button class="btn secondary" onclick="go('landing')">Quay lại</button><button class="btn" onclick="newProfile()">+ Tạo hồ sơ mới</button></div>
 </section>
@@ -61,7 +62,7 @@
   <div class="profileBar"><div><div class="eyebrow">Hồ sơ kinh doanh</div><h1 id="builderName">-</h1><div class="profileMeta" id="builderMeta"></div></div><div class="saveState">✓ Tự động lưu trên thiết bị</div></div>
   <div id="sourceList" class="sourceList"></div>
   <button class="addCard" onclick="addSource()">+ Thêm nguồn thu</button>
-  <div class="builderFooter"><p><b>M2:</b> Mỗi nguồn thu có một “Kế hoạch nhanh”. MBA chỉ hỏi những số cần để trả kết quả đầu tiên; phần “Tính sát hơn” sẽ được bổ sung sau.</p><div class="actions"><button class="btn secondary" onclick="openProfiles()">Hồ sơ khác</button><button class="btn" onclick="finishStructure()">Xem tiến độ kế hoạch</button></div></div>
+  <div class="builderFooter"><p><b>M3:</b> Khi mọi nguồn đã có Kế hoạch nhanh, MBA sẽ ghép chúng lại, trừ chi phí dùng chung một lần và cho bạn chọn có phân bổ các khoản chung về từng nguồn hay không.</p><div class="actions"><button class="btn secondary" onclick="openProfiles()">Hồ sơ khác</button><button class="btn" onclick="finishStructure()">Tổng hợp toàn hồ sơ</button></div></div>
 </section>
 
 <section class="screen" id="plan">
@@ -72,12 +73,51 @@
   <div class="planShell"><div class="head"><div class="eyebrow" id="resultEyebrow">Kết quả</div><h1 id="resultTitle">Nguồn thu</h1><p>Kết quả đã tự động lưu vào Hồ sơ kinh doanh trên thiết bị.</p></div><div class="resultHero"><div id="heroLabel">Kết quả</div><div class="big" id="heroValue">-</div></div><div id="metricGrid" class="metricGrid"></div><div class="insight"><h3>Điều đáng chú ý</h3><p id="insightText">-</p></div><div id="assumptions" class="assumptions"></div><div class="actions"><button class="btn secondary" onclick="editCurrentPlan()">Sửa số liệu</button><button class="btn" onclick="backToBuilderFromResult()">Quay lại các nguồn thu</button></div></div>
 </section>
 
+<section class="screen" id="sharedCosts">
+  <div class="head"><div class="eyebrow">M3 - Chi phí dùng chung</div><h1>Những khoản nào phục vụ cả <span id="sharedProfileName">việc kinh doanh</span>?</h1><p>Chỉ nhập những khoản dùng chung cho nhiều nguồn thu. Đừng nhập lại chi phí đã nằm trong Kế hoạch nhanh của từng nguồn.</p></div>
+  <div class="box">
+    <div class="modeNote"><b>Ví dụ:</b> mặt bằng dùng cho cả quán và workshop, nhân sự quản lý chung, kế toán, phần mềm hoặc marketing thương hiệu. Nếu một khoản chỉ phục vụ riêng một nguồn, hãy để nó ở Kế hoạch nhanh của nguồn đó.</div>
+    <div id="sharedStandardRows"></div>
+    <div class="subhead">Khoản khác</div>
+    <div id="otherSharedRows" class="otherRows"></div>
+    <button type="button" class="btn secondary" style="margin-top:10px" onclick="addOtherSharedRow()">+ Thêm khoản khác</button>
+    <div class="sharedTotal"><span>Tổng chi phí dùng chung mỗi tháng</span><b id="sharedTotal">0đ</b></div>
+
+    <div class="subhead">Bạn muốn xử lý chi phí dùng chung thế nào?</div>
+    <div id="allocationChoices" class="choiceGrid"></div>
+    <div class="allocationNote">Không có cách phân bổ nào là “đúng tuyệt đối”. Đây là lựa chọn quản trị nên MBA để bạn chọn. Dù chọn cách nào, tổng lợi nhuận toàn hồ sơ vẫn không đổi.</div>
+    <div id="customAllocationBox" class="customAllocation">
+      <div class="field" style="margin-top:14px"><label>Tự phân bổ theo cách nào?</label><div id="allocationModeChoices" class="choiceGrid"></div></div>
+      <div id="customAllocationRows"></div>
+      <div id="customAllocationHelp" class="hint"></div>
+      <div id="allocationSummary" class="allocationSummary"></div>
+    </div>
+    <div class="actions"><button class="btn secondary" onclick="renderBuilder();go('builder')">Quay lại các nguồn thu</button><button class="btn" id="businessCalculateBtn" onclick="calculateBusiness()">Xem kết quả toàn hồ sơ</button></div>
+  </div>
+</section>
+
+<section class="screen" id="businessResult">
+  <div class="businessResult">
+    <div class="head"><div class="eyebrow">M3 - Kết quả toàn hồ sơ</div><h1 id="businessResultName">Hồ sơ kinh doanh</h1><p>MBA đã ghép các nguồn thu và trừ chi phí dùng chung một lần.</p></div>
+    <div class="resultHero"><div id="businessHeroLabel">Lợi nhuận ước tính</div><div class="big" id="businessHeroValue">-</div></div>
+    <div id="businessMetrics" class="metricGrid"></div>
+    <div class="insight"><h3>Điều đáng chú ý</h3><p id="businessInsight">-</p></div>
+    <div id="allocationLabel" class="allocationLabel"></div>
+    <div class="subhead">Từng nguồn đang đóng góp thế nào?</div>
+    <div id="streamResultTable" class="streamTable"></div>
+    <div class="distribution"><div id="revenueDistribution"></div><div id="profitDistribution"></div></div>
+    <div id="businessAssumptions" class="assumptions"></div>
+    <div class="actions"><button class="btn secondary" onclick="editBusinessPlan()">Sửa chi phí / cách phân bổ</button><button class="btn" onclick="renderBuilder();go('builder')">Quay lại Hồ sơ kinh doanh</button></div>
+  </div>
+</section>
+
 <section class="screen" id="ready">
-  <div class="ready"><div class="readyHero"><div class="eyebrow" style="color:#d8ebe5">M2 - Kế hoạch nhanh</div><h1 id="readyName">Hồ sơ</h1><p>MBA đã có cấu trúc nguồn thu và có thể tính kế hoạch riêng cho từng nguồn.</p></div><div class="readyList"><div class="card"><span>Số nguồn thu</span><b id="readyStreams">0</b></div><div class="card"><span>Đã có kế hoạch nhanh</span><b id="readyPlanned">0/0</b></div><div class="card"><span>Lưu trữ hồ sơ</span><b style="font-size:22px">Thiết bị này</b></div></div><div class="callout"><b>Tiếp theo:</b> hoàn thiện kế hoạch cho những nguồn còn thiếu. Sau đó M3 sẽ ghép các nguồn lại, thêm chi phí dùng chung và cho bạn xem kết quả của toàn business.</div><div class="actions"><button class="btn secondary" onclick="renderBuilder();go('builder')">Quay lại nguồn thu</button><button class="btn" onclick="toast('M3 - nhiều nguồn thu và chi phí dùng chung chưa được build trong lượt này.')">Xem bước tiếp theo</button></div></div>
+  <div class="ready"><div class="readyHero"><div class="eyebrow" style="color:#d8ebe5">Kế hoạch</div><h1 id="readyName">Hồ sơ</h1><p>MBA đã có cấu trúc nguồn thu và Kế hoạch nhanh cho từng nguồn.</p></div><div class="readyList"><div class="card"><span>Số nguồn thu</span><b id="readyStreams">0</b></div><div class="card"><span>Đã có Kế hoạch nhanh</span><b id="readyPlanned">0/0</b></div><div class="card"><span>Lưu trữ hồ sơ</span><b style="font-size:22px">Thiết bị này</b></div></div></div>
 </section>
 </main>
 <div class="toast" id="toast"></div>
 <script src="app.js"></script>
 <script src="m2-fixes.js"></script>
+<script src="m3.js"></script>
 </body>
 </html>
