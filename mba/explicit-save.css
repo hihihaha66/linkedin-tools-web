@@ -1,0 +1,15 @@
+.saveState{background:var(--soft);color:var(--green)}
+.saveState.manualSaved::first-letter{font-weight:700}
+.explicitSaveNotice{display:none;margin:12px 0 0;padding:9px 11px;border-radius:9px;background:#f2ead9;color:#6b5427;font-size:11px;font-weight:600}
+.explicitSaveNotice.on{display:block}
+.profileRenameBtn{border-color:var(--line)!important;background:transparent!important;color:var(--green)!important}
+.renameBackdrop{position:fixed;inset:0;z-index:116;background:rgba(27,25,21,.4);opacity:0;pointer-events:none;transition:opacity .18s ease}
+.renameBackdrop.on{opacity:1;pointer-events:auto}
+.renameModal{position:fixed;left:50%;top:50%;z-index:117;width:min(470px,calc(100% - 30px));transform:translate(-50%,-46%) scale(.98);opacity:0;pointer-events:none;background:var(--paper);border:1px solid var(--line);border-radius:18px;box-shadow:0 24px 70px rgba(29,27,23,.18);padding:20px;transition:opacity .18s ease,transform .18s ease}
+.renameModal.on{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+.renameModal h2{font-size:25px;line-height:1.15;margin:0}
+.renameModal p{margin:8px 0 14px;color:var(--muted);font-size:12px}
+.renameActions{display:flex;justify-content:flex-end;gap:9px;margin-top:16px}
+.renameActions .btn{min-width:110px}
+body.renameOpen{overflow:hidden}
+@media(max-width:650px){.renameModal{top:auto;bottom:0;width:100%;border-radius:20px 20px 0 0;border-bottom:0;transform:translate(-50%,105%);padding:20px 18px calc(20px + env(safe-area-inset-bottom))}.renameModal.on{transform:translate(-50%,0)}.renameActions{display:grid;grid-template-columns:1fr 1fr}.renameActions .btn{width:100%;min-height:46px}.profileCard .actions{flex-wrap:wrap}}
