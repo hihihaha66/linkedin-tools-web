@@ -4,9 +4,9 @@ let mbaStructureHistory=[];
   let tries=0;
   const timer=setInterval(()=>{
     tries++;
-    const ready=typeof editSource==='function'&&typeof addSource==='function'&&typeof selectModel==='function'&&typeof renderStreamSetup==='function'&&typeof go==='function';
+    const ready=window.__mbaExplicitSaveReady&&typeof editSource==='function'&&typeof addSource==='function'&&typeof selectModel==='function'&&typeof renderStreamSetup==='function'&&typeof go==='function';
     if(ready){clearInterval(timer);setupStructureNavigation()}
-    else if(tries>160){clearInterval(timer);setupStructureNavigation()}
+    else if(tries>200){clearInterval(timer);setupStructureNavigation()}
   },50);
 })();
 
