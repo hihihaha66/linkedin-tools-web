@@ -1,0 +1,17 @@
+.foodMonthlyCosts{margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
+.foodCostTitle{font-size:14px;font-weight:700;margin-bottom:4px;color:var(--ink)}
+.foodCostIntro{font-size:12px;color:var(--muted);line-height:1.65;margin-bottom:12px}
+.foodCostChoiceGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.foodCostChoiceGrid .choice{text-align:left;min-height:68px}
+.foodCostChoiceGrid .choice small{display:block;margin-top:5px;font-size:10px;line-height:1.45;color:var(--muted);font-weight:400}
+.foodCostModeArea{display:none}.foodCostModeArea.on{display:block}
+.foodCostDetailGrid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.foodCostDetailGrid .field{min-width:0}
+.foodCostOther{padding-top:4px}
+.foodCostOtherLabel{margin-bottom:10px}
+.foodCostTotal{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:8px;padding:13px 14px;border:1px solid var(--line);border-radius:10px;background:var(--soft2)}
+.foodCostTotal span{font-size:12px;color:var(--muted)}
+.foodCostTotal b{font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--ink)}
+.foodCostScopeNote{margin-top:10px;padding:11px 12px;border-radius:9px;background:var(--soft2);font-size:11px;line-height:1.65;color:var(--muted)}
+.foodCostScopeNote b{color:var(--ink)}
+@media(max-width:650px){.foodCostChoiceGrid,.foodCostDetailGrid{grid-template-columns:1fr}.foodCostChoiceGrid .choice{min-height:auto}}
