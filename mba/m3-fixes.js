@@ -58,3 +58,11 @@ openPlanning=function(id){
     document.body.appendChild(script);
   }
 })();
+
+(function loadProductCopyCleanup(){
+  if(!document.querySelector('script[data-product-copy]')){
+    const script=document.createElement('script');
+    script.src='product-copy.js';script.dataset.productCopy='1';
+    document.body.appendChild(script);
+  }
+})();
