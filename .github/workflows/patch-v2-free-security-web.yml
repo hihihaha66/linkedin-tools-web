@@ -1,0 +1,37 @@
+name: Patch V2 free security hardening web
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v2-free-security-web.py'
+      - '.github/workflows/patch-v2-free-security-web.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: release/v2-free-security-hardening
+      - name: Apply frontend hardening
+        run: python .github/patch-v2-free-security-web.py
+      - name: Validate CSP and key wording
+        run: |
+          python scripts/check-v2-csp.py
+          grep -F 'Phụ cấp này có tính vào căn cứ BH?' net-cao-hon-co-that-tot-hon-v2.html
+          grep -F 'Nhóm công việc' net-cao-hon-co-that-tot-hon-v2.html
+          grep -F 'máy chủ tính toán' net-cao-hon-co-that-tot-hon-v2.html
+          grep -F 'Tải dữ liệu (.json)' net-cao-hon-co-that-tot-hon-v2.html
+      - name: Commit hardening and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-free-security-web.py .github/workflows/patch-v2-free-security-web.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html scripts/check-v2-csp.py .github/workflows/v2-security-check.yml
+          git commit -m "Harden V2 frontend for free public use"
+          git push origin HEAD:release/v2-free-security-hardening
