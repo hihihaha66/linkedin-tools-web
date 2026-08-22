@@ -1,0 +1,47 @@
+name: Patch V2 assumptions and calendar switching web
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v2-assumptions-calendar-switch-web.py'
+      - '.github/workflows/patch-v2-assumptions-calendar-switch-web.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/v2-assumptions-calendar-switch
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply frontend patch
+        run: python .github/patch-v2-assumptions-calendar-switch-web.py
+      - name: Validate CSP, syntax and feature copy
+        shell: bash
+        run: |
+          python scripts/check-v2-csp.py
+          python - <<'PY'
+          from pathlib import Path
+          html=Path('net-cao-hon-co-that-tot-hon-v2.html').read_text()
+          start=html.index('<script>')+len('<script>'); end=html.index('</script>',start)
+          Path('/tmp/v2-inline.js').write_text(html[start:end])
+          PY
+          node --check /tmp/v2-inline.js
+          grep -F 'Trước khi chốt' net-cao-hon-co-that-tot-hon-v2.html || true
+          grep -F 'so đến 31/12 & hòa vốn' net-cao-hon-co-that-tot-hon-v2.html
+          grep -F 'payload.switching.asOfDate=localToday()' net-cao-hon-co-that-tot-hon-v2.html
+      - name: Commit feature and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-assumptions-calendar-switch-web.py .github/workflows/patch-v2-assumptions-calendar-switch-web.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html
+          git commit -m "Add V2 assumptions and year-end switching UI"
+          git push origin HEAD:feature/v2-assumptions-calendar-switch
