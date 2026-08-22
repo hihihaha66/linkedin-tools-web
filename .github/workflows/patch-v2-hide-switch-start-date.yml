@@ -1,0 +1,48 @@
+name: Patch V2 hidden switching start date
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v2-hide-switch-start-date.py'
+      - '.github/workflows/patch-v2-hide-switch-start-date.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ux/v2-hide-switch-start-date
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply UX patch
+        run: python .github/patch-v2-hide-switch-start-date.py
+      - name: Validate CSP, syntax and hidden-by-default control
+        shell: bash
+        run: |
+          python scripts/check-v2-csp.py
+          python - <<'PY'
+          from pathlib import Path
+          html=Path('net-cao-hon-co-that-tot-hon-v2.html').read_text()
+          a=html.index('<script>')+len('<script>'); b=html.index('</script>',a)
+          Path('/tmp/v2-inline.js').write_text(html[a:b])
+          assert '<label>Tính từ ngày</label>' not in html
+          assert 'Xem lại một lần chuyển việc trước đây?' in html
+          assert 'Bắt đầu so từ ngày' in html
+          print('PASS: historical start date is hidden by default')
+          PY
+          node --check /tmp/v2-inline.js
+      - name: Commit UX patch and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-hide-switch-start-date.py .github/workflows/patch-v2-hide-switch-start-date.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html
+          git commit -m "Hide V2 switching start date by default"
+          git push origin HEAD:ux/v2-hide-switch-start-date
