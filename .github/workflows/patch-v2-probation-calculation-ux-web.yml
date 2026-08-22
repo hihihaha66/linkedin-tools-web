@@ -1,0 +1,51 @@
+name: Patch V2 probation calculation UX web
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v2-probation-calculation-ux-web.py'
+      - '.github/workflows/patch-v2-probation-calculation-ux-web.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/v2-probation-calculation-ux
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply probation UX fix
+        run: python .github/patch-v2-probation-calculation-ux-web.py
+      - name: Validate CSP, syntax and probation UX
+        shell: bash
+        run: |
+          python scripts/check-v2-csp.py
+          python - <<'PY'
+          from pathlib import Path
+          html=Path('net-cao-hon-co-that-tot-hon-v2.html').read_text()
+          assert 'Có giai đoạn thử việc cần tính riêng?' in html
+          assert 'Hưởng đủ mức lương offer thì để 100%' in html
+          assert 'state.offers[i].probPct=100' in html
+          trial_pos=html.index("+trial")
+          ot_pos=html.index("+otPayBlock", trial_pos)
+          assert trial_pos < ot_pos
+          a=html.index('<script>')+len('<script>'); b=html.index('</script>',a)
+          Path('/tmp/v2-inline.js').write_text(html[a:b])
+          print('PASS: probation details are immediate and 100% is explicit')
+          PY
+          node --check /tmp/v2-inline.js
+      - name: Commit fix and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-probation-calculation-ux-web.py .github/workflows/patch-v2-probation-calculation-ux-web.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html
+          git commit -m "Fix V2 probation input flow"
+          git push origin HEAD:fix/v2-probation-calculation-ux
