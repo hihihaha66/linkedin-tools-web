@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="no-referrer" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-/w7HwA+Ws2R/BUd+COBKCtwjeZnamXM9N6y06IahNuU='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,8 +25,8 @@
 <div class="toolbar">
 <button class="btn" id="saveBtn">Lưu</button>
 <button class="btn ghost tiny" id="exportBtn">↓ Xuất kết quả (.txt)</button>
-<button class="btn ghost tiny" id="backupBtn">↓ Tải về (.json)</button>
-<button class="btn ghost tiny" id="importBtn">↑ Nhập</button>
+<button class="btn ghost tiny" id="backupBtn">↓ Tải dữ liệu (.json)</button>
+<button class="btn ghost tiny" id="importBtn">↑ Nhập dữ liệu (.json)</button>
 <input type="file" id="importInput" accept="application/json" style="display:none">
 <button class="btn danger tiny" id="clearBtn">Xoá hết</button>
 <span class="save-state" id="saveState"></span>
@@ -51,7 +53,7 @@
 <h2 class="sec">Nhập từng bên</h2>
 <p class="hint">Gross hay net đều được - chọn đúng loại ở mỗi offer. Nếu nhập net, tool sẽ tự quy đổi theo thuế TNCN áp dụng cho kỳ tính thuế 2026. Các mục thưởng, phụ cấp và phúc lợi được thu gọn bên dưới để bạn chỉ mở khi cần.</p>
 <div class="offers-in" id="offersIn"></div>
-<p class="hint" style="max-width:none;margin:10px 0 14px"><b>Chưa biết mức đóng bảo hiểm?</b> Có thể hỏi HR: “Mức lương làm căn cứ đóng BHXH/BHYT/BHTN của vị trí này là bao nhiêu?”. Nếu tổng gross có khoản không thuộc căn cứ đóng BH, mức này có thể khác gross.</p>
+<p class="hint" style="max-width:none;margin:10px 0 14px"><b>Chưa biết mức đóng bảo hiểm?</b> Có thể hỏi HR: “Mức lương làm căn cứ đóng BHXH/BHYT/BHTN của vị trí này là bao nhiêu?”. “Theo mặc định” dùng gross và tạm cộng phụ cấp cố định vào căn cứ BH nếu bạn chưa xác nhận là “Không”; nếu HR đưa một mức BH riêng, chọn “Tự nhập”.</p>
 <div class="switch-box">
   <div class="switch-head">
     <div class="switch-copy">
@@ -69,15 +71,15 @@
 <div id="empty" class="empty">Nhập lương cho ít nhất một offer để bắt đầu.</div>
 <div class="results hidden" id="results">
 <div class="layer"><p class="lnum">Lớp 1 · <b>Tiền về tay mỗi tháng</b></p><div class="cols" id="l1cols"></div><div class="delta" id="l1delta"></div></div>
-<div class="layer"><p class="lnum">Lớp 2 · <b>Package năm</b></p><p class="hint" style="margin-top:-2px">So package năm theo 12 tháng chuẩn hóa: <b>Chắc chắn</b> không tính thưởng hiệu suất, và <b>Có thưởng hiệu suất</b> cộng đúng mức bạn đã nhập. Nếu không có khoản này, tool chỉ hiện phần chắc chắn. Đây không phải dòng tiền 12 tháng lịch kể từ ngày onboard. Tiền OT không nằm trong package năm này vì phụ thuộc số giờ OT thực tế; xem Lớp 3.</p><div class="cols" id="annualcols"></div><div class="delta" id="annualdelta"></div></div>
+<div class="layer"><p class="lnum">Lớp 2 · <b>Package năm</b></p><p class="hint" style="margin-top:-2px;margin-bottom:6px">So package năm theo 12 tháng chuẩn hóa: <b>Chắc chắn</b> không tính thưởng hiệu suất, và <b>Có thưởng hiệu suất</b> cộng đúng mức bạn đã nhập. Tiền OT không nằm trong package năm này vì phụ thuộc số giờ OT thực tế; xem Lớp 3.</p><p class="benefit-note" style="font-size:12.5px;margin:0 0 14px"><b>Lưu ý:</b> Đây không phải dòng tiền 12 tháng lịch kể từ ngày onboard.</p><div class="cols" id="annualcols"></div><div class="delta" id="annualdelta"></div></div>
 <div class="layer"><p class="lnum">Lớp 3 · <b>Giờ bạn bỏ ra để có package đó</b></p><p class="hint" style="margin-top:-2px">176h/tháng là giả định so sánh. Đi lại và OT được cộng vào tổng thời gian bạn bỏ ra. Nếu OT có lương, tool ước tính thêm tiền OT từ số giờ và hệ số bạn nhập. Ngày phép hưởng lương chỉ làm giảm thời gian bạn bỏ ra - không cộng thành một khoản tiền mới.</p><div class="cols" id="tcols"></div><div class="delta" id="tdelta"></div></div>
 <div class="layer"><p class="lnum">Lớp 4 · <b>Căn cứ đóng bảo hiểm</b></p><p class="hint" style="margin-top:-2px">BHXH/BHYT và BHTN có trần căn cứ khác nhau, nên không có một “nền tính mọi quyền lợi” duy nhất ở các mức lương cao.</p><div class="cols" id="l2basis"></div></div>
 <div class="layer"><p class="lnum">Lớp 5 · <b>Nếu có biến cố</b></p><p class="hint" style="margin-top:-2px">Các mô phỏng ở đây dùng mức lương làm căn cứ đóng BH đã nhập. Tool chỉ mô phỏng số tiền, không kiểm tra đủ điều kiện hưởng.</p><div class="events" id="l3events"></div></div>
 <div class="verdict" id="verdict"></div>
 <div class="layer" id="switchLayer" style="display:none;margin-top:20px"><p class="lnum">Thời điểm chuyển việc · <b>Nếu chuyển việc lúc này?</b></p><div id="switchingResult"></div></div>
 </div>
-<div class="disclaim">Đây là công cụ mô phỏng để so sánh, không thay thế tư vấn payroll/pháp lý. Dữ liệu được gửi tới máy chủ để tính toán nhưng website không chủ động lưu vào cơ sở dữ liệu; nếu bấm Lưu, dữ liệu được giữ trên trình duyệt của bạn. “Phụ cấp cố định” trong tool được hiểu là khoản trả thêm ngoài mức lương offer, chịu thuế TNCN nhưng không tự tính vào căn cứ đóng BH; nếu khoản của bạn có bản chất hoặc cách đóng BH khác, hãy phản ánh ở ô mức lương làm căn cứ đóng BH. Thưởng hiệu suất chỉ được cộng ở kịch bản “Có thưởng hiệu suất” và phụ thuộc kết quả thực tế. Tiền OT là khoản ước tính từ lương gross, số giờ OT và hệ số bạn nhập; cách payroll thực tế có thể khác. Ngày phép được dùng để điều chỉnh time cost, không cộng trực tiếp vào thu nhập năm. Phần thời điểm chuyển việc phụ thuộc chính sách thưởng thực tế của từng công ty.</div>
-<p class="src"><b>Tham số đang dùng:</b> Tool dùng các tham số hiện hành từ 01/07/2026. Tiền lương làm thêm giờ được miễn PIT trong kỳ tính thuế 2026. PIT 5 bậc: 5% - 10% - 20% - 30% - 35% theo các ngưỡng 10 - 30 - 60 - 100 triệu đồng/tháng; giảm trừ 15,5 triệu cho bản thân và 6,2 triệu/người phụ thuộc. NLĐ đóng BH chuẩn 10,5%; căn cứ BHXH/BHYT tối đa 50,6 triệu/tháng từ 01/07/2026; BHTN tối đa 20× lương tối thiểu vùng. LTT vùng 2026: I 5,31 triệu; II 4,73 triệu; III 4,14 triệu; IV 3,70 triệu. Trợ cấp thất nghiệp 60% bình quân 6 tháng đóng BHTN, tối đa 5× LTT vùng; thai sản theo bình quân 6 tháng đóng BHXH; ốm đau thông thường = căn cứ BHXH ÷ 24 × 75% × số ngày. Nguồn pháp lý chính: Bộ luật Lao động 45/2019/QH14; NĐ 145/2020/NĐ-CP; Luật Thuế TNCN 109/2025/QH15; Luật BHXH 41/2024/QH15; NĐ 158/2025/NĐ-CP; Luật Việc làm 74/2025/QH15; NĐ 293/2025/NĐ-CP.</p>
+<div class="disclaim">Đây là công cụ mô phỏng để so sánh, không thay thế tư vấn payroll/pháp lý. Dữ liệu offer được gửi tới máy chủ để tính toán. Ứng dụng không ghi nội dung offer vào cơ sở dữ liệu; nếu bấm Lưu, dữ liệu được giữ trên trình duyệt của bạn. “Phụ cấp cố định” trong tool được hiểu là khoản trả thêm ngoài mức lương offer, chịu thuế TNCN nhưng không tự tính vào căn cứ đóng BH; nếu khoản của bạn có bản chất hoặc cách đóng BH khác, hãy phản ánh ở ô mức lương làm căn cứ đóng BH. Thưởng hiệu suất chỉ được cộng ở kịch bản “Có thưởng hiệu suất” và phụ thuộc kết quả thực tế. Tiền OT là khoản ước tính từ lương gross, số giờ OT và hệ số bạn nhập; cách payroll thực tế có thể khác. Ngày phép được dùng để giảm thời gian bạn bỏ ra khi tính giá trị/giờ, không cộng trực tiếp vào thu nhập năm. Phần thời điểm chuyển việc phụ thuộc chính sách thưởng thực tế của từng công ty.</div>
+<p class="src"><b>Tham số đang dùng:</b> PIT 5 bậc 5% - 10% - 20% - 30% - 35% theo các ngưỡng 10 - 30 - 60 - 100 triệu đồng/tháng và miễn thuế toàn bộ tiền lương làm thêm giờ: áp dụng cho thu nhập tiền lương, tiền công của kỳ tính thuế 2026. Giảm trừ gia cảnh 15,5 triệu/tháng cho bản thân và 6,2 triệu/tháng/người phụ thuộc: hiệu lực từ 01/01/2026. Lương tối thiểu vùng từ 01/01/2026: I 5,31 triệu; II 4,73 triệu; III 4,14 triệu; IV 3,70 triệu. NLĐ đóng BH chuẩn 10,5%; căn cứ BHXH/BHYT tối đa 50,6 triệu/tháng từ 01/07/2026; BHTN tối đa 20× lương tối thiểu vùng. Trợ cấp thất nghiệp 60% bình quân 6 tháng đóng BHTN, tối đa 5× LTT vùng; thai sản theo bình quân 6 tháng đóng BHXH; ốm đau thông thường = căn cứ BHXH ÷ 24 × 75% × số ngày. Nguồn pháp lý chính: Bộ luật Lao động 45/2019/QH14; NĐ 145/2020/NĐ-CP; Luật Thuế TNCN 109/2025/QH15; Nghị quyết 110/2025/UBTVQH15; Luật BHXH 41/2024/QH15; NĐ 158/2025/NĐ-CP; Luật Việc làm 74/2025/QH15; NĐ 293/2025/NĐ-CP.</p>
 </div>
 <script>
 "use strict";
@@ -86,23 +88,24 @@ const KEY="net-cao-hon-v2-state";
 const LEGACY_KEY="net-cao-hon-v2";
 const API_URL="https://linkedin-tools-api-test.vercel.app/api/offer-value-v2";
 const canStore=(function(){try{const t="__v2_state";localStorage.setItem(t,"1");localStorage.removeItem(t);return true}catch(e){return false}})();
-function blank(n){return{name:n,gross:null,payType:"gross",base:"full",customBase:null,days:null,commute:null,ot:null,otPaid:"no",otFactor:null,probationEnabled:"no",probPct:null,probMon:null,probInsurance:"no",guaranteedBonusMonths:null,performanceBonusType:"months",performanceBonusValue:null,fixedAllowance:null,paidLeaveDays:null}}
+function blank(n){return{name:n,gross:null,payType:"gross",base:"full",customBase:null,days:null,commute:null,ot:null,otPaid:"no",otFactor:null,probationEnabled:"no",probPct:null,probMon:null,probInsurance:"no",probJobType:"unknown",guaranteedBonusMonths:null,performanceBonusType:"months",performanceBonusValue:null,fixedAllowance:null,allowanceBh:"unknown",paidLeaveDays:null}}
 function blankSwitch(){return{enabled:false,targetOffer:"0",lastWorkingDate:"",currentBonusIfStay:null,currentBonusRule:"unknown",currentBonusPayDate:"",currentBonusIfLeave:null,onboardDate:"",newBonusRule:"unknown",newBonusCustom:null,currentNet:null}}
 function ensureSwitching(x){const s=Object.assign(blankSwitch(),x||{});s.enabled=s.enabled===true;s.targetOffer=s.targetOffer==="1"?"1":"0";if(s.currentBonusRule==="active"){const l=String(s.lastWorkingDate||"").slice(0,10),p=String(s.currentBonusPayDate||"").slice(0,10);s.currentBonusRule=l&&p?(l>=p?"full":"lost"):"unknown"}if(!["unknown","lost","time","full","custom"].includes(s.currentBonusRule))s.currentBonusRule="unknown";if(!["unknown","time","full","none","custom"].includes(s.newBonusRule))s.newBonusRule="unknown";return s}
 let state={deps:null,region:"I",sickDays:null,mat:"hide",offers:[blank("Offer A"),blank("Offer B")],switching:blankSwitch()};
-let dirty=false,requestSeq=0,debounceTimer=null;
+let dirty=false,requestSeq=0,debounceTimer=null,activeController=null,lastRequestBody=null,lastResult=null;
 function grp(raw){let s=String(raw==null?"":raw).replace(/[^\d]/g,"");if(s==="")return"";s=s.replace(/^0+(?=\d)/,"");return s.replace(/\B(?=(\d{3})+(?!\d))/g,",")}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function hasVal(v){return v!==null&&v!==undefined&&String(v).trim()!==""&&String(v)!=="0"}
-function shouldOpenBenefits(o){return hasVal(o.guaranteedBonusMonths)||hasVal(o.performanceBonusValue)||hasVal(o.fixedAllowance)||hasVal(o.paidLeaveDays)}
+function hasInput(v){return v!==null&&v!==undefined&&String(v).trim()!==""}
+function hasPositiveValue(v){if(!hasInput(v))return false;const n=Number(String(v).replace(/,/g,""));return Number.isFinite(n)&&n>0}
+function shouldOpenBenefits(o){return hasPositiveValue(o.guaranteedBonusMonths)||hasPositiveValue(o.performanceBonusValue)||hasPositiveValue(o.fixedAllowance)||hasPositiveValue(o.paidLeaveDays)}
 function ensureOfferShape(o,n){
- const src=o||{},oldTrial=src.probationEnabled==null&&(hasVal(src.probPct)||hasVal(src.probMon)||src.probInsurance==="yes");
+ const src=o||{},oldTrial=src.probationEnabled==null&&(hasInput(src.probPct)||hasInput(src.probMon)||src.probInsurance==="yes");
  return{name:String(src.name||n),gross:src.gross??null,payType:src.payType==="net"?"net":"gross",base:src.base==="custom"?"custom":"full",customBase:src.customBase??null,days:src.days??null,commute:src.commute??null,ot:src.ot??null,otPaid:src.otPaid==="yes"?"yes":"no",otFactor:src.otFactor??null,
-  probationEnabled:(src.probationEnabled==="yes"||oldTrial)?"yes":"no",probPct:src.probPct??null,probMon:src.probMon??null,probInsurance:src.probInsurance==="yes"?"yes":"no",
+  probationEnabled:(src.probationEnabled==="yes"||oldTrial)?"yes":"no",probPct:src.probPct??null,probMon:src.probMon??null,probInsurance:src.probInsurance==="yes"?"yes":"no",probJobType:["manager","college","intermediate","other"].includes(src.probJobType)?src.probJobType:"unknown",
   guaranteedBonusMonths:src.guaranteedBonusMonths??null,performanceBonusType:src.performanceBonusType==="amount"?"amount":"months",performanceBonusValue:src.performanceBonusValue??src.targetBonusMonths??null,
-  fixedAllowance:src.fixedAllowance??null,paidLeaveDays:src.paidLeaveDays??null};
+  fixedAllowance:src.fixedAllowance??null,allowanceBh:["yes","no"].includes(src.allowanceBh)?src.allowanceBh:"unknown",paidLeaveDays:src.paidLeaveDays??null};
 }
-function isV2Legacy(d){return d&&Array.isArray(d.offers)&&d.offers.some(o=>o&&["probInsurance","probationEnabled","guaranteedBonusMonths","targetBonusMonths","performanceBonusValue","fixedAllowance","paidLeaveDays","otPaid","otFactor"].some(k=>Object.prototype.hasOwnProperty.call(o,k)))}
+function isV2Legacy(d){return d&&Array.isArray(d.offers)&&d.offers.some(o=>o&&["probInsurance","probationEnabled","probJobType","guaranteedBonusMonths","targetBonusMonths","performanceBonusValue","fixedAllowance","allowanceBh","paidLeaveDays","otPaid","otFactor"].some(k=>Object.prototype.hasOwnProperty.call(o,k)))}
 
 function renderInputs(){
  document.getElementById("offersIn").innerHTML=state.offers.map(function(o,i){
@@ -110,7 +113,7 @@ function renderInputs(){
   const otPaid=o.otPaid==="yes";
   const otPayBlock='<div style="margin:-2px 0 14px;padding:12px 11px 2px;background:var(--paper);border:1px solid var(--line);border-radius:8px"><label>OT có tính lương không?</label><div class="seg" data-seg="otPaid" data-i="'+i+'"><button data-v="no" class="'+(!otPaid?"on":"")+'">Không</button><button data-v="yes" class="'+(otPaid?"on":"")+'">Có</button></div>'+(otPaid?'<div class="field" style="margin-top:10px"><label>Hệ số OT</label><div class="suffix-row"><input type="text" data-i="'+i+'" data-k="otFactor" inputmode="decimal" placeholder="vd 150" value="'+(o.otFactor==null?"":esc(o.otFactor))+'"><span class="suffix">%</span></div></div>':'')+'<p class="benefit-note">OT luôn được cộng vào tổng thời gian bạn bỏ ra. Nếu công ty trả OT ngày thường 150% thì chọn Có và nhập 150 ở hệ số OT; tool dùng số giờ OT và hệ số này để ước tính tiền OT. Mốc OT ban ngày tối thiểu theo luật: 150% ngày thường, 200% ngày nghỉ hằng tuần, 300% lễ/Tết.</p></div>';
   const trialOn=o.probationEnabled==="yes";
-  const trial=trialOn?'<div class="prob-wrap"><div class="duo"><div class="field"><label>Lương thử việc (% mức lương offer)</label><input type="text" data-i="'+i+'" data-k="probPct" inputmode="decimal" placeholder="vd 85" value="'+(o.probPct==null?"":esc(o.probPct))+'"></div><div class="field"><label>Số tháng thử việc</label><input type="text" data-i="'+i+'" data-k="probMon" inputmode="decimal" placeholder="vd 2" value="'+(o.probMon==null?"":esc(o.probMon))+'"></div></div><label>Trong thời gian thử việc có đóng BH bắt buộc?</label><div class="seg" data-seg="probInsurance" data-i="'+i+'"><button data-v="no" class="'+(o.probInsurance!=="yes"?"on":"")+'">Không</button><button data-v="yes" class="'+(o.probInsurance==="yes"?"on":"")+'">Có</button></div><p class="benefit-note">% thử việc được tính theo loại lương bạn đã chọn ở offer: Gross hoặc Net.</p></div>':'';
+  const trial=trialOn?'<div class="prob-wrap"><div class="duo"><div class="field"><label>Lương thử việc (% mức lương offer)</label><input type="text" data-i="'+i+'" data-k="probPct" inputmode="decimal" placeholder="vd 85" value="'+(o.probPct==null?"":esc(o.probPct))+'"></div><div class="field"><label>Số tháng thử việc</label><input type="text" data-i="'+i+'" data-k="probMon" inputmode="decimal" placeholder="vd 2" value="'+(o.probMon==null?"":esc(o.probMon))+'"></div></div><div class="field"><label>Nhóm công việc <span style="font-size:11px">(để kiểm tra thời gian thử việc)</span></label><select data-i="'+i+'" data-k="probJobType"><option value="unknown" '+(o.probJobType==="unknown"?"selected":"")+'>Chưa rõ</option><option value="manager" '+(o.probJobType==="manager"?"selected":"")+'>Quản lý doanh nghiệp</option><option value="college" '+(o.probJobType==="college"?"selected":"")+'>Vị trí yêu cầu cao đẳng trở lên</option><option value="intermediate" '+(o.probJobType==="intermediate"?"selected":"")+'>Trung cấp / công nhân kỹ thuật / nhân viên nghiệp vụ</option><option value="other" '+(o.probJobType==="other"?"selected":"")+'>Công việc khác</option></select><p class="benefit-note">Giới hạn luật tương ứng: 180 ngày, 60 ngày, 30 ngày hoặc 06 ngày làm việc. Tool dùng số tháng bạn nhập để cảnh báo gần đúng; nếu hợp đồng ghi ngày, hãy ưu tiên số ngày thực tế.</p></div><label>Trong thời gian thử việc có đóng BH bắt buộc?</label><div class="seg" data-seg="probInsurance" data-i="'+i+'"><button data-v="no" class="'+(o.probInsurance!=="yes"?"on":"")+'">Không</button><button data-v="yes" class="'+(o.probInsurance==="yes"?"on":"")+'">Có</button></div><p class="benefit-note">% thử việc được tính theo loại lương bạn đã chọn ở offer: Gross hoặc Net.</p></div>':'';
   const perfAmount=o.performanceBonusType==="amount";
   const perfValue=o.performanceBonusValue==null?"":o.performanceBonusValue;
   const perfInput=perfAmount?'<div class="sub-input suffix-row"><input type="text" data-i="'+i+'" data-k="performanceBonusValue" inputmode="numeric" placeholder="vd 60,000,000" value="'+grp(perfValue)+'"><span class="suffix">đ</span></div>':'<div class="sub-input suffix-row"><input type="text" data-i="'+i+'" data-k="performanceBonusValue" inputmode="decimal" placeholder="vd 3" value="'+esc(perfValue)+'"><span class="suffix">tháng</span></div>';
@@ -128,7 +131,7 @@ function renderInputs(){
    +'<div class="field"><label>Thưởng đảm bảo / năm (tháng lương)</label><input type="text" data-i="'+i+'" data-k="guaranteedBonusMonths" inputmode="decimal" placeholder="vd 1" value="'+(o.guaranteedBonusMonths==null?"":esc(o.guaranteedBonusMonths))+'"><p class="benefit-note">Ví dụ tháng 13 chắc chắn nhận = 1. Khoản này dùng cùng loại Gross/Net đã chọn cho offer.</p></div>'
    +'<div class="field"><label>Thưởng hiệu suất / năm</label><div class="seg" data-seg="performanceBonusType" data-i="'+i+'"><button data-v="months" class="'+(!perfAmount?"on":"")+'">Tháng lương</button><button data-v="amount" class="'+(perfAmount?"on":"")+'">Số tiền</button></div>'+perfInput+'<p class="benefit-note">Nhập đúng cách HR/offer nêu khoản thưởng: ví dụ 3 tháng lương hoặc 60,000,000đ. Khoản này dùng cùng loại Gross/Net của offer và không nằm trong phần “Chắc chắn”.</p></div>'
    +'<div class="duo"><div class="field suffix-row"><label>Phụ cấp cố định ngoài mức lương trên / tháng</label><input type="text" data-i="'+i+'" data-k="fixedAllowance" inputmode="numeric" placeholder="vd 1,000,000" value="'+grp(o.fixedAllowance==null?"":o.fixedAllowance)+'"><span class="suffix">đ</span></div><div class="field"><label>Nghỉ phép hưởng lương / năm</label><input type="text" data-i="'+i+'" data-k="paidLeaveDays" inputmode="decimal" placeholder="vd 12" value="'+(o.paidLeaveDays==null?"":esc(o.paidLeaveDays))+'"></div></div>'
-   +'<p class="benefit-note">Phụ cấp ở ô này được hiểu là khoản trả thêm ngoài mức lương offer, chịu thuế TNCN nhưng không tự cộng vào căn cứ BH. Nếu khoản của bạn thuộc căn cứ BH, hãy phản ánh ở ô “Mức lương làm căn cứ đóng BH”.</p>'
+   +'<div class="field"><label>Phụ cấp này có tính vào căn cứ BH?</label><div class="seg" data-seg="allowanceBh" data-i="'+i+'"><button data-v="unknown" class="'+(o.allowanceBh==="unknown"?"on":"")+'">Chưa rõ</button><button data-v="yes" class="'+(o.allowanceBh==="yes"?"on":"")+'">Có</button><button data-v="no" class="'+(o.allowanceBh==="no"?"on":"")+'">Không</button></div><p class="benefit-note">Nếu để “Chưa rõ”, tool tạm tính <b>Có</b> để tránh làm tiền về tay trông cao hơn thực tế. Nếu bạn chọn “Tự nhập” mức căn cứ BH ở phía trên, mức tự nhập luôn được ưu tiên.</p></div>'
    +'<p class="benefit-note">Ngày phép không được cộng thành “tiền thưởng”. Tool chỉ dùng phép để giảm số giờ bạn phải bỏ ra khi tính giá trị/giờ.</p>'
    +'</div></details></div>';
  }).join("");
@@ -170,15 +173,30 @@ function applyResult(data){
  document.getElementById("l2basis").innerHTML=data.l2basis||"";document.getElementById("l3events").innerHTML=data.l3events||"";document.getElementById("verdict").innerHTML=data.verdictHtml||"";
  const sl=document.getElementById("switchLayer");document.getElementById("switchingResult").innerHTML=data.switchingHtml||"";sl.style.display=data.showSwitching?"":"none";
 }
-function showApiError(){const e=document.getElementById("empty");e.style.display="";e.textContent="Không kết nối được máy tính phía server. Thử tải lại trang sau ít phút.";document.getElementById("results").classList.add("hidden")}
-async function calculateNow(){const seq=++requestSeq;try{const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(state),cache:"no-store"});if(!res.ok)throw new Error("HTTP "+res.status);const data=await res.json();if(seq!==requestSeq)return null;applyResult(data);return data}catch(e){if(seq===requestSeq)showApiError();return null}}
-function scheduleCalculation(){clearTimeout(debounceTimer);debounceTimer=setTimeout(calculateNow,180)}
+function showApiError(msg){const e=document.getElementById("empty");e.style.display="";e.textContent=msg||"Không kết nối được máy chủ tính toán. Thử tải lại trang sau ít phút.";document.getElementById("results").classList.add("hidden")}
+function hasAnySalary(){return state.offers.some(o=>{const n=Number(String(o.gross??"").replace(/,/g,""));return Number.isFinite(n)&&n>0})}
+async function calculateNow(){
+ clearTimeout(debounceTimer);
+ if(!hasAnySalary()){if(activeController)activeController.abort();activeController=null;lastRequestBody=null;lastResult=null;applyResult({hasResults:false});return null}
+ const body=JSON.stringify(state);
+ if(body===lastRequestBody&&lastResult){applyResult(lastResult);return lastResult}
+ if(activeController)activeController.abort();
+ const controller=new AbortController();activeController=controller;const seq=++requestSeq;
+ try{
+  const res=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"application/json"},body,cache:"no-store",signal:controller.signal});
+  if(res.status===429){if(seq===requestSeq)showApiError("Đang có nhiều lượt tính toán cùng lúc. Chờ khoảng một phút rồi thử lại.");return null}
+  if(!res.ok)throw new Error("HTTP "+res.status);
+  const data=await res.json();if(seq!==requestSeq)return null;lastRequestBody=body;lastResult=data;applyResult(data);return data
+ }catch(e){if(e&&e.name==="AbortError")return null;if(seq===requestSeq)showApiError();return null}
+ finally{if(activeController===controller)activeController=null}
+}
+function scheduleCalculation(){clearTimeout(debounceTimer);debounceTimer=setTimeout(calculateNow,600)}
 function markDirty(){dirty=true;updateSaveUI()}
-function updateSaveUI(){const btn=document.getElementById("saveBtn");if(!canStore){btn.style.display="none";document.getElementById("saveState").textContent="Chế độ tạm - dùng Tải về để giữ dữ liệu";return}btn.style.display="";if(dirty){btn.textContent="Lưu";document.getElementById("saveState").textContent="● Có thay đổi chưa lưu"}else{btn.textContent="Đã lưu ✓";document.getElementById("saveState").textContent="Đã lưu trên máy này"}}
-function doSave(){if(!canStore)return;try{localStorage.setItem(KEY,JSON.stringify(state));dirty=false;updateSaveUI()}catch(e){document.getElementById("saveState").textContent="Không lưu được - thử Tải về"}}
+function updateSaveUI(){const btn=document.getElementById("saveBtn");if(!canStore){btn.style.display="none";document.getElementById("saveState").textContent="Chế độ tạm - dùng Tải dữ liệu để giữ dữ liệu";return}btn.style.display="";if(dirty){btn.textContent="Lưu";document.getElementById("saveState").textContent="● Có thay đổi chưa lưu"}else{btn.textContent="Đã lưu ✓";document.getElementById("saveState").textContent="Đã lưu trên máy này"}}
+function doSave(){if(!canStore)return;try{localStorage.setItem(KEY,JSON.stringify(state));dirty=false;updateSaveUI()}catch(e){document.getElementById("saveState").textContent="Không lưu được - thử Tải dữ liệu"}}
 function normalizeState(d){if(!d||!Array.isArray(d.offers)||d.offers.length!==2)return null;return{deps:d.deps??null,region:d.region||"I",sickDays:d.sickDays??null,mat:d.mat||"hide",offers:[ensureOfferShape(d.offers[0],"Offer A"),ensureOfferShape(d.offers[1],"Offer B")],switching:ensureSwitching(d.switching)}}
 function load(){if(!canStore)return;try{const raw=localStorage.getItem(KEY);if(raw){const d=normalizeState(JSON.parse(raw));if(d){state=d;return}}const legacy=localStorage.getItem(LEGACY_KEY);if(legacy){const parsed=JSON.parse(legacy);if(isV2Legacy(parsed)){const d=normalizeState(parsed);if(d){state=d;localStorage.setItem(KEY,JSON.stringify(state))}}}}catch(e){}}
-function syncCtx(){document.getElementById("deps").value=state.deps==null?"":state.deps;document.getElementById("region").value=state.region||"I";document.getElementById("sickDays").value=state.sickDays==null?"":state.sickDays;[].forEach.call(document.getElementById("matSeg").children,x=>x.classList.toggle("on",x.getAttribute("data-v")===state.mat));const bh=document.getElementById("bhSim");if(bh)bh.open=hasVal(state.sickDays)||state.mat==="show"}
+function syncCtx(){document.getElementById("deps").value=state.deps==null?"":state.deps;document.getElementById("region").value=state.region||"I";document.getElementById("sickDays").value=state.sickDays==null?"":state.sickDays;[].forEach.call(document.getElementById("matSeg").children,x=>x.classList.toggle("on",x.getAttribute("data-v")===state.mat));const bh=document.getElementById("bhSim");if(bh)bh.open=hasPositiveValue(state.sickDays)||state.mat==="show"}
 function download(name,text,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 
 document.getElementById("deps").addEventListener("input",e=>{state.deps=e.target.value;markDirty();scheduleCalculation()});
@@ -187,16 +205,18 @@ document.getElementById("sickDays").addEventListener("input",e=>{state.sickDays=
 document.getElementById("matSeg").addEventListener("click",function(e){const b=e.target.closest("button");if(!b)return;state.mat=b.getAttribute("data-v");[].forEach.call(this.children,x=>x.classList.toggle("on",x===b));markDirty();scheduleCalculation()});
 const host=document.getElementById("offersIn");
 host.addEventListener("input",function(e){
- const el=e.target,iRaw=el.getAttribute("data-i"),k=el.getAttribute("data-k");if(iRaw==null||!k)return;const i=parseInt(iRaw,10);
+ const el=e.target;if(el.tagName==="SELECT")return;const iRaw=el.getAttribute("data-i"),k=el.getAttribute("data-k");if(iRaw==null||!k)return;const i=parseInt(iRaw,10);
  const moneyField=k==="gross"||k==="customBase"||k==="fixedAllowance"||(k==="performanceBonusValue"&&state.offers[i].performanceBonusType==="amount");
  if(moneyField){const f=grp(el.value);el.value=f;state.offers[i][k]=f.replace(/,/g,"")}else state.offers[i][k]=el.value;
  markDirty();scheduleCalculation();if(k==="name")renderSwitchingInputs();
 });
+host.addEventListener("change",function(e){const el=e.target;if(el.tagName!=="SELECT")return;const iRaw=el.getAttribute("data-i"),k=el.getAttribute("data-k");if(iRaw==null||!k)return;state.offers[parseInt(iRaw,10)][k]=el.value;markDirty();scheduleCalculation()});
 host.addEventListener("click",function(e){
  const b=e.target.closest("[data-seg] button");if(!b)return;const seg=b.closest("[data-seg]"),i=parseInt(seg.getAttribute("data-i"),10),kind=seg.getAttribute("data-seg"),v=b.getAttribute("data-v");
  if(kind==="base"){state.offers[i].base=v;markDirty();renderInputs();scheduleCalculation();return}
  if(kind==="pay"){state.offers[i].payType=v;markDirty();renderInputs();scheduleCalculation();return}
  if(kind==="otPaid"){state.offers[i].otPaid=v;markDirty();renderInputs();scheduleCalculation();return}
+ if(kind==="allowanceBh"){state.offers[i].allowanceBh=v;[].forEach.call(seg.children,x=>x.classList.toggle("on",x===b));markDirty();scheduleCalculation();return}
  if(kind==="probationEnabled"){state.offers[i].probationEnabled=v;markDirty();renderInputs();scheduleCalculation();return}
  if(kind==="performanceBonusType"){if(state.offers[i].performanceBonusType!==v)state.offers[i].performanceBonusValue=null;state.offers[i].performanceBonusType=v;markDirty();renderInputs();scheduleCalculation();return}
  if(kind==="probInsurance"){state.offers[i].probInsurance=v;[].forEach.call(seg.children,x=>x.classList.toggle("on",x===b));markDirty();scheduleCalculation();return}
@@ -212,7 +232,7 @@ document.getElementById("exportBtn").addEventListener("click",async function(){c
 document.getElementById("backupBtn").addEventListener("click",()=>download("net-cao-hon-v2-du-lieu.json",JSON.stringify(state,null,2),"application/json"));
 document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importInput").click());
 document.getElementById("importInput").addEventListener("change",function(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(){try{const d=normalizeState(JSON.parse(r.result));if(d){state=d;syncCtx();renderInputs();renderSwitchingInputs();markDirty();scheduleCalculation()}else alert("File không đúng định dạng")}catch(err){alert("File không đọc được")}};r.readAsText(f);e.target.value=""});
-let clearArmed=false,clearTimer=null;document.getElementById("clearBtn").addEventListener("click",function(){const btn=this;if(!clearArmed){clearArmed=true;btn.textContent="Bấm lại để xoá";clearTimer=setTimeout(()=>{clearArmed=false;btn.textContent="Xoá hết"},3000);return}clearTimeout(clearTimer);clearArmed=false;btn.textContent="Xoá hết";state={deps:null,region:"I",sickDays:null,mat:"hide",offers:[blank("Offer A"),blank("Offer B")],switching:blankSwitch()};if(canStore)try{localStorage.removeItem(KEY)}catch(e){}syncCtx();renderInputs();renderSwitchingInputs();dirty=false;updateSaveUI();calculateNow()});
+let clearArmed=false,clearTimer=null;document.getElementById("clearBtn").addEventListener("click",function(){const btn=this;if(!clearArmed){clearArmed=true;btn.textContent="Bấm lại để xoá";clearTimer=setTimeout(()=>{clearArmed=false;btn.textContent="Xoá hết"},3000);return}clearTimeout(clearTimer);clearArmed=false;btn.textContent="Xoá hết";state={deps:null,region:"I",sickDays:null,mat:"hide",offers:[blank("Offer A"),blank("Offer B")],switching:blankSwitch()};if(canStore)try{localStorage.removeItem(KEY)}catch(e){}syncCtx();renderInputs();renderSwitchingInputs();lastRequestBody=null;lastResult=null;if(activeController)activeController.abort();activeController=null;dirty=false;updateSaveUI();calculateNow()});
 window.addEventListener("beforeunload",function(e){if(dirty&&canStore){e.preventDefault();e.returnValue=""}});
 load();syncCtx();renderInputs();renderSwitchingInputs();dirty=false;updateSaveUI();calculateNow();
 })();
