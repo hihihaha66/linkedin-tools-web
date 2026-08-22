@@ -1,0 +1,37 @@
+name: Patch V2 paid OT web once
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'net-cao-hon-co-that-tot-hon-v2.html'
+      - '.github/patch-v2-paid-ot-web.py'
+      - '.github/workflows/patch-v2-paid-ot-web.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/v2-paid-ot-v2
+      - name: Apply UI patch
+        run: python .github/patch-v2-paid-ot-web.py
+      - name: Validate key wording
+        shell: bash
+        run: |
+          grep -F 'OT có tính lương không?' net-cao-hon-co-that-tot-hon-v2.html
+          grep -F 'Hệ số OT' net-cao-hon-co-that-tot-hon-v2.html
+          grep -F 'Chỉ dùng để mô phỏng khoản hưởng chế độ ốm đau hưởng BHXH' net-cao-hon-co-that-tot-hon-v2.html
+      - name: Commit UI patch and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-paid-ot-web.py .github/workflows/patch-v2-paid-ot-web.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html
+          git commit -m "Add paid OT inputs to V2"
+          git push origin HEAD:feature/v2-paid-ot-v2
