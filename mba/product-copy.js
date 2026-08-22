@@ -1,4 +1,7 @@
 (function cleanProductCopy(){
+  const heroCopy=document.querySelector('#landing .hero p');
+  if(heroCopy)heroCopy.textContent='MBA biến những con số rời rạc thành một bức tranh tổng quan cho các dự án kinh doanh của bạn: đang lời hay lỗ, hòa vốn ở đâu, tiền đang đi đâu và điều gì đáng chú ý.';
+
   const footer=document.querySelector('#landing .footerNote');
   if(footer)footer.textContent='MBA là công cụ hỗ trợ quản trị và mô phỏng, không thay thế phần mềm kế toán hoặc báo cáo thuế.';
 
