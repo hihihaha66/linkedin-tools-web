@@ -1,0 +1,36 @@
+name: V2 frontend security check
+
+on:
+  pull_request:
+    paths:
+      - 'net-cao-hon-co-that-tot-hon-v2.html'
+      - 'scripts/check-v2-csp.py'
+      - '.github/workflows/v2-security-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'net-cao-hon-co-that-tot-hon-v2.html'
+      - 'scripts/check-v2-csp.py'
+      - '.github/workflows/v2-security-check.yml'
+
+jobs:
+  csp-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check CSP and inline script hash
+        run: python scripts/check-v2-csp.py
+      - name: Check inline JavaScript syntax
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          html=Path('net-cao-hon-co-that-tot-hon-v2.html').read_text()
+          start=html.index('<script>')+len('<script>')
+          end=html.index('</script>',start)
+          Path('/tmp/v2-inline.js').write_text(html[start:end])
+          PY
+          node --check /tmp/v2-inline.js
