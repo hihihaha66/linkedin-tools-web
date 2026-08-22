@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-XwYeBZ01N9xhG01g3cQGugPZSceGq468oyI0KyIyJZc='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-pmfffIEfGEBv1+wvbul9fByUVk8lotgaMdWUv7Afrq0='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -99,7 +99,7 @@ function hasInput(v){return v!==null&&v!==undefined&&String(v).trim()!==""}
 function hasPositiveValue(v){if(!hasInput(v))return false;const n=Number(String(v).replace(/,/g,""));return Number.isFinite(n)&&n>0}
 function shouldOpenBenefits(o){return hasPositiveValue(o.guaranteedBonusMonths)||hasPositiveValue(o.performanceBonusValue)||hasPositiveValue(o.fixedAllowance)||hasPositiveValue(o.paidLeaveDays)}
 function ensureOfferShape(o,n){
- const src=o||{},oldTrial=src.probationEnabled==null&&(hasInput(src.probPct)||hasInput(src.probMon)||src.probInsurance==="yes");
+ const src=o||{},oldTrial=src.probationEnabled==null&&(hasPositiveValue(src.probPct)||hasPositiveValue(src.probMon)||src.probInsurance==="yes");
  return{name:String(src.name||n),gross:src.gross??null,payType:src.payType==="net"?"net":"gross",base:src.base==="custom"?"custom":"full",customBase:src.customBase??null,days:src.days??null,commute:src.commute??null,ot:src.ot??null,otPaid:src.otPaid==="yes"?"yes":"no",otFactor:src.otFactor??null,
   probationEnabled:(src.probationEnabled==="yes"||oldTrial)?"yes":"no",probPct:src.probPct??null,probMon:src.probMon??null,probInsurance:src.probInsurance==="yes"?"yes":"no",probJobType:["manager","college","intermediate","other"].includes(src.probJobType)?src.probJobType:"unknown",
   guaranteedBonusMonths:src.guaranteedBonusMonths??null,performanceBonusType:src.performanceBonusType==="amount"?"amount":"months",performanceBonusValue:src.performanceBonusValue??src.targetBonusMonths??null,
