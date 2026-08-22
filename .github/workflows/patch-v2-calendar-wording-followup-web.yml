@@ -1,0 +1,45 @@
+name: Patch V2 calendar wording follow-up web
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v2-calendar-wording-followup-web.py'
+      - '.github/workflows/patch-v2-calendar-wording-followup-web.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/v2-assumptions-calendar-switch
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply wording follow-up
+        run: python .github/patch-v2-calendar-wording-followup-web.py
+      - name: Validate CSP and syntax
+        shell: bash
+        run: |
+          python scripts/check-v2-csp.py
+          python - <<'PY'
+          from pathlib import Path
+          html=Path('net-cao-hon-co-that-tot-hon-v2.html').read_text()
+          a=html.index('<script>')+len('<script>'); b=html.index('</script>',a)
+          Path('/tmp/v2-inline.js').write_text(html[a:b])
+          PY
+          node --check /tmp/v2-inline.js
+          grep -F 'không xét ngày thực trả thưởng' net-cao-hon-co-that-tot-hon-v2.html
+      - name: Commit follow-up and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-calendar-wording-followup-web.py .github/workflows/patch-v2-calendar-wording-followup-web.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html
+          git commit -m "Clarify V2 year-end comparison wording"
+          git push origin HEAD:feature/v2-assumptions-calendar-switch
