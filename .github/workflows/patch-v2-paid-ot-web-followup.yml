@@ -1,0 +1,36 @@
+name: Patch V2 paid OT web follow-up
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'net-cao-hon-co-that-tot-hon-v2.html'
+      - '.github/patch-v2-paid-ot-web-followup.py'
+      - '.github/workflows/patch-v2-paid-ot-web-followup.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/v2-paid-ot-v2
+      - name: Apply UI follow-up
+        run: python .github/patch-v2-paid-ot-web-followup.py
+      - name: Validate follow-up
+        shell: bash
+        run: |
+          grep -F 'Tiền OT không nằm trong gói này' net-cao-hon-co-that-tot-hon-v2.html
+          grep -F 'Bộ luật Lao động 45/2019/QH14' net-cao-hon-co-that-tot-hon-v2.html
+      - name: Commit follow-up and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-paid-ot-web-followup.py .github/workflows/patch-v2-paid-ot-web-followup.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html
+          git commit -m "Clarify paid OT in V2"
+          git push origin HEAD:feature/v2-paid-ot-v2
