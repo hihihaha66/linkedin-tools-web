@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YgyO09VTzbNdeeeMqoTg+YqeK/wrfIAQ3WiPDpLkpLQ='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-xqIBGJttMvJJFAehGXlhQn374RYejSA3IUEZ9YMU4ns='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,7 +59,7 @@
     <div class="switch-copy">
       <p class="eyebrow">Thời điểm chuyển việc</p>
       <h2 class="sec">Nếu chuyển việc thì sao?</h2>
-      <p class="hint">So tổng quy đổi của hai phương án từ hôm nay đến 31/12: ở lại công ty hiện tại, hoặc nghỉ vào ngày bạn chọn rồi sang offer mới. Sau đó tool mới ước tính mất bao lâu để bù lại phần hụt khi chuyển việc.</p>
+      <p class="hint">So tổng quy đổi của hai phương án từ ngày bạn chọn đến 31/12: ở lại công ty hiện tại, hoặc nghỉ rồi sang offer mới. Mặc định “Tính từ ngày” là hôm nay, nhưng bạn có thể chọn ngày trong quá khứ để xem lại một quyết định cũ.</p>
     </div>
     <div class="switch-toggle">
       <label>Tính thêm tác động khi chuyển việc</label>
@@ -90,7 +90,7 @@ const LEGACY_KEY="net-cao-hon-v2";
 const API_URL="https://linkedin-tools-api-test.vercel.app/api/offer-value-v2";
 const canStore=(function(){try{const t="__v2_state";localStorage.setItem(t,"1");localStorage.removeItem(t);return true}catch(e){return false}})();
 function blank(n){return{name:n,gross:null,payType:"gross",base:"full",customBase:null,days:null,commute:null,ot:null,otPaid:"no",otFactor:null,probationEnabled:"no",probPct:null,probMon:null,probInsurance:"no",probJobType:"unknown",guaranteedBonusMonths:null,performanceBonusType:"months",performanceBonusValue:null,fixedAllowance:null,allowanceBh:"unknown",paidLeaveDays:null}}
-function blankSwitch(){return{enabled:false,targetOffer:"0",lastWorkingDate:"",currentBonusIfStay:null,currentBonusRule:"unknown",currentBonusPayDate:"",currentBonusIfLeave:null,onboardDate:"",newBonusRule:"unknown",newBonusCustom:null,currentNet:null}}
+function blankSwitch(){return{enabled:false,targetOffer:"0",asOfDate:"",lastWorkingDate:"",currentBonusIfStay:null,currentBonusRule:"unknown",currentBonusPayDate:"",currentBonusIfLeave:null,onboardDate:"",newBonusRule:"unknown",newBonusCustom:null,currentNet:null}}
 function ensureSwitching(x){const s=Object.assign(blankSwitch(),x||{});s.enabled=s.enabled===true;s.targetOffer=s.targetOffer==="1"?"1":"0";if(s.currentBonusRule==="active"){const l=String(s.lastWorkingDate||"").slice(0,10),p=String(s.currentBonusPayDate||"").slice(0,10);s.currentBonusRule=l&&p?(l>=p?"full":"lost"):"unknown"}if(!["unknown","lost","time","full","custom"].includes(s.currentBonusRule))s.currentBonusRule="unknown";if(!["unknown","time","full","none","custom"].includes(s.newBonusRule))s.newBonusRule="unknown";return s}
 let state={deps:null,region:"I",sickDays:null,mat:"hide",offers:[blank("Offer A"),blank("Offer B")],switching:blankSwitch()};
 let dirty=false,requestSeq=0,debounceTimer=null,activeController=null,lastRequestBody=null,lastResult=null;
@@ -152,6 +152,7 @@ function renderSwitchingInputs(){
  const newHelp=sw.newBonusRule==="time"?(newMonth?'Onboard tháng '+newMonth+' → tool tạm tính '+(13-newMonth)+'/12 khoản thưởng đảm bảo. Chỉ chọn cách này nếu HR/chính sách công ty tính thưởng năm đầu theo thời gian làm việc.':'Tool sẽ tạm tính theo số tháng từ tháng onboard đến hết năm. Chỉ chọn nếu chính sách công ty thực sự tính như vậy.'):(sw.newBonusRule==="unknown"?'Nếu HR chưa nói rõ thưởng năm đầu, cứ để “Chưa rõ”.':'');
  box.innerHTML='<div class="switch-grid">'
   +'<div class="field"><label>Chuyển sang offer</label><select data-sw="targetOffer"><option value="0" '+(sw.targetOffer!=="1"?"selected":"")+'>'+esc(state.offers[0].name||"Offer A")+'</option><option value="1" '+(sw.targetOffer==="1"?"selected":"")+'>'+esc(state.offers[1].name||"Offer B")+'</option></select></div>'
+  +'<div class="field"><label>Tính từ ngày</label><input type="date" data-sw="asOfDate" value="'+esc(sw.asOfDate||localToday())+'"><p class="benefit-note">Mặc định là hôm nay. Muốn xem lại một lần chuyển việc cũ thì chọn ngày bắt đầu trong quá khứ.</p></div>'
   +'<div class="field suffix-row"><label>Net hiện tại / tháng <span style="font-size:11px">(để so đến 31/12 & hòa vốn)</span></label><input type="text" data-sw="currentNet" inputmode="numeric" placeholder="cần để so cuối năm" value="'+grp(sw.currentNet==null?"":sw.currentNet)+'"><span class="suffix">đ</span></div>'
   +'<div class="field"><label>Ngày làm việc cuối cùng ở công ty hiện tại</label><input type="date" data-sw="lastWorkingDate" value="'+esc(sw.lastWorkingDate||"")+'"></div>'
   +'<div class="field"><label>Ngày onboard công ty mới</label><input type="date" data-sw="onboardDate" value="'+esc(sw.onboardDate||"")+'"></div>'
@@ -160,7 +161,7 @@ function renderSwitchingInputs(){
   +oldExtra
   +'<div class="field"><label>Trong năm onboard, thưởng đảm bảo ở công ty mới sẽ thế nào?</label><select data-sw="newBonusRule"><option value="unknown" '+(sw.newBonusRule==="unknown"?"selected":"")+'>Chưa rõ</option><option value="time" '+(sw.newBonusRule==="time"?"selected":"")+'>Theo số tháng làm</option><option value="full" '+(sw.newBonusRule==="full"?"selected":"")+'>Nhận đủ</option><option value="none" '+(sw.newBonusRule==="none"?"selected":"")+'>Không nhận</option><option value="custom" '+(sw.newBonusRule==="custom"?"selected":"")+'>Tôi biết số sẽ nhận</option></select>'+(newHelp?'<p class="benefit-note">'+esc(newHelp)+'</p>':'')+'</div>'
   +newExtra
-  +'<p class="benefit-note switch-wide"><b>Cách tính:</b> Tool lấy ngày hôm nay trên thiết bị của bạn làm mốc, quy đổi ngày lẻ theo net tháng ÷ 30, tính net thử việc trước rồi net chính thức sau đó. OT và thưởng hiệu suất không được tự cộng vào phép so đến 31/12 hay hòa vốn.</p>'
+  +'<p class="benefit-note switch-wide"><b>Cách tính:</b> Tool dùng “Tính từ ngày” làm mốc, quy đổi ngày lẻ theo net tháng ÷ 30, tính net thử việc trước rồi net chính thức sau đó. OT và thưởng hiệu suất không được tự cộng vào phép so đến 31/12 hay hòa vốn.</p>'
   +'</div>';
 }
 
@@ -181,7 +182,7 @@ function localToday(){const d=new Date(),y=d.getFullYear(),m=String(d.getMonth()
 async function calculateNow(){
  clearTimeout(debounceTimer);
  if(!hasAnySalary()){if(activeController)activeController.abort();activeController=null;lastRequestBody=null;lastResult=null;applyResult({hasResults:false});return null}
- const payload=JSON.parse(JSON.stringify(state));if(payload.switching&&payload.switching.enabled)payload.switching.asOfDate=localToday();const body=JSON.stringify(payload);
+ const payload=JSON.parse(JSON.stringify(state));if(payload.switching&&payload.switching.enabled&&!payload.switching.asOfDate)payload.switching.asOfDate=localToday();const body=JSON.stringify(payload);
  if(body===lastRequestBody&&lastResult){applyResult(lastResult);return lastResult}
  if(activeController)activeController.abort();
  const controller=new AbortController();activeController=controller;const seq=++requestSeq;
@@ -225,10 +226,10 @@ host.addEventListener("click",function(e){
  if(kind==="probInsurance"){state.offers[i].probInsurance=v;[].forEach.call(seg.children,x=>x.classList.toggle("on",x===b));markDirty();scheduleCalculation();return}
 });
 
-document.getElementById("switchEnabledSeg").addEventListener("click",function(e){const b=e.target.closest("button");if(!b)return;state.switching.enabled=b.getAttribute("data-v")==="on";markDirty();renderSwitchingInputs();scheduleCalculation()});
+document.getElementById("switchEnabledSeg").addEventListener("click",function(e){const b=e.target.closest("button");if(!b)return;state.switching.enabled=b.getAttribute("data-v")==="on";if(state.switching.enabled&&!state.switching.asOfDate)state.switching.asOfDate=localToday();markDirty();renderSwitchingInputs();scheduleCalculation()});
 const swHost=document.getElementById("switchFields");
 swHost.addEventListener("input",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k||el.tagName==="SELECT")return;if(["currentBonusIfStay","currentBonusIfLeave","newBonusCustom","currentNet"].includes(k)){const f=grp(el.value);el.value=f;state.switching[k]=f.replace(/,/g,"")}else state.switching[k]=el.value;markDirty();scheduleCalculation()});
-swHost.addEventListener("change",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k)return;if(el.tagName==="SELECT")state.switching[k]=el.value;else if(el.type==="date")state.switching[k]=el.value;else return;markDirty();if(k==="currentBonusRule"||k==="newBonusRule"||k==="lastWorkingDate"||k==="onboardDate")renderSwitchingInputs();scheduleCalculation()});
+swHost.addEventListener("change",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k)return;if(el.tagName==="SELECT")state.switching[k]=el.value;else if(el.type==="date")state.switching[k]=el.value;else return;markDirty();if(k==="currentBonusRule"||k==="newBonusRule"||k==="asOfDate"||k==="lastWorkingDate"||k==="onboardDate")renderSwitchingInputs();scheduleCalculation()});
 
 document.getElementById("saveBtn").addEventListener("click",doSave);
 document.getElementById("exportBtn").addEventListener("click",async function(){const data=await calculateNow();if(!data||!data.exportText)return;download("so-2-offer-v2.txt",data.exportText,"text/plain;charset=utf-8")});
