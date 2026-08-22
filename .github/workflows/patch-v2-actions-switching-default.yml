@@ -36,7 +36,10 @@ jobs:
           assert html.index('id="saveBtn"') > html.index('id="verdict"')
           assert html.index('data-v="on" class="on">Tính thêm</button>') < html.index('data-v="off">Bỏ qua</button>')
           assert 'currentBonusRule:"lost"' in html
-          assert html.index('<option value="lost"') < html.index('<option value="unknown"')
+          select_start=html.index('<select data-sw="currentBonusRule">')
+          select_end=html.index('</select>',select_start)
+          select_html=html[select_start:select_end]
+          assert select_html.index('<option value="lost"') < select_html.index('<option value="unknown"')
           print('PASS: actions moved; switching and lost-bonus defaults are visible')
           PY
           node --check /tmp/v2-inline.js
