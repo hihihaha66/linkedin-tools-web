@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-Amksy6YI96Q6fTX4RxrrSvrsbDXF06OlVIrtWXCNcD8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-ipnUiVtHc9GvS7WTwpa8jCK6YDPCKhVSBzJHbbPXmPQ='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -153,7 +153,7 @@ function renderSwitchingInputs(){
  const oldHelp=sw.currentBonusRule==="time"?(oldMonth?'Nghỉ tháng '+oldMonth+' → tool tạm tính '+oldMonth+'/12 khoản thưởng. Chỉ chọn cách này nếu chính sách công ty tính theo thời gian làm việc.':'Tool sẽ tạm tính theo số tháng đã làm trong năm. Chỉ chọn cách này nếu chính sách công ty thực sự tính như vậy.'):(sw.currentBonusRule==="unknown"?'Nếu chưa biết chính sách khi nghỉ, cứ để “Chưa rõ”. Tool sẽ không tự đoán khoản thưởng này.':'');
  const newHelp=sw.newBonusRule==="time"?(newMonth?'Onboard tháng '+newMonth+' → tool tạm tính '+(13-newMonth)+'/12 khoản thưởng đảm bảo. Chỉ chọn cách này nếu HR/chính sách công ty tính thưởng năm đầu theo thời gian làm việc.':'Tool sẽ tạm tính theo số tháng từ tháng onboard đến hết năm. Chỉ chọn nếu chính sách công ty thực sự tính như vậy.'):(sw.newBonusRule==="unknown"?'Nếu HR chưa nói rõ thưởng năm đầu, cứ để “Chưa rõ”.':'');
  box.innerHTML='<div class="switch-grid">'
-  +'<div class="field"><label>Chuyển sang offer</label><select data-sw="targetOffer"><option value="0" '+(sw.targetOffer!=="1"?"selected":"")+'>'+esc(state.offers[0].name||"Offer A")+'</option><option value="1" '+(sw.targetOffer==="1"?"selected":"")+'>'+esc(state.offers[1].name||"Offer B")+'</option></select></div>'
+  +'<div class="field"><label>Bạn muốn so phương án ở lại với offer nào?</label><select data-sw="targetOffer"><option value="0" '+(sw.targetOffer!=="1"?"selected":"")+'>'+esc(state.offers[0].name||"Offer A")+'</option><option value="1" '+(sw.targetOffer==="1"?"selected":"")+'>'+esc(state.offers[1].name||"Offer B")+'</option></select></div>'
   +'<div class="field suffix-row"><label>Net hiện tại / tháng <span style="font-size:11px">(để so đến 31/12 & hòa vốn)</span></label><input type="text" data-sw="currentNet" inputmode="numeric" placeholder="cần để so cuối năm" value="'+grp(sw.currentNet==null?"":sw.currentNet)+'"><span class="suffix">đ</span></div>'
   +'<div class="field"><label>Ngày làm việc cuối cùng ở công ty hiện tại</label><input type="date" data-sw="lastWorkingDate" value="'+esc(sw.lastWorkingDate||"")+'"></div>'
   +'<div class="field"><label>Ngày onboard công ty mới</label><input type="date" data-sw="onboardDate" value="'+esc(sw.onboardDate||"")+'"></div>'
