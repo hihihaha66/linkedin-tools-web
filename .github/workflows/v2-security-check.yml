@@ -1,0 +1,22 @@
+name: V2 frontend security check
+
+on:
+  pull_request:
+    paths:
+      - 'net-cao-hon-co-that-tot-hon-v2.html'
+      - 'scripts/check-v2-csp.py'
+      - '.github/workflows/v2-security-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'net-cao-hon-co-that-tot-hon-v2.html'
+      - 'scripts/check-v2-csp.py'
+      - '.github/workflows/v2-security-check.yml'
+
+jobs:
+  csp-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check CSP and inline script hash
+        run: python scripts/check-v2-csp.py
