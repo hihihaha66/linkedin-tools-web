@@ -1,0 +1,34 @@
+name: Patch V2 package wording follow-up
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v2-package-nam-followup.py'
+      - '.github/workflows/patch-v2-package-nam-followup.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: copy/v2-package-nam-followup
+      - name: Apply cleanup
+        run: python .github/patch-v2-package-nam-followup.py
+      - name: Validate cleanup
+        run: |
+          grep -F 'package năm này' net-cao-hon-co-that-tot-hon-v2.html
+          grep -F 'Giờ bạn bỏ ra để có package đó' net-cao-hon-co-that-tot-hon-v2.html
+      - name: Commit cleanup and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-package-nam-followup.py .github/workflows/patch-v2-package-nam-followup.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html
+          git commit -m "Finish Package năm wording cleanup"
+          git push origin HEAD:copy/v2-package-nam-followup
