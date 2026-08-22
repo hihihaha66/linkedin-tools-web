@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-xbaXy8E12UeHpKCRNApXZN2y35STExmk6YX2FvfMwIg='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-YgyO09VTzbNdeeeMqoTg+YqeK/wrfIAQ3WiPDpLkpLQ='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -59,7 +59,7 @@
     <div class="switch-copy">
       <p class="eyebrow">Thời điểm chuyển việc</p>
       <h2 class="sec">Nếu chuyển việc lúc này?</h2>
-      <p class="hint">So hai phương án từ hôm nay đến 31/12: ở lại công ty hiện tại, hoặc nghỉ vào ngày bạn chọn rồi sang offer mới. Sau đó tool mới ước tính mất bao lâu để bù lại phần hụt khi chuyển việc.</p>
+      <p class="hint">So tổng quy đổi của hai phương án từ hôm nay đến 31/12: ở lại công ty hiện tại, hoặc nghỉ vào ngày bạn chọn rồi sang offer mới. Sau đó tool mới ước tính mất bao lâu để bù lại phần hụt khi chuyển việc.</p>
     </div>
     <div class="switch-toggle">
       <label>Tính thêm tác động khi chuyển việc</label>
@@ -155,7 +155,7 @@ function renderSwitchingInputs(){
   +'<div class="field suffix-row"><label>Net hiện tại / tháng <span style="font-size:11px">(để so đến 31/12 & hòa vốn)</span></label><input type="text" data-sw="currentNet" inputmode="numeric" placeholder="cần để so cuối năm" value="'+grp(sw.currentNet==null?"":sw.currentNet)+'"><span class="suffix">đ</span></div>'
   +'<div class="field"><label>Ngày làm việc cuối cùng ở công ty hiện tại</label><input type="date" data-sw="lastWorkingDate" value="'+esc(sw.lastWorkingDate||"")+'"></div>'
   +'<div class="field"><label>Ngày onboard công ty mới</label><input type="date" data-sw="onboardDate" value="'+esc(sw.onboardDate||"")+'"></div>'
-  +'<div class="field suffix-row"><label>Nếu ở lại đến 31/12, khoản thưởng bạn dự kiến được hưởng (về tay)</label><input type="text" data-sw="currentBonusIfStay" inputmode="numeric" placeholder="có thể để trống" value="'+grp(sw.currentBonusIfStay==null?"":sw.currentBonusIfStay)+'"><span class="suffix">đ</span></div>'
+  +'<div class="field suffix-row"><label>Nếu ở lại đến 31/12, khoản thưởng bạn dự kiến được hưởng (về tay)</label><input type="text" data-sw="currentBonusIfStay" inputmode="numeric" placeholder="có thể để trống" value="'+grp(sw.currentBonusIfStay==null?"":sw.currentBonusIfStay)+'"><span class="suffix">đ</span><p class="benefit-note">Không có thì để trống. Tool hiểu đây là khoản bạn được hưởng nếu ở lại đến 31/12; không xét ngày thực trả thưởng.</p></div>'
   +'<div class="field"><label>Nếu nghỉ vào ngày trên, khoản thưởng này sẽ thế nào?</label><select data-sw="currentBonusRule"><option value="unknown" '+(sw.currentBonusRule==="unknown"?"selected":"")+'>Chưa rõ</option><option value="lost" '+(sw.currentBonusRule==="lost"?"selected":"")+'>Mất toàn bộ</option><option value="time" '+(sw.currentBonusRule==="time"?"selected":"")+'>Nhận theo thời gian đã làm</option><option value="full" '+(sw.currentBonusRule==="full"?"selected":"")+'>Vẫn nhận đủ</option><option value="custom" '+(sw.currentBonusRule==="custom"?"selected":"")+'>Tôi biết số sẽ nhận</option></select>'+(oldHelp?'<p class="benefit-note">'+esc(oldHelp)+'</p>':'')+'</div>'
   +oldExtra
   +'<div class="field"><label>Trong năm onboard, thưởng đảm bảo ở công ty mới sẽ thế nào?</label><select data-sw="newBonusRule"><option value="unknown" '+(sw.newBonusRule==="unknown"?"selected":"")+'>Chưa rõ</option><option value="time" '+(sw.newBonusRule==="time"?"selected":"")+'>Theo số tháng làm</option><option value="full" '+(sw.newBonusRule==="full"?"selected":"")+'>Nhận đủ</option><option value="none" '+(sw.newBonusRule==="none"?"selected":"")+'>Không nhận</option><option value="custom" '+(sw.newBonusRule==="custom"?"selected":"")+'>Tôi biết số sẽ nhận</option></select>'+(newHelp?'<p class="benefit-note">'+esc(newHelp)+'</p>':'')+'</div>'
