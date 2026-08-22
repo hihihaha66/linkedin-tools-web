@@ -1,0 +1,34 @@
+name: Patch V2 package year wording web
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v2-package-nam-web.py'
+      - '.github/workflows/patch-v2-package-nam-web.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: copy/v2-package-nam
+      - name: Apply wording patch
+        run: python .github/patch-v2-package-nam-web.py
+      - name: Validate wording
+        run: |
+          grep -F 'Lớp 2 · <b>Package năm</b>' net-cao-hon-co-that-tot-hon-v2.html
+          grep -F 'So package năm theo 12 tháng chuẩn hóa' net-cao-hon-co-that-tot-hon-v2.html
+      - name: Commit wording and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-package-nam-web.py .github/workflows/patch-v2-package-nam-web.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html
+          git commit -m "Use package year wording in V2"
+          git push origin HEAD:copy/v2-package-nam
