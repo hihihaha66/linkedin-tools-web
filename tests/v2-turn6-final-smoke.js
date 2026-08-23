@@ -45,6 +45,23 @@ const click=(w,e)=>e.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
  if(!rawHtml.includes('@media(max-width:540px)')||!rawHtml.includes('grid-template-columns:34% 33% 33%'))fail('mobile 3-column matrix contract missing');
  console.log('PASS Turn 6: desktop/mobile 3-column contract');
 
+ // Turn 2 grouping contract: OT stays contiguous, then trial asks job group before duration; allowance stays next to BH treatment.
+ {
+  const {w,d}=boot();
+  input(w,field(d,'otMonthly'),'8');
+  click(w,q(d,'[data-seg="probationEnabled"][data-i="0"] [data-v="yes"]'));
+  const labels=[...d.querySelectorAll('#offersIn .offer-mlabel')].map(x=>x.textContent.trim());
+  const pos=x=>labels.indexOf(x);
+  const ordered=['Làm thêm giờ (OT) trung bình / tháng','OT có được trả tiền không?','OT chủ yếu rơi vào','Hệ số OT','Mức lương dùng để tính OT','Có giai đoạn thử việc cần tính riêng?','Nhóm công việc của vị trí','Thời gian thử việc','Lương thử việc (% mức lương offer)','Trong thời gian thử việc có đóng BH bắt buộc?'];
+  for(let i=1;i<ordered.length;i++)if(!(pos(ordered[i-1])>=0&&pos(ordered[i])>pos(ordered[i-1])))fail('Turn 2 grouping order broken: '+ordered[i-1]+' -> '+ordered[i]);
+  if(!(pos('Phụ cấp cố định ngoài mức lương trên / tháng')<pos('Phụ cấp này có tính vào căn cứ BH?')&&pos('Phụ cấp này có tính vào căn cứ BH?')<pos('Nghỉ phép hưởng lương / năm')))fail('benefit grouping order broken');
+  if(!d.body.textContent.includes('Nếu offer là Gross, % này áp trên Gross; nếu là Net, áp trên Net.'))fail('trial salary helper not moved to salary row');
+  if(d.body.textContent.includes('Nếu bạn chọn “Tự nhập” mức căn cứ BH'))fail('stale benefit wording still present');
+  w.close();
+ }
+ console.log('PASS Turn 2: OT/trial/benefit grouping order and helper placement');
+
+
  // Blank state + all result layers wired through existing response contract.
  {
   const {w,d,requests}=boot();
