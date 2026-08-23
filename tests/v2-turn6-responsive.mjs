@@ -9,11 +9,13 @@ try{
   const check=async phase=>{
    const r=await page.evaluate(()=>{
     const row=document.querySelector('.offer-mrow.head');
-    const rects=[...row.children].slice(0,3).map(e=>{const x=e.getBoundingClientRect();return{x:x.x,y:x.y,w:x.width,h:x.height}});
-    return{rects,scroll:document.documentElement.scrollWidth,inner:window.innerWidth};
+    const rects=[...row.children].slice(0,3).map(e=>{const x=e.getBoundingClientRect();return{x:x.x,y:x.y,w:x.width,h:x.height,cy:x.y+x.height/2}});
+    const cs=getComputedStyle(row);
+    return{rects,display:cs.display,grid:cs.gridTemplateColumns,scroll:document.documentElement.scrollWidth,inner:window.innerWidth};
    });
    if(r.rects.length!==3)throw new Error(`${label}/${phase}: header is not 3 columns`);
-   if(!(Math.abs(r.rects[0].y-r.rects[1].y)<2&&Math.abs(r.rects[1].y-r.rects[2].y)<2))throw new Error(`${label}/${phase}: columns stacked vertically`);
+   if(r.display!=='grid'||r.grid.split(' ').filter(Boolean).length<3)throw new Error(`${label}/${phase}: header is not a 3-track CSS grid (${r.display}; ${r.grid})`);
+   if(!(Math.abs(r.rects[0].cy-r.rects[1].cy)<2&&Math.abs(r.rects[1].cy-r.rects[2].cy)<2))throw new Error(`${label}/${phase}: columns do not share the same row center`);
    if(!(r.rects[0].x<r.rects[1].x&&r.rects[1].x<r.rects[2].x&&r.rects.every(x=>x.w>40)))throw new Error(`${label}/${phase}: invalid column geometry`);
    if(r.scroll>r.inner+2)throw new Error(`${label}/${phase}: horizontal overflow ${r.scroll}px > ${r.inner}px`);
   };
