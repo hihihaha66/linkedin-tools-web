@@ -59,6 +59,32 @@ try{
   await page.locator('[data-seg="otPaid"][data-i="0"] [data-v="yes"]').click();
   await page.locator('select[data-i="0"][data-k="otType"]').selectOption('mixed');
   await check('expanded-trial-ot');
+
+  // Inject a representative long-result fixture matching the Safari screenshots so result CSS is actually exercised.
+  await page.evaluate(()=>{
+    const host=document.createElement('div');
+    host.id='responsiveResultFixture';
+    host.innerHTML=`
+      <div class="switch-result">
+        <h4>Sau khi chuyển, bao lâu thì bù lại phần hụt?</h4>
+        <div class="row"><span>Thưởng bỏ lại ở công ty hiện tại</span><span class="v">-62,000,000đ</span></div>
+        <div class="row"><span>Khoảng nghỉ giữa hai việc</span><span class="v">1 ngày · hụt ≈ 700,000đ</span></div>
+        <div class="row row-wrap break-even-row"><span>Ước tính hòa vốn</span><span class="v">Chưa có mốc hòa vốn từ chênh lệch net hàng tháng hiện tại</span></div>
+        <div class="switch-scenarios">
+          <div class="switch-scenario-title">Kịch bản từ các input biến động đã nhập</div>
+          <div class="switch-scenario-row"><span><b>Kịch bản: OT có lương như đã nhập</b><small>Giả định mức OT hiện tại duy trì tương tự từ onboard đến 31/12.</small></span><span class="v">Chuyển 155,000,000đ · chênh -54,700,000đ</span></div>
+          <div class="switch-scenario-row"><span><b>Kịch bản: có thêm thưởng hiệu suất</b><small>Không coi là khoản đảm bảo; tạm phân bổ 7/12 theo tháng onboard.</small></span><span class="v">Chuyển 180,000,000đ · chênh -29,700,000đ</span></div>
+          <p class="switch-scenario-note">Không dùng các kịch bản biến động để suy ra ngày hòa vốn chính xác.</p>
+        </div>
+      </div>
+      <div class="verdict">
+        <h3>Bạn đang đổi gì lấy gì - bốn trục</h3>
+        <p><b>Nếu làm đủ 12 tháng</b> - thu nhập cố định của Offer A cao hơn khoảng 65,852,600đ/năm. Nếu có thêm thưởng hiệu suất đã nhập, Offer A cao hơn khoảng 114,352,600đ/năm.</p>
+        <div style="margin:14px 0 4px;padding:12px 13px;border-radius:8px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.28)"><p>Driver thời gian lớn nhất: Đi lại làm Offer A tốn thêm khoảng 152 giờ/năm so với bên kia.</p></div>
+      </div>`;
+    document.querySelector('.wrap').appendChild(host);
+  });
+
   const containment=await page.evaluate(()=>{
     const sels=['.switch-result','.verdict','.events','.offer-matrix','.bh-sim','.switch-scenarios'];
     const bad=[];
@@ -66,6 +92,13 @@ try{
       const r=el.getBoundingClientRect();
       if(el.scrollWidth>el.clientWidth+2)bad.push(sel+':scroll '+el.scrollWidth+'>'+el.clientWidth);
       if(r.left<-2||r.right>innerWidth+2)bad.push(sel+':viewport '+Math.round(r.left)+'..'+Math.round(r.right)+' / '+innerWidth);
+    }
+    const be=document.querySelector('#responsiveResultFixture .break-even-row');
+    if(be){
+      const labelEl=be.children[0],valueEl=be.children[1];
+      const lr=labelEl.getBoundingClientRect(),vr=valueEl.getBoundingClientRect();
+      if(lr.width<70)bad.push('break-even label crushed to '+Math.round(lr.width)+'px');
+      if(vr.right>innerWidth+2)bad.push('break-even value exits viewport');
     }
     return bad;
   });
