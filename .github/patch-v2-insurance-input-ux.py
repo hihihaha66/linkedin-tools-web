@@ -46,3 +46,5 @@ a=s.index('<script>')+len('<script>'); b=s.index('</script>',a)
 digest=base64.b64encode(hashlib.sha256(s[a:b].encode()).digest()).decode()
 s=re.sub(r"script-src 'sha256-[^']+'",f"script-src 'sha256-{digest}'",s,count=1)
 p.write_text(s)
+
+# retry trigger
