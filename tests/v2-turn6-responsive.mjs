@@ -20,6 +20,18 @@ try{
    if(r.scroll>r.inner+2)throw new Error(`${label}/${phase}: horizontal overflow ${r.scroll}px > ${r.inner}px`);
   };
   await check('blank');
+  const toggleIcons=await page.evaluate(()=>{
+    const d=document.createElement('details');
+    d.innerHTML='<summary class="calc-summary">Xem cách tính</summary><div>detail</div>';
+    document.body.appendChild(d);
+    const summary=d.querySelector('summary');
+    const closed=getComputedStyle(summary,'::before').content;
+    d.open=true;
+    const opened=getComputedStyle(summary,'::before').content;
+    d.remove();
+    return{closed,opened};
+  });
+  if(!toggleIcons.closed.includes('＋')||!toggleIcons.opened.includes('−'))throw new Error(`${label}: calculation disclosure icon did not switch + -> - (${toggleIcons.closed} / ${toggleIcons.opened})`);
   await page.locator('[data-seg="probationEnabled"][data-i="0"] [data-v="yes"]').click();
   await page.locator('input[data-i="0"][data-k="probDurationValue"]').fill('60');
   await page.locator('select[data-i="0"][data-k="probDurationUnit"]').selectOption('days');
