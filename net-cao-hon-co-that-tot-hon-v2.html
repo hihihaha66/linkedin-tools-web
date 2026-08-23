@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-Zyb7LA+zeaUGf76gMyfRNBp0qpLDBbPorn+DwZyGFDQ='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-8VonNG0VTKy9JKS71FFlc+bd8sJ8jub7cOqcF3e89fU='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -186,6 +186,19 @@ function renderInputs(){
  syncOtPaidVisibility();
 }
 
+function switchingCurrentNetStatus(v){
+ const raw=String(v==null?'':v).replace(/,/g,'').trim();if(raw==='')return{kind:'empty',text:''};
+ const n=Number(raw);if(!Number.isFinite(n)||n<=0)return{kind:'invalid',text:'Net hiện tại phải lớn hơn 0.'};
+ if(n<1000000)return{kind:'warning',text:'Bạn đang nhập '+Math.round(n).toLocaleString('en-US')+'đ. Ô này nhập theo đồng. Ví dụ 22 triệu = 22,000,000đ.'};
+ return{kind:'valid',text:''};
+}
+function syncSwitchCurrentNetInline(el){
+ const help=document.querySelector('[data-current-net-help]');if(!el||!help)return;
+ const st=switchingCurrentNetStatus(el.value),strong=st.kind==='invalid'||st.kind==='warning';
+ if(st.kind==='invalid')el.setAttribute('aria-invalid','true');else el.removeAttribute('aria-invalid');
+ help.textContent=st.text;help.style.display=st.text?'':'none';help.style.color=strong?'var(--clay)':'';help.style.fontWeight=strong?'600':'';
+}
+
 function renderSwitchingInputs(){
  const sw=state.switching=ensureSwitching(state.switching);
  const seg=document.getElementById("switchEnabledSeg");[].forEach.call(seg.children,b=>b.classList.toggle("on",b.getAttribute("data-v")===(sw.enabled?"on":"off")));
@@ -196,11 +209,12 @@ function renderSwitchingInputs(){
  const newExtra=sw.newBonusRule==="custom"?'<div class="field suffix-row"><label>Số thưởng đảm bảo dự kiến về tay trong năm onboard</label><input type="text" data-sw="newBonusCustom" inputmode="numeric" placeholder="vd 5,000,000" value="'+grp(sw.newBonusCustom==null?"":sw.newBonusCustom)+'"><span class="suffix">đ</span></div>':'';
  const oldMonth=sw.lastWorkingDate?Number(String(sw.lastWorkingDate).slice(5,7)):null;
  const newMonth=sw.onboardDate?Number(String(sw.onboardDate).slice(5,7)):null;
+ const currentNetStatus=switchingCurrentNetStatus(sw.currentNet);
  const oldHelp=sw.currentBonusRule==="time"?(oldMonth?'Nghỉ tháng '+oldMonth+' → tool tạm tính '+oldMonth+'/12 khoản thưởng. Chỉ chọn cách này nếu chính sách công ty tính theo thời gian làm việc.':'Tool sẽ tạm tính theo số tháng đã làm trong năm. Chỉ chọn cách này nếu chính sách công ty thực sự tính như vậy.'):(sw.currentBonusRule==="unknown"?'Nếu chưa biết chính sách khi nghỉ, cứ để “Chưa rõ”. Tool sẽ không tự đoán khoản thưởng này.':'');
  const newHelp=sw.newBonusRule==="time"?(newMonth?'Onboard tháng '+newMonth+' → tool tạm tính '+(13-newMonth)+'/12 khoản thưởng đảm bảo. Chỉ chọn cách này nếu HR/chính sách công ty tính thưởng năm đầu theo thời gian làm việc.':'Tool sẽ tạm tính theo số tháng từ tháng onboard đến hết năm. Chỉ chọn nếu chính sách công ty thực sự tính như vậy.'):(sw.newBonusRule==="unknown"?'Nếu HR chưa nói rõ thưởng năm đầu, cứ để “Chưa rõ”.':'');
  box.innerHTML='<div class="switch-grid">'
   +'<div class="field"><label>Bạn muốn so phương án ở lại với offer nào?</label><select data-sw="targetOffer"><option value="0" '+(sw.targetOffer!=="1"?"selected":"")+'>'+esc(state.offers[0].name||"Offer A")+'</option><option value="1" '+(sw.targetOffer==="1"?"selected":"")+'>'+esc(state.offers[1].name||"Offer B")+'</option></select></div>'
-  +'<div class="field suffix-row"><label>Net hiện tại / tháng <span style="font-size:11px">(để so đến 31/12 & hòa vốn)</span></label><input type="text" data-sw="currentNet" inputmode="numeric" placeholder="cần để so cuối năm" value="'+grp(sw.currentNet==null?"":sw.currentNet)+'"><span class="suffix">đ</span></div>'
+  +'<div class="field suffix-row"><label>Net hiện tại / tháng <span style="font-size:11px">(để so đến 31/12 & hòa vốn)</span></label><input type="text" data-sw="currentNet" inputmode="numeric" placeholder="Ví dụ: 22,000,000" value="'+grp(sw.currentNet==null?"":sw.currentNet)+'" '+(currentNetStatus.kind==='invalid'?'aria-invalid="true"':'')+'><span class="suffix">đ</span><p class="benefit-note" data-current-net-help style="'+(currentNetStatus.text?((currentNetStatus.kind==='invalid'||currentNetStatus.kind==='warning')?'color:var(--clay);font-weight:600':''):'display:none')+'">'+esc(currentNetStatus.text)+'</p></div>'
   +'<div class="field"><label>Ngày làm việc cuối cùng ở công ty hiện tại</label><input type="date" data-sw="lastWorkingDate" value="'+esc(sw.lastWorkingDate||"")+'"></div>'
   +'<div class="field"><label>Ngày onboard công ty mới</label><input type="date" data-sw="onboardDate" value="'+esc(sw.onboardDate||"")+'"></div>'
   +'<div class="field suffix-row"><label>Nếu ở lại đến 31/12, khoản thưởng bạn dự kiến được hưởng (về tay)</label><input type="text" data-sw="currentBonusIfStay" inputmode="numeric" placeholder="có thể để trống" value="'+grp(sw.currentBonusIfStay==null?"":sw.currentBonusIfStay)+'"><span class="suffix">đ</span><p class="benefit-note">Không có thì để trống. Tool hiểu đây là khoản bạn được hưởng nếu ở lại đến 31/12; không xét ngày thực trả thưởng.</p></div>'
@@ -280,7 +294,7 @@ host.addEventListener("click",function(e){
 
 document.getElementById("switchEnabledSeg").addEventListener("click",function(e){const b=e.target.closest("button");if(!b)return;state.switching.enabled=b.getAttribute("data-v")==="on";state.switching.enabledExplicit=true;markDirty();renderSwitchingInputs();scheduleCalculation()});
 const swHost=document.getElementById("switchFields");
-swHost.addEventListener("input",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k||el.tagName==="SELECT")return;if(["currentBonusIfStay","currentBonusIfLeave","newBonusCustom","currentNet"].includes(k)){const f=grp(el.value);el.value=f;state.switching[k]=f.replace(/,/g,"")}else state.switching[k]=el.value;markDirty();scheduleCalculation()});
+swHost.addEventListener("input",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k||el.tagName==="SELECT")return;if(["currentBonusIfStay","currentBonusIfLeave","newBonusCustom","currentNet"].includes(k)){const f=grp(el.value);el.value=f;state.switching[k]=f.replace(/,/g,"");if(k==="currentNet")syncSwitchCurrentNetInline(el)}else state.switching[k]=el.value;markDirty();scheduleCalculation()});
 swHost.addEventListener("change",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k)return;if(el.tagName==="SELECT"){state.switching[k]=el.value;if(k==="currentBonusRule")state.switching.currentBonusRuleExplicit=true}else if(el.type==="date")state.switching[k]=el.value;else return;markDirty();if(k==="currentBonusRule"||k==="newBonusRule"||k==="lastWorkingDate"||k==="onboardDate")renderSwitchingInputs();scheduleCalculation()});
 
 document.getElementById("saveBtn").addEventListener("click",doSave);
