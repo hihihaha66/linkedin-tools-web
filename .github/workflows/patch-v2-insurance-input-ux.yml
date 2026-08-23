@@ -1,0 +1,120 @@
+name: Update V2 insurance input UX
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v2-insurance-input-ux.py'
+      - '.github/workflows/patch-v2-insurance-input-ux.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/v2-insurance-input-ux
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply frontend update
+        run: python .github/patch-v2-insurance-input-ux.py
+      - name: Static checks
+        shell: bash
+        run: |
+          python scripts/check-v2-csp.py
+          python - <<'PY'
+          from pathlib import Path
+          html=Path('net-cao-hon-co-that-tot-hon-v2.html').read_text()
+          required=[
+            'Công ty dùng mức nào để đóng BH?',
+            '>Chưa rõ</option>',
+            '>Theo mức lương offer</option>',
+            '>Tôi biết mức cụ thể</option>',
+            'Tool tạm lấy mức lương offer làm mức dùng để tính BH',
+            'bhMode:"unknown"',
+            "o.base=src.bhMode==='custom'?'custom':'full'"
+          ]
+          for x in required: assert x in html, x
+          assert 'Theo mặc định' not in html
+          assert 'Mức lương làm căn cứ đóng BH\',baseCell' not in html
+          a=html.index('<script>')+len('<script>'); b=html.index('</script>',a)
+          Path('/tmp/v2-inline.js').write_text(html[a:b])
+          print('PASS static BH UX')
+          PY
+          node --check /tmp/v2-inline.js
+      - name: Install DOM test dependency
+        run: npm install --no-save jsdom@24
+      - name: Behavioral test BH UX and payload
+        shell: bash
+        run: |
+          node <<'JS'
+          const fs=require('fs');
+          const {JSDOM}=require('jsdom');
+          let html=fs.readFileSync('net-cao-hon-co-that-tot-hon-v2.html','utf8').replace(/<link[^>]+fonts\.googleapis\.com[^>]*>/g,'').replace(/<link[^>]+fonts\.gstatic\.com[^>]*>/g,'');
+          const requests=[];
+          const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://example.test/',beforeParse(w){w.fetch=async(_url,opts)=>{requests.push(JSON.parse(opts.body));return{status:200,ok:true,json:async()=>({hasResults:false})}}}});
+          const w=dom.window,d=w.document;
+          const input=(el,value)=>{el.value=value;el.dispatchEvent(new w.Event('input',{bubbles:true}))};
+          const change=(el,value)=>{el.value=value;el.dispatchEvent(new w.Event('change',{bubbles:true}))};
+          const bh=()=>d.querySelector('select[data-i="0"][data-k="bhMode"]');
+          if(!bh())throw new Error('BH mode select missing');
+          if(bh().value!=='unknown')throw new Error('new blank offer should default to unknown');
+          const labels=[...bh().options].map(x=>x.textContent).join('|');
+          for(const x of ['Chưa rõ','Theo mức lương offer','Tôi biết mức cụ thể'])if(!labels.includes(x))throw new Error('missing option '+x);
+          if(d.querySelector('input[data-i="0"][data-k="customBase"]'))throw new Error('custom amount visible before custom mode');
+
+          input(d.querySelector('input[data-i="0"][data-k="gross"]'),'30,000,000');
+          change(bh(),'salary');
+          if(d.querySelector('input[data-i="0"][data-k="customBase"]'))throw new Error('custom amount visible in salary mode');
+
+          change(bh(),'custom');
+          const custom=d.querySelector('input[data-i="0"][data-k="customBase"]');
+          if(!custom)throw new Error('custom amount missing in custom mode');
+          input(custom,'5,800,000');
+
+          setTimeout(()=>{
+            try{
+              let body=requests.at(-1);if(!body)throw new Error('no API request');
+              if(body.offers[0].bhMode!=='custom'||body.offers[0].base!=='custom')throw new Error('custom BH payload mismatch');
+              if(String(body.offers[0].customBase)!=='5800000')throw new Error('custom amount payload mismatch '+body.offers[0].customBase);
+              change(bh(),'unknown');
+              setTimeout(()=>{
+                try{
+                  body=requests.at(-1);
+                  if(body.offers[0].bhMode!=='unknown'||body.offers[0].base!=='full')throw new Error('unknown BH payload mismatch');
+                  console.log('PASS BH UX + payload');w.close();
+                }catch(e){console.error(e);process.exitCode=1;w.close()}
+              },700);
+            }catch(e){console.error(e);process.exitCode=1;w.close()}
+          },700);
+          JS
+      - name: Behavioral test legacy saved-state migration
+        shell: bash
+        run: |
+          node <<'JS'
+          const fs=require('fs');
+          const {JSDOM}=require('jsdom');
+          let html=fs.readFileSync('net-cao-hon-co-that-tot-hon-v2.html','utf8').replace(/<link[^>]+fonts\.googleapis\.com[^>]*>/g,'').replace(/<link[^>]+fonts\.gstatic\.com[^>]*>/g,'');
+          function run(old,expected){
+            const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://example.test/',beforeParse(w){w.localStorage.setItem('net-cao-hon-v2-state',JSON.stringify({deps:null,region:'I',offers:[old,{name:'Offer B',gross:null,base:'full'}]}));w.fetch=async()=>({status:200,ok:true,json:async()=>({hasResults:false})})}});
+            const v=dom.window.document.querySelector('select[data-i="0"][data-k="bhMode"]').value;
+            if(v!==expected)throw new Error('legacy '+old.base+' mapped to '+v+' instead of '+expected);
+            dom.window.close();
+          }
+          run({name:'Offer A',gross:'30000000',base:'full',customBase:null},'salary');
+          run({name:'Offer A',gross:'30000000',base:'custom',customBase:'5800000'},'custom');
+          console.log('PASS legacy BH migration');
+          JS
+      - name: Commit update and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-insurance-input-ux.py .github/workflows/patch-v2-insurance-input-ux.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html
+          git commit -m "Clarify V2 insurance input UX"
+          git push origin HEAD:refactor/v2-insurance-input-ux
