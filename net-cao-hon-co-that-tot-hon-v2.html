@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-8VonNG0VTKy9JKS71FFlc+bd8sJ8jub7cOqcF3e89fU='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-KCOcA656huxMkqbQvtluI1Owv8ZJKn2Jor7f3e8qNNE='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,6 +18,10 @@
 /* V2 Turn 1: one A/B comparison mental model for offer input */
 .offers-in{display:block}.offer-matrix{width:100%;background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}.offer-mrow{display:grid;grid-template-columns:minmax(160px,1.25fr) repeat(2,minmax(0,1fr));align-items:stretch;border-bottom:1px solid var(--line)}.offer-mrow:last-child{border-bottom:0}.offer-mrow.head{background:var(--paper-2);font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);align-items:center}.offer-mlabel,.offer-mcell{min-width:0;padding:11px 12px}.offer-mlabel{font-size:13px;color:var(--ink);display:flex;align-items:flex-start}.offer-mcell{border-left:1px solid var(--line)}.offer-mrow.head .offer-mlabel,.offer-mrow.head .offer-mcell{padding-top:9px;padding-bottom:9px}.offer-mcell .name-in{width:100%;font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;padding:2px 0 5px}.offer-mcell .name-in:focus{outline:none;border-bottom-color:var(--moss)}.offer-head-name{display:block;font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);padding:2px 0 5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.offer-mcell input[type=text],.offer-mcell select{font-size:14px;padding:9px 9px}.offer-mcell .suffix-row .suffix{right:9px;font-size:11px}.offer-mcell .suffix-row input{padding-right:34px}.offer-mcell .suffix-row.unit-wide input{padding-right:64px}.offer-mcell .seg{width:100%}.offer-mcell .seg button{min-width:0;font-size:11.5px;padding:8px 4px;white-space:normal}.offer-mcell .seg.three button{font-size:10.5px;padding-left:2px;padding-right:2px}.offer-mcell .sub-input{margin-top:7px}.offer-mcell .benefit-note{font-size:10.5px;margin:5px 0 0}.offer-mnote{grid-column:1/-1;padding:8px 12px 10px;font-size:11.5px;line-height:1.5;color:var(--ink-soft);background:rgba(239,235,224,.36)}.offer-mnote.warn{color:var(--clay)}.offer-mna{color:var(--ink-soft);font-family:var(--mono);display:block;padding:8px 0}.compare-benefits{margin-top:10px;padding:0 12px;background:#fff;border:1px solid var(--line);border-radius:var(--radius)}.compare-benefits summary{padding:11px 0}.compare-benefits .benefits-body{padding:0 0 12px}.compare-benefits .offer-matrix{border-radius:8px}.offer-mcell .control-stack>*+*{margin-top:7px}.prob-duration-input{display:grid;grid-template-columns:minmax(0,1fr) 88px;gap:6px;align-items:start}.prob-duration-input select{min-width:0;padding-left:7px;padding-right:5px}.prob-duration-help{margin-bottom:0!important}
 @media(max-width:540px){.prob-duration-input{grid-template-columns:1fr}.prob-duration-input select{font-size:10.5px}.wrap{padding-left:10px;padding-right:10px}.offer-mrow{grid-template-columns:34% 33% 33%}.offer-mlabel,.offer-mcell{padding:9px 7px}.offer-mlabel{font-size:11.5px;line-height:1.4}.offer-mrow.head .offer-mlabel,.offer-mrow.head .offer-mcell{padding:8px 6px}.offer-mcell .name-in{font-size:13px}.offer-head-name{font-size:13px}.offer-mcell input[type=text],.offer-mcell select{font-size:12.5px;padding:8px 6px}.offer-mcell .suffix-row input{padding-right:24px}.offer-mcell .suffix-row.unit-wide input{padding-right:53px}.offer-mcell .suffix-row .suffix{right:5px;font-size:10px}.offer-mcell .seg button{font-size:10.5px;padding:8px 2px;line-height:1.15}.offer-mcell .seg.three button{font-size:9.5px}.offer-mnote{padding:7px 8px 9px;font-size:10.5px}.events .erow{grid-template-columns:38% 31% 31%;gap:4px;padding:10px 8px;font-size:12.5px}.events .erow.head{font-size:9.5px}.events .erow .lbl small{font-size:10.5px}.events .erow .va,.events .erow .vb{font-size:11.5px;min-width:0;overflow-wrap:anywhere}}
+
+/* V2 Turn 4: OT progressive disclosure inside the persistent A/B matrix */
+.ot-mini-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}.ot-inline-help{font-size:10.5px;line-height:1.45;margin:5px 0 0;color:var(--clay)}.ot-inline-help:empty{display:none}.ot-config-cell .offer-mna{padding:7px 0}.ot-config-cell select{font-size:12px}.ot-config-cell .control-stack>*+*{margin-top:6px}
+@media(max-width:540px){.ot-mini-pair{grid-template-columns:1fr;gap:4px}.ot-config-cell select{font-size:10px;padding-left:4px;padding-right:3px}.ot-inline-help{font-size:9.5px}.ot-config-cell .suffix-row input{padding-right:22px}}
 </style>
 </head>
 <body>
@@ -85,7 +89,7 @@
 <button class="btn ghost tiny" id="backupBtn">↓ Tải dữ liệu (.json)</button>
 <span class="save-state" id="saveState"></span>
 </div>
-<div class="disclaim">Đây là công cụ mô phỏng để so sánh, không thay thế tư vấn payroll/pháp lý. Dữ liệu offer được gửi tới máy chủ để tính toán. Ứng dụng không ghi nội dung offer vào cơ sở dữ liệu; nếu bấm Lưu, dữ liệu được giữ trên trình duyệt của bạn. “Phụ cấp cố định” trong tool được hiểu là khoản trả thêm ngoài mức lương offer và chịu thuế TNCN. Căn cứ BH dùng theo lựa chọn ở từng offer; nếu để “Chưa rõ”, tool tạm lấy mức lương offer làm mức dùng để tính BH, còn mức cụ thể bạn nhập luôn được ưu tiên. Thưởng hiệu suất chỉ được cộng ở dòng “Nếu có thêm thưởng hiệu suất” và phụ thuộc kết quả thực tế. Tiền OT là khoản ước tính từ lương gross, số giờ OT và hệ số bạn nhập; cách payroll thực tế có thể khác. Ngày phép được dùng để giảm thời gian bạn bỏ ra khi tính giá trị/giờ, không cộng trực tiếp vào thu nhập năm. Phần thời điểm chuyển việc dùng net/30 cho ngày lẻ, không mô phỏng quyết toán thuế khi đổi nơi làm việc và vẫn phụ thuộc chính sách thưởng thực tế của từng công ty.</div>
+<div class="disclaim">Đây là công cụ mô phỏng để so sánh, không thay thế tư vấn payroll/pháp lý. Dữ liệu offer được gửi tới máy chủ để tính toán. Ứng dụng không ghi nội dung offer vào cơ sở dữ liệu; nếu bấm Lưu, dữ liệu được giữ trên trình duyệt của bạn. “Phụ cấp cố định” trong tool được hiểu là khoản trả thêm ngoài mức lương offer và chịu thuế TNCN. Căn cứ BH dùng theo lựa chọn ở từng offer; nếu để “Chưa rõ”, tool tạm lấy mức lương offer làm mức dùng để tính BH, còn mức cụ thể bạn nhập luôn được ưu tiên. Thưởng hiệu suất chỉ được cộng ở dòng “Nếu có thêm thưởng hiệu suất” và phụ thuộc kết quả thực tế. Tiền OT là khoản ước tính từ mức lương dùng để tính OT, số giờ và hệ số theo loại ngày bạn nhập; cách payroll thực tế có thể khác. Ngày phép được dùng để giảm thời gian bạn bỏ ra khi tính giá trị/giờ, không cộng trực tiếp vào thu nhập năm. Phần thời điểm chuyển việc dùng net/30 cho ngày lẻ, không mô phỏng quyết toán thuế khi đổi nơi làm việc và vẫn phụ thuộc chính sách thưởng thực tế của từng công ty.</div>
 <p class="src"><b>Tham số đang dùng:</b> PIT 5 bậc 5% - 10% - 20% - 30% - 35% theo các ngưỡng 10 - 30 - 60 - 100 triệu đồng/tháng và miễn thuế toàn bộ tiền lương làm thêm giờ: áp dụng cho thu nhập tiền lương, tiền công của kỳ tính thuế 2026. Giảm trừ gia cảnh 15,5 triệu/tháng cho bản thân và 6,2 triệu/tháng/người phụ thuộc: hiệu lực từ 01/01/2026. Lương tối thiểu vùng từ 01/01/2026: I 5,31 triệu; II 4,73 triệu; III 4,14 triệu; IV 3,70 triệu. NLĐ đóng BH chuẩn 10,5%; căn cứ BHXH/BHYT tối đa 50,6 triệu/tháng từ 01/07/2026; BHTN tối đa 20× lương tối thiểu vùng. Trợ cấp thất nghiệp 60% bình quân 6 tháng đóng BHTN, tối đa 5× LTT vùng; thai sản theo bình quân 6 tháng đóng BHXH; ốm đau thông thường = căn cứ BHXH ÷ 24 × 75% × số ngày. Nguồn pháp lý chính: Bộ luật Lao động 45/2019/QH14; NĐ 145/2020/NĐ-CP; Luật Thuế TNCN 109/2025/QH15; Nghị quyết 110/2025/UBTVQH15; Luật BHXH 41/2024/QH15; NĐ 158/2025/NĐ-CP; Luật Việc làm 74/2025/QH15; NĐ 293/2025/NĐ-CP.</p>
 </div>
 <script>
@@ -96,7 +100,7 @@ const LEGACY_KEY="net-cao-hon-v2";
 const API_URL="https://linkedin-tools-api-test.vercel.app/api/offer-value-v2";
 const UI_WKS=4.33;
 const canStore=(function(){try{const t="__v2_state";localStorage.setItem(t,"1");localStorage.removeItem(t);return true}catch(e){return false}})();
-function blank(n){return{name:n,gross:null,payType:"gross",base:"full",bhMode:"unknown",customBase:null,days:null,commute:null,otMonthly:null,otPaid:"no",otFactor:null,probationEnabled:"no",probPct:null,probDurationValue:null,probDurationUnit:"months",probInsurance:"no",probJobType:"unknown",guaranteedBonusMonths:null,performanceBonusType:"months",performanceBonusValue:null,fixedAllowance:null,allowanceBh:"unknown",paidLeaveDays:null}}
+function blank(n){return{name:n,gross:null,payType:"gross",base:"full",bhMode:"unknown",customBase:null,days:null,commute:null,otMonthly:null,otPaid:"no",otType:"weekday",otFactor:150,otBreakdownWeekday:null,otBreakdownRest:null,otBreakdownHoliday:null,otFactorWeekday:150,otFactorRest:200,otFactorHoliday:300,otBaseMode:"offer",otBaseAmount:null,probationEnabled:"no",probPct:null,probDurationValue:null,probDurationUnit:"months",probInsurance:"no",probJobType:"unknown",guaranteedBonusMonths:null,performanceBonusType:"months",performanceBonusValue:null,fixedAllowance:null,allowanceBh:"unknown",paidLeaveDays:null}}
 function blankSwitch(){return{enabled:true,enabledExplicit:false,targetOffer:"0",lastWorkingDate:"",currentBonusIfStay:null,currentBonusRule:"lost",currentBonusRuleExplicit:false,currentBonusPayDate:"",currentBonusIfLeave:null,onboardDate:"",newBonusRule:"unknown",newBonusCustom:null,currentNet:null}}
 function ensureSwitching(x){const raw=x||{},s=Object.assign(blankSwitch(),raw);delete s.asOfDate;const hasEnabledFlag=typeof raw.enabledExplicit==="boolean";s.enabled=hasEnabledFlag?raw.enabled===true:true;s.enabledExplicit=hasEnabledFlag?raw.enabledExplicit===true:false;s.targetOffer=s.targetOffer==="1"?"1":"0";const hasRuleFlag=typeof raw.currentBonusRuleExplicit==="boolean",legacyRuleExplicit=["lost","time","full","custom","active"].includes(raw.currentBonusRule),ruleExplicit=hasRuleFlag?raw.currentBonusRuleExplicit===true:legacyRuleExplicit;if(s.currentBonusRule==="active"){const l=String(s.lastWorkingDate||"").slice(0,10),p=String(s.currentBonusPayDate||"").slice(0,10);s.currentBonusRule=l&&p?(l>=p?"full":"lost"):"lost"}if(!["unknown","lost","time","full","custom"].includes(s.currentBonusRule))s.currentBonusRule="lost";if(!ruleExplicit&&(raw.currentBonusRule==null||raw.currentBonusRule==="unknown"))s.currentBonusRule="lost";s.currentBonusRuleExplicit=ruleExplicit;if(!["unknown","time","full","none","custom"].includes(s.newBonusRule))s.newBonusRule="unknown";return s}
 let state={deps:null,region:"I",sickDays:null,mat:"hide",offers:[blank("Offer A"),blank("Offer B")],switching:blankSwitch()};
@@ -111,19 +115,49 @@ function ensureOfferShape(o,n){
  const oldOt=hasInput(src.ot)?Number(String(src.ot).replace(/,/g,"")):NaN,otMonthly=hasInput(src.otMonthly)?src.otMonthly:(Number.isFinite(oldOt)&&oldOt>=0?Math.round(oldOt*UI_WKS*100)/100:null);
  const probDurationValue=hasInput(src.probDurationValue)?src.probDurationValue:(src.probMon??null),probDurationUnit=src.probDurationUnit==='days'?'days':'months';
  const bhMode=["unknown","salary","custom"].includes(src.bhMode)?src.bhMode:(src.base==="custom"?"custom":"salary");
- return{name:String(src.name||n),gross:src.gross??null,payType:src.payType==="net"?"net":"gross",base:bhMode==="custom"?"custom":"full",bhMode,customBase:src.customBase??null,days:src.days??null,commute:src.commute??null,otMonthly,otPaid:src.otPaid==="yes"?"yes":"no",otFactor:src.otFactor??null,
+ const otType=["weekday","rest","mixed"].includes(src.otType)?src.otType:"weekday",otDefaultFactor=otType==="rest"?200:150;
+ const otFactor=hasInput(src.otFactor)?src.otFactor:otDefaultFactor;
+ return{name:String(src.name||n),gross:src.gross??null,payType:src.payType==="net"?"net":"gross",base:bhMode==="custom"?"custom":"full",bhMode,customBase:src.customBase??null,days:src.days??null,commute:src.commute??null,otMonthly,otPaid:src.otPaid==="yes"?"yes":"no",otType,otFactor,
+  otBreakdownWeekday:src.otBreakdownWeekday??null,otBreakdownRest:src.otBreakdownRest??null,otBreakdownHoliday:src.otBreakdownHoliday??null,
+  otFactorWeekday:hasInput(src.otFactorWeekday)?src.otFactorWeekday:150,otFactorRest:hasInput(src.otFactorRest)?src.otFactorRest:200,otFactorHoliday:hasInput(src.otFactorHoliday)?src.otFactorHoliday:300,
+  otBaseMode:src.otBaseMode==="custom"?"custom":"offer",otBaseAmount:src.otBaseAmount??null,
   probationEnabled:trialEnabled?"yes":"no",probPct,probDurationValue,probDurationUnit,probInsurance:src.probInsurance==="yes"?"yes":"no",probJobType:["manager","college","intermediate","other"].includes(src.probJobType)?src.probJobType:"unknown",
   guaranteedBonusMonths:src.guaranteedBonusMonths??null,performanceBonusType:src.performanceBonusType==="amount"?"amount":"months",performanceBonusValue:src.performanceBonusValue??src.targetBonusMonths??null,
   fixedAllowance:src.fixedAllowance??null,allowanceBh:["yes","no"].includes(src.allowanceBh)?src.allowanceBh:"unknown",paidLeaveDays:src.paidLeaveDays??null};
 }
 function isV2Legacy(d){return d&&Array.isArray(d.offers)&&d.offers.some(o=>o&&["probInsurance","probationEnabled","probJobType","guaranteedBonusMonths","targetBonusMonths","performanceBonusValue","fixedAllowance","allowanceBh","paidLeaveDays","otPaid","otFactor"].some(k=>Object.prototype.hasOwnProperty.call(o,k)))}
 
-function syncOtPaidVisibility(){
- const row=document.querySelector('#offersIn .ot-paid-row');if(!row)return;
- const active=state.offers.map(o=>hasPositiveValue(o.otMonthly));
- row.style.display=active.some(Boolean)?'grid':'none';
- active.forEach((on,i)=>{const cell=row.querySelector('[data-ot-paid-cell="'+i+'"]');if(!cell)return;const dash=cell.querySelector('.ot-paid-dash'),controls=cell.querySelector('.ot-paid-controls');if(dash)dash.style.display=on?'none':'';if(controls)controls.style.display=on?'':'none'});
+function otNumber(v){if(!hasInput(v))return 0;const n=Number(String(v).replace(/,/g,''));return Number.isFinite(n)?Math.max(0,n):0}
+function otActive(o){return otNumber(o.otMonthly)>0}
+function otPaidActive(o){return otActive(o)&&o.otPaid==='yes'}
+function otGuardrailText(o){
+ const h=otNumber(o.otMonthly);if(!(h>0))return'';const annual=h*12,parts=[];
+ if(h>40)parts.push('Vượt mốc 40 giờ/tháng');
+ if(annual>300)parts.push('nếu duy trì 12 tháng ≈ '+Math.round(annual)+' giờ/năm, vượt 300 giờ/năm');
+ else if(annual>200)parts.push('nếu duy trì 12 tháng ≈ '+Math.round(annual)+' giờ/năm, vượt 200 giờ/năm; một số trường hợp có thể đến 300 giờ/năm');
+ return parts.join('; ')+(parts.length?'.':'');
 }
+function otMixedText(o){
+ if(!(otPaidActive(o)&&o.otType==='mixed'))return'';const total=otNumber(o.otBreakdownWeekday)+otNumber(o.otBreakdownRest)+otNumber(o.otBreakdownHoliday),target=otNumber(o.otMonthly);
+ return Math.abs(total-target)<=0.05?'':'Đã phân bổ '+Number(total.toFixed(2))+'/'+Number(target.toFixed(2))+' giờ. Tổng 3 loại cần bằng OT/tháng.';
+}
+function otFactorText(o,key,min){const v=otNumber(o[key]);return v>0&&v<min?'Mức tối thiểu của loại ngày này là '+min+'%.':''}
+function syncOtInline(i){
+ const o=state.offers[i],g=document.querySelector('[data-ot-guard="'+i+'"]');if(g){g.textContent=otGuardrailText(o);g.style.display=g.textContent?'':'none'}
+ const m=document.querySelector('[data-ot-mixed-help="'+i+'"]');if(m){m.textContent=otMixedText(o);m.style.display=m.textContent?'':'none'}
+ [['otFactor',o.otType==='rest'?200:150],['otFactorWeekday',150],['otFactorRest',200],['otFactorHoliday',300]].forEach(([key,min])=>{const h=document.querySelector('[data-ot-factor-help="'+i+'-'+key+'"]');if(h){h.textContent=otFactorText(o,key,min);h.style.display=h.textContent?'':'none'}})
+}
+function syncOtPaidVisibility(){
+ const anyOt=state.offers.some(otActive),anyPaid=state.offers.some(otPaidActive),anySingle=state.offers.some(o=>otPaidActive(o)&&o.otType!=='mixed'),anyMixed=state.offers.some(o=>otPaidActive(o)&&o.otType==='mixed');
+ const toggle=(sel,on)=>{const el=document.querySelector(sel);if(el)el.style.display=on?'grid':'none'};
+ toggle('#offersIn .ot-paid-row',anyOt);toggle('#offersIn .ot-type-row',anyPaid);toggle('#offersIn .ot-factor-row',anySingle);toggle('#offersIn .ot-mixed-weekday-row',anyMixed);toggle('#offersIn .ot-mixed-rest-row',anyMixed);toggle('#offersIn .ot-mixed-holiday-row',anyMixed);toggle('#offersIn .ot-base-row',anyPaid);
+ state.offers.forEach((o,i)=>{
+  const modes={paid:otActive(o),type:otPaidActive(o),factor:otPaidActive(o)&&o.otType!=='mixed',mixed:otPaidActive(o)&&o.otType==='mixed',base:otPaidActive(o)};
+  Object.entries(modes).forEach(([kind,on])=>{document.querySelectorAll('[data-ot-cell="'+kind+'-'+i+'"]').forEach(cell=>{const dash=cell.querySelector('.ot-cell-dash'),controls=cell.querySelector('.ot-cell-controls');if(dash)dash.style.display=on?'none':'';if(controls)controls.style.display=on?'':'none'})});
+  syncOtInline(i);
+ });
+}
+
 
 const PROB_LIMITS={manager:{days:180,months:6,label:'180 ngày'},college:{days:60,months:2,label:'60 ngày'},intermediate:{days:30,months:1,label:'30 ngày'},other:{days:6,months:6/22,label:'6 ngày làm việc'}};
 function probDurationNumber(o){if(!hasInput(o.probDurationValue))return NaN;const n=Number(String(o.probDurationValue).replace(/,/g,''));return Number.isFinite(n)?n:NaN}
@@ -156,7 +190,13 @@ function renderInputs(){
  const probOn=function(o){return o.probationEnabled==='yes'};
  const probDurationCell=function(o,i){if(!probOn(o))return dash;const st=probDurationStatus(o),strong=st.kind==='invalid'||st.kind==='warning',ph=o.probDurationUnit==='days'?'vd 60':'vd 2';return '<div class="prob-duration-input">'+textInput(i,'probDurationValue',o,ph,'decimal',false,'',st.kind==='invalid'?'aria-invalid="true"':'')+'<select data-i="'+i+'" data-k="probDurationUnit"><option value="months" '+(o.probDurationUnit==='months'?'selected':'')+'>Tháng</option><option value="days" '+(o.probDurationUnit==='days'?'selected':'')+'>Ngày</option></select></div><p class="benefit-note prob-duration-help" data-probdur-help="'+i+'" style="'+(st.kind==='valid'?'display:none':(strong?'color:var(--clay);font-weight:600':''))+'">'+st.text+'</p>'};
  const jobCell=function(o,i){if(!probOn(o))return dash;return '<select data-i="'+i+'" data-k="probJobType"><option value="unknown" '+(o.probJobType==='unknown'?'selected':'')+'>Chưa rõ</option><option value="manager" '+(o.probJobType==='manager'?'selected':'')+'>Quản lý doanh nghiệp · tối đa 180 ngày</option><option value="college" '+(o.probJobType==='college'?'selected':'')+'>Cao đẳng trở lên · tối đa 60 ngày</option><option value="intermediate" '+(o.probJobType==='intermediate'?'selected':'')+'>Trung cấp / kỹ thuật / nghiệp vụ · tối đa 30 ngày</option><option value="other" '+(o.probJobType==='other'?'selected':'')+'>Công việc khác · tối đa 6 ngày làm việc</option></select>'};
- const otPaidCell=function(o,i){const hasOt=hasPositiveValue(o.otMonthly),paid=o.otPaid==='yes';return '<div class="ot-paid-cell" data-ot-paid-cell="'+i+'"><span class="offer-mna ot-paid-dash" style="'+(hasOt?'display:none':'')+'">-</span><div class="control-stack ot-paid-controls" style="'+(hasOt?'':'display:none')+'">'+seg(i,'otPaid',o.otPaid,[['no','Không'],['yes','Có']])+(paid?'<div class="sub-input">'+textInput(i,'otFactor',o,'vd 150','decimal',false,'%')+'</div>':'')+'</div></div>'};
+ const otWrap=function(kind,i,controls){return '<div class="ot-config-cell" data-ot-cell="'+kind+'-'+i+'"><span class="offer-mna ot-cell-dash">-</span><div class="ot-cell-controls" style="display:none">'+controls+'</div></div>'};
+ const otPaidCell=function(o,i){return otWrap('paid',i,seg(i,'otPaid',o.otPaid,[['no','Không'],['yes','Có']]));};
+ const otTypeCell=function(o,i){return otWrap('type',i,'<select data-i="'+i+'" data-k="otType"><option value="weekday" '+(o.otType==='weekday'?'selected':'')+'>Ngày thường</option><option value="rest" '+(o.otType==='rest'?'selected':'')+'>Ngày nghỉ hằng tuần</option><option value="mixed" '+(o.otType==='mixed'?'selected':'')+'>Nhiều loại</option></select>');};
+ const otFactorCell=function(o,i){const min=o.otType==='rest'?200:150;return otWrap('factor',i,textInput(i,'otFactor',o,'Ví dụ: '+min,'decimal',false,'%')+'<p class="ot-inline-help" data-ot-factor-help="'+i+'-otFactor">'+esc(otFactorText(o,'otFactor',min))+'</p>');};
+ const otMixedCell=function(o,i,hourKey,factorKey,min,showHelp){return otWrap('mixed',i,'<div class="ot-mini-pair">'+textInput(i,hourKey,o,'Giờ','decimal',false,'h')+textInput(i,factorKey,o,String(min),'decimal',false,'%')+'</div><p class="ot-inline-help" data-ot-factor-help="'+i+'-'+factorKey+'">'+esc(otFactorText(o,factorKey,min))+'</p>'+(showHelp?'<p class="ot-inline-help" data-ot-mixed-help="'+i+'">'+esc(otMixedText(o))+'</p>':''));};
+ const otBaseCell=function(o,i){return otWrap('base',i,'<div class="control-stack"><select data-i="'+i+'" data-k="otBaseMode"><option value="offer" '+(o.otBaseMode==='offer'?'selected':'')+'>Ước tính theo lương offer</option><option value="custom" '+(o.otBaseMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.otBaseMode==='custom'?'<div class="sub-input">'+textInput(i,'otBaseAmount',o,'Ví dụ: 20,000,000','numeric',true,'đ')+'</div><p class="benefit-note" style="margin-bottom:0">Nhập mức lương tháng payroll dùng để tính OT.</p>':'')+'</div>');};
+ const otHoursCell=function(o,i){return textInput(i,'otMonthly',o,'Ví dụ: 8','decimal',false,'giờ')+'<p class="ot-inline-help" data-ot-guard="'+i+'">'+esc(otGuardrailText(o))+'</p>';};
  const perfCell=function(o,i){const amount=o.performanceBonusType==='amount';return '<div class="control-stack">'+seg(i,'performanceBonusType',o.performanceBonusType,[['months','Tháng lương'],['amount','Số tiền']])+'<div class="sub-input">'+textInput(i,'performanceBonusValue',o,amount?'vd 60,000,000':'vd 3',amount?'numeric':'decimal',amount,amount?'đ':'tháng')+'</div></div>'};
  const anyTrial=probOn(A)||probOn(B),open=benefitsWasOpen||shouldOpenBenefits(A)||shouldOpenBenefits(B);
  let html='<div class="offer-matrix">'+head(true);
@@ -165,7 +205,7 @@ function renderInputs(){
  html+=row('Công ty dùng mức nào để đóng BH?',bhCell(A,0),bhCell(B,1));
  html+=row('Lên văn phòng / tuần',textInput(0,'days',A,'vd 5','decimal',false,'buổi'),textInput(1,'days',B,'vd 5','decimal',false,'buổi'));
  html+=row('Di chuyển 1 chiều',textInput(0,'commute',A,'vd 45','decimal',false,'phút'),textInput(1,'commute',B,'vd 45','decimal',false,'phút'));
- html+=row('Làm thêm giờ (OT) trung bình / tháng',textInput(0,'otMonthly',A,'vd 8','decimal',false,'giờ'),textInput(1,'otMonthly',B,'vd 8','decimal',false,'giờ'));
+ html+=row('Làm thêm giờ (OT) trung bình / tháng',otHoursCell(A,0),otHoursCell(B,1),'Tool cảnh báo theo mốc 40 giờ/tháng và quy đổi mức trung bình này ra 12 tháng để đối chiếu 200/300 giờ/năm. Không đủ dữ liệu để kiểm tra giới hạn theo từng ngày.');
  html+=row('Có giai đoạn thử việc cần tính riêng?',seg(0,'probationEnabled',A.probationEnabled,[['no','Không'],['yes','Có']]),seg(1,'probationEnabled',B.probationEnabled,[['no','Không'],['yes','Có']]),'Chọn Không nếu không có thử việc, hoặc giai đoạn thử việc có lương và BH giống điều kiện chính thức nên không cần tách riêng. Nếu có khác biệt, chọn Có.');
  if(anyTrial){
   html+=row('Lương thử việc (% mức lương offer)',probOn(A)?textInput(0,'probPct',A,'100','decimal',false,'%')+ '<p class="benefit-note">Hưởng đủ mức lương offer thì để 100%.</p>':dash,probOn(B)?textInput(1,'probPct',B,'100','decimal',false,'%')+'<p class="benefit-note">Hưởng đủ mức lương offer thì để 100%.</p>':dash);
@@ -173,7 +213,13 @@ function renderInputs(){
   html+=row('Vị trí này thuộc nhóm nào?',jobCell(A,0),jobCell(B,1),'Tool dùng nhóm này để cảnh báo nếu thời gian thử việc bạn nhập vượt giới hạn tương ứng.');
   html+=row('Trong thời gian thử việc có đóng BH bắt buộc?',probOn(A)?seg(0,'probInsurance',A.probInsurance,[['no','Không'],['yes','Có']]):dash,probOn(B)?seg(1,'probInsurance',B.probInsurance,[['no','Không'],['yes','Có']]):dash,'% thử việc được tính theo loại lương bạn đã chọn ở offer: Gross hoặc Net.');
  }
- html+=row('OT có được trả tiền không?',otPaidCell(A,0),otPaidCell(B,1),'OT vẫn được cộng vào tổng thời gian bạn bỏ ra dù có được trả thêm hay không. Nếu chọn Có, nhập hệ số công ty áp dụng để tool ước tính tiền OT.','ot-paid-row');
+ html+=row('OT có được trả tiền không?',otPaidCell(A,0),otPaidCell(B,1),'OT không lương vẫn được cộng vào tổng thời gian bạn bỏ ra.','ot-paid-row');
+ html+=row('OT chủ yếu rơi vào',otTypeCell(A,0),otTypeCell(B,1),'Ngày thường dùng mốc tối thiểu 150%; ngày nghỉ hằng tuần 200%. Chọn Nhiều loại nếu cần tách thêm ngày lễ/Tết.','ot-type-row');
+ html+=row('Hệ số OT',otFactorCell(A,0),otFactorCell(B,1),'Tool điền mốc tối thiểu theo loại ngày; bạn có thể sửa nếu chính sách công ty áp dụng hệ số khác.','ot-factor-row');
+ html+=row('OT ngày thường',otMixedCell(A,0,'otBreakdownWeekday','otFactorWeekday',150,false),otMixedCell(B,1,'otBreakdownWeekday','otFactorWeekday',150,false),'Nhập giờ/tháng và hệ số tương ứng.','ot-mixed-weekday-row');
+ html+=row('OT ngày nghỉ hằng tuần',otMixedCell(A,0,'otBreakdownRest','otFactorRest',200,false),otMixedCell(B,1,'otBreakdownRest','otFactorRest',200,false),'','ot-mixed-rest-row');
+ html+=row('OT ngày lễ/Tết',otMixedCell(A,0,'otBreakdownHoliday','otFactorHoliday',300,true),otMixedCell(B,1,'otBreakdownHoliday','otFactorHoliday',300,true),'Tổng giờ của 3 loại phải bằng OT trung bình/tháng đã nhập.','ot-mixed-holiday-row');
+ html+=row('Mức lương dùng để tính OT',otBaseCell(A,0),otBaseCell(B,1),'Nếu không biết payroll dùng mức riêng nào, để “Ước tính theo lương offer”.','ot-base-row');
  html+='</div>';
  html+='<details class="benefits compare-benefits"'+(open?' open':'')+'><summary>Thưởng, phụ cấp & phúc lợi</summary><div class="benefits-body"><div class="offer-matrix">'+head(false);
  html+=row('Thưởng đảm bảo / năm (tháng lương)',textInput(0,'guaranteedBonusMonths',A,'vd 1','decimal',false,'tháng'),textInput(1,'guaranteedBonusMonths',B,'vd 1','decimal',false,'tháng'),'Ví dụ tháng 13 chắc chắn nhận = 1. Khoản này dùng cùng loại Gross/Net đã chọn cho offer.');
@@ -241,7 +287,7 @@ function showApiError(msg){const e=document.getElementById("empty");e.style.disp
 function hasAnySalary(){return state.offers.some(o=>{const n=Number(String(o.gross??"").replace(/,/g,""));return Number.isFinite(n)&&n>0})}
 function apiState(){
  const out=JSON.parse(JSON.stringify(state));
- out.offers.forEach((o,i)=>{const src=state.offers[i],raw=src.otMonthly,n=hasInput(raw)?Number(String(raw).replace(/,/g,"")):0;o.ot=Number.isFinite(n)&&n>0?n/UI_WKS:0;delete o.otMonthly;o.probMon=probDurationMonthsForApi(src);delete o.probDurationValue;delete o.probDurationUnit;o.base=src.bhMode==='custom'?'custom':'full'});
+ out.offers.forEach((o,i)=>{const src=state.offers[i],raw=src.otMonthly,n=hasInput(raw)?Number(String(raw).replace(/,/g,"")):0;o.otMonthly=Number.isFinite(n)&&n>=0?n:0;o.ot=Number.isFinite(n)&&n>0?n/UI_WKS:0;o.probMon=probDurationMonthsForApi(src);delete o.probDurationValue;delete o.probDurationUnit;o.base=src.bhMode==='custom'?'custom':'full'});
  return out;
 }
 async function calculateNow(){
@@ -275,12 +321,12 @@ document.getElementById("matSeg").addEventListener("click",function(e){const b=e
 const host=document.getElementById("offersIn");
 host.addEventListener("input",function(e){
  const el=e.target;if(el.tagName==="SELECT")return;const iRaw=el.getAttribute("data-i"),k=el.getAttribute("data-k");if(iRaw==null||!k)return;const i=parseInt(iRaw,10);
- const moneyField=k==="gross"||k==="customBase"||k==="fixedAllowance"||(k==="performanceBonusValue"&&state.offers[i].performanceBonusType==="amount");
+ const moneyField=k==="gross"||k==="customBase"||k==="fixedAllowance"||k==="otBaseAmount"||(k==="performanceBonusValue"&&state.offers[i].performanceBonusType==="amount");
  if(moneyField){const f=grp(el.value);el.value=f;state.offers[i][k]=f.replace(/,/g,"")}else state.offers[i][k]=el.value;
- if(k==="probDurationValue")syncProbDurationInline(i);if(k==="otMonthly")syncOtPaidVisibility();
+ if(k==="probDurationValue")syncProbDurationInline(i);if(k==="otMonthly"||k.startsWith("otBreakdown")||k.startsWith("otFactor"))syncOtPaidVisibility();
  markDirty();scheduleCalculation();if(k==="name"){document.querySelectorAll('[data-offer-head="'+i+'"]').forEach(x=>x.textContent=state.offers[i].name);renderSwitchingInputs();}
 });
-host.addEventListener("change",function(e){const el=e.target;if(el.tagName!=="SELECT")return;const iRaw=el.getAttribute("data-i"),k=el.getAttribute("data-k");if(iRaw==null||!k)return;const i=parseInt(iRaw,10);state.offers[i][k]=el.value;markDirty();if(k==="probDurationUnit"||k==="probJobType"||k==="bhMode")renderInputs();scheduleCalculation()});
+host.addEventListener("change",function(e){const el=e.target;if(el.tagName!=="SELECT")return;const iRaw=el.getAttribute("data-i"),k=el.getAttribute("data-k");if(iRaw==null||!k)return;const i=parseInt(iRaw,10),o=state.offers[i],old=o[k];o[k]=el.value;if(k==="otType"&&el.value!=="mixed"){const oldDefault=old==="rest"?200:150,newDefault=el.value==="rest"?200:150,current=otNumber(o.otFactor);if(!hasInput(o.otFactor)||Math.abs(current-oldDefault)<1e-9)o.otFactor=newDefault}markDirty();if(k==="probDurationUnit"||k==="probJobType"||k==="bhMode"||k==="otType"||k==="otBaseMode")renderInputs();scheduleCalculation()});
 host.addEventListener("click",function(e){
  const b=e.target.closest("[data-seg] button");if(!b)return;const seg=b.closest("[data-seg]"),i=parseInt(seg.getAttribute("data-i"),10),kind=seg.getAttribute("data-seg"),v=b.getAttribute("data-v");
  if(kind==="base"){state.offers[i].base=v;markDirty();renderInputs();scheduleCalculation();return}
