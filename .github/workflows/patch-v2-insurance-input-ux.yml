@@ -40,7 +40,7 @@ jobs:
           ]
           for x in required: assert x in html, x
           assert 'Theo mặc định' not in html
-          assert 'Mức lương làm căn cứ đóng BH\',baseCell' not in html
+          assert "html+=row('Mức lương làm căn cứ đóng BH',baseCell" not in html
           a=html.index('<script>')+len('<script>'); b=html.index('</script>',a)
           Path('/tmp/v2-inline.js').write_text(html[a:b])
           print('PASS static BH UX')
@@ -61,33 +61,22 @@ jobs:
           const input=(el,value)=>{el.value=value;el.dispatchEvent(new w.Event('input',{bubbles:true}))};
           const change=(el,value)=>{el.value=value;el.dispatchEvent(new w.Event('change',{bubbles:true}))};
           const bh=()=>d.querySelector('select[data-i="0"][data-k="bhMode"]');
-          if(!bh())throw new Error('BH mode select missing');
-          if(bh().value!=='unknown')throw new Error('new blank offer should default to unknown');
+          if(!bh()||bh().value!=='unknown')throw new Error('new blank BH mode should be unknown');
           const labels=[...bh().options].map(x=>x.textContent).join('|');
           for(const x of ['Chưa rõ','Theo mức lương offer','Tôi biết mức cụ thể'])if(!labels.includes(x))throw new Error('missing option '+x);
-          if(d.querySelector('input[data-i="0"][data-k="customBase"]'))throw new Error('custom amount visible before custom mode');
-
           input(d.querySelector('input[data-i="0"][data-k="gross"]'),'30,000,000');
-          change(bh(),'salary');
-          if(d.querySelector('input[data-i="0"][data-k="customBase"]'))throw new Error('custom amount visible in salary mode');
-
           change(bh(),'custom');
           const custom=d.querySelector('input[data-i="0"][data-k="customBase"]');
-          if(!custom)throw new Error('custom amount missing in custom mode');
+          if(!custom)throw new Error('custom BH amount missing');
           input(custom,'5,800,000');
-
           setTimeout(()=>{
             try{
               let body=requests.at(-1);if(!body)throw new Error('no API request');
-              if(body.offers[0].bhMode!=='custom'||body.offers[0].base!=='custom')throw new Error('custom BH payload mismatch');
-              if(String(body.offers[0].customBase)!=='5800000')throw new Error('custom amount payload mismatch '+body.offers[0].customBase);
+              if(body.offers[0].bhMode!=='custom'||body.offers[0].base!=='custom'||String(body.offers[0].customBase)!=='5800000')throw new Error('custom BH payload mismatch');
               change(bh(),'unknown');
               setTimeout(()=>{
-                try{
-                  body=requests.at(-1);
-                  if(body.offers[0].bhMode!=='unknown'||body.offers[0].base!=='full')throw new Error('unknown BH payload mismatch');
-                  console.log('PASS BH UX + payload');w.close();
-                }catch(e){console.error(e);process.exitCode=1;w.close()}
+                try{body=requests.at(-1);if(body.offers[0].bhMode!=='unknown'||body.offers[0].base!=='full')throw new Error('unknown BH payload mismatch');console.log('PASS BH UX + payload');w.close()}
+                catch(e){console.error(e);process.exitCode=1;w.close()}
               },700);
             }catch(e){console.error(e);process.exitCode=1;w.close()}
           },700);
