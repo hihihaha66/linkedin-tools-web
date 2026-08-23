@@ -1,0 +1,26 @@
+name: V2 Turn 6 responsive QA
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'net-cao-hon-co-that-tot-hon-v2.html'
+      - 'tests/v2-turn6-responsive.mjs'
+      - '.github/workflows/v2-turn6-responsive.yml'
+
+jobs:
+  responsive:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install browser test dependency
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start static server
+        run: python3 -m http.server 8000 >/tmp/v2-http.log 2>&1 &
+      - name: Run desktop/mobile browser smoke
+        run: node tests/v2-turn6-responsive.mjs
