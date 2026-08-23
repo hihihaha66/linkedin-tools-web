@@ -20,6 +20,25 @@ try{
    if(r.scroll>r.inner+2)throw new Error(`${label}/${phase}: horizontal overflow ${r.scroll}px > ${r.inner}px`);
   };
   await check('blank');
+  const setupLayout=await page.evaluate(()=>{
+    const ctx=document.querySelector('.ctx');
+    const cells=[...ctx.children].map(e=>{const r=e.getBoundingClientRect();return{x:r.x,y:r.y,w:r.width,h:r.height}});
+    const bh=document.querySelector('#bhSim');
+    const rows=[...document.querySelectorAll('.bh-compact-row')];
+    return{ctxDisplay:getComputedStyle(ctx).display,ctxCols:getComputedStyle(ctx).gridTemplateColumns,cells,bhHeight:bh.getBoundingClientRect().height,rowCount:rows.length,sharedNote:!!document.querySelector('.bh-shared-note')};
+  });
+  if(setupLayout.ctxDisplay!=='grid'||setupLayout.ctxCols.split(' ').filter(Boolean).length<2)throw new Error(`${label}: common context is not a compact two-column grid`);
+  if(label==='mobile'&&Math.abs(setupLayout.cells[0].y-setupLayout.cells[1].y)>2)throw new Error('mobile: common-context fields stacked instead of sharing a row');
+  if(setupLayout.rowCount!==2||!setupLayout.sharedNote)throw new Error(`${label}: BHXH simulator is not 2 compact rows + shared note`);
+  await page.locator('#bhSim summary').click();
+  await page.locator('#sickDays').fill('5');
+  await page.locator('#matSeg [data-v="show"]').click();
+  const bhState=await page.locator('#bhSummaryState').textContent();
+  if(!bhState.includes('5 ngày ốm')||!bhState.includes('Thai sản: Có'))throw new Error(`${label}: collapsed BHXH summary did not mirror current settings (${bhState})`);
+  if(label==='mobile'){
+    const openHeight=await page.locator('#bhSim').evaluate(e=>e.getBoundingClientRect().height);
+    if(openHeight>300)throw new Error(`mobile: compact BHXH simulator still too tall (${openHeight}px)`);
+  }
   const toggleIcons=await page.evaluate(()=>{
     const d=document.createElement('details');
     d.innerHTML='<summary class="calc-summary">Xem cách tính</summary><div>detail</div>';
