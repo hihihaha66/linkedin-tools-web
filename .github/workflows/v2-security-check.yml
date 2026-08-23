@@ -6,6 +6,7 @@ on:
       - 'net-cao-hon-co-that-tot-hon-v2.html'
       - 'scripts/check-v2-csp.py'
       - 'tests/ot-turn4-smoke.js'
+      - 'tests/v2-turn6-final-smoke.js'
       - '.github/workflows/v2-security-check.yml'
   push:
     branches: [main]
@@ -13,6 +14,7 @@ on:
       - 'net-cao-hon-co-that-tot-hon-v2.html'
       - 'scripts/check-v2-csp.py'
       - 'tests/ot-turn4-smoke.js'
+      - 'tests/v2-turn6-final-smoke.js'
       - '.github/workflows/v2-security-check.yml'
 
 jobs:
@@ -40,3 +42,5 @@ jobs:
         run: npm install --no-save jsdom@24
       - name: Run Turn 4 OT behavioral smoke test
         run: node tests/ot-turn4-smoke.js
+      - name: Run Turn 6 final UI/state smoke test
+        run: node tests/v2-turn6-final-smoke.js
