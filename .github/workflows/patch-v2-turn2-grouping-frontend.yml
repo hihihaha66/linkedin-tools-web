@@ -1,0 +1,57 @@
+name: Patch V2 Turn 2 frontend grouping
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v2-turn2-grouping-frontend.py'
+      - '.github/workflows/patch-v2-turn2-grouping-frontend.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/v2-turn2-grouping-final
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply grouping cleanup
+        run: python .github/patch-v2-turn2-grouping-frontend.py
+      - name: Check CSP and inline JavaScript syntax
+        shell: bash
+        run: |
+          python scripts/check-v2-csp.py
+          python - <<'PY'
+          from pathlib import Path
+          html=Path('net-cao-hon-co-that-tot-hon-v2.html').read_text()
+          start=html.index('<script>')+len('<script>')
+          end=html.index('</script>',start)
+          Path('/tmp/v2-inline.js').write_text(html[start:end])
+          PY
+          node --check /tmp/v2-inline.js
+      - name: Install UI test dependencies
+        run: |
+          npm install --no-save jsdom@24 playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Run state and OT smoke tests
+        run: |
+          node tests/ot-turn4-smoke.js
+          node tests/v2-turn6-final-smoke.js
+      - name: Start static server
+        run: python3 -m http.server 8000 >/tmp/v2-http.log 2>&1 &
+      - name: Run desktop/mobile browser smoke
+        run: node tests/v2-turn6-responsive.mjs
+      - name: Commit implementation and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-turn2-grouping-frontend.py .github/workflows/patch-v2-turn2-grouping-frontend.yml
+          git add -- net-cao-hon-co-that-tot-hon-v2.html tests/v2-turn6-final-smoke.js
+          git commit -m "Refine V2 Turn 2 input grouping"
+          git push origin HEAD:refactor/v2-turn2-grouping-final
