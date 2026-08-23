@@ -162,5 +162,20 @@ const click=(w,e)=>e.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
  }
  console.log('PASS Turn 6: invalid JSON import');
 
- console.log('All V2 Turn 6 frontend smoke cases passed.');
+ 
+
+ // Layer 6 state + API contract, including salary-as-unknown mode.
+ {
+  const solverState={deps:0,region:'I',sickDays:null,mat:'hide',offers:[{name:'Offer A',gross:null,payType:'gross',bhMode:'salary',probationEnabled:'no'},{name:'Offer B',gross:null}],switching:{enabled:true,targetOffer:'0',lastWorkingDate:'2026-06-30',onboardDate:'2026-07-01',currentNet:'30000000',currentBonusIfStay:'60000000',currentBonusRule:'lost',newBonusRule:'time'},solver:{enabled:true,templateOffer:'0',goalNoLoss:true,noLossBuffer:'0',goalBreakEven:true,breakEvenMonths:'6',goalMonthlyNet:true,targetMonthlyNet:'35000000',goalAnnualFixed:false,targetAnnualFixed:null}};
+  const api={...resultStub(),showLayer6:true,layer6Html:'<div data-test="layer6">LAYER6</div>',hasResults:false};
+  const {w,d,requests}=boot({storage:{[KEY]:solverState},apiResult:api});await wait(80);
+  if(!q(d,'#solverEnabledSeg [data-v="on"]').classList.contains('on'))fail('Layer 6 enabled state did not restore');
+  if(!requests.length)fail('Layer 6 did not call API when salary is intentionally blank');
+  const body=requests.at(-1);if(!body.solver||body.solver.templateOffer!=='0'||body.solver.goalBreakEven!==true)fail('Layer 6 solver state missing from API body');
+  if(!q(d,'[data-test="layer6"]'))fail('Layer 6 response did not render independently from Layers 1-5');
+  w.close();
+ }
+ console.log('PASS Layer 6 frontend: persisted solver state, salary-as-unknown request, independent result rendering');
+
+console.log('All V2 Turn 6 frontend smoke cases passed.');
 })().catch(e=>{console.error(e);process.exitCode=1});

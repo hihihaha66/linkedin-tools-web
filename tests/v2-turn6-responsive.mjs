@@ -85,8 +85,14 @@ try{
     document.querySelector('.wrap').appendChild(host);
   });
 
+  await page.evaluate(()=>{
+    const box=document.querySelector('#solverBox');
+    box.querySelector('#solverEnabledSeg [data-v="on"]').click();
+    document.querySelector('#solverResult').innerHTML='<div class="solver-result"><h3>Layer 6 · Offer tối thiểu để đáng chuyển</h3><div class="solver-hero"><span>Mức sàn tài chính</span><strong>Gross 48,500,000đ/tháng</strong><small>≈ Gross 48,500,000đ · Net 41,200,000đ/tháng</small></div><div class="solver-breakdown"><b>Mỗi mục tiêu riêng cần tối thiểu</b><div class="solver-row"><span>Hòa vốn trong 6 tháng</span><span class="v">Gross 48,500,000đ</span></div></div><div class="solver-scenarios"><b>Kịch bản</b><div class="solver-row"><span>Nếu có thêm thưởng hiệu suất đã nhập</span><span class="v">Gross 43,200,000đ</span></div></div></div>';
+    document.querySelector('#solverLayer').style.display='';
+  });
   const containment=await page.evaluate(()=>{
-    const sels=['.switch-result','.verdict','.events','.offer-matrix','.bh-sim','.switch-scenarios'];
+    const sels=['.switch-result','.verdict','.events','.offer-matrix','.bh-sim','.switch-scenarios','.solver-box','.solver-result'];
     const bad=[];
     for(const sel of sels)for(const el of document.querySelectorAll(sel)){
       const r=el.getBoundingClientRect();
