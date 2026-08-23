@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-bZxN6siEDRnME295QJmLm+ySzHp5i8TPm1tY86cU6F8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-ucbVfKtSje9Dx4PzZ7fUZZXL5sXPeT+e/FddsPgHncA='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -120,7 +120,7 @@ function renderInputs(){
  const seg=function(i,kind,value,opts,three){return '<div class="seg'+(three?' three':'')+'" data-seg="'+kind+'" data-i="'+i+'">'+opts.map(function(x){return '<button data-v="'+x[0]+'" class="'+(value===x[0]?'on':'')+'">'+x[1]+'</button>'}).join('')+'</div>'};
  const textInput=function(i,k,o,placeholder,inputmode,money,suffix,extra){const raw=o[k],v=money?grp(raw==null?'':raw):esc(raw==null?'':raw);return '<div class="suffix-row"><input type="text" data-i="'+i+'" data-k="'+k+'" inputmode="'+(inputmode||'decimal')+'" placeholder="'+placeholder+'" value="'+v+'" '+(extra||'')+'>'+(suffix?'<span class="suffix">'+suffix+'</span>':'')+'</div>'};
  const row=function(label,a,b,note,cls){return '<div class="offer-mrow'+(cls?' '+cls:'')+'"><div class="offer-mlabel">'+label+'</div><div class="offer-mcell">'+a+'</div><div class="offer-mcell">'+b+'</div>'+(note?'<div class="offer-mnote">'+note+'</div>':'')+'</div>'};
- const head=function(editable){return '<div class="offer-mrow head"><div class="offer-mlabel">Chỉ tiêu</div><div class="offer-mcell">'+(editable?'<input class="name-in" data-i="0" data-k="name" value="'+esc(A.name)+'">':'<span class="offer-head-name">'+esc(A.name)+'</span>')+'</div><div class="offer-mcell">'+(editable?'<input class="name-in" data-i="1" data-k="name" value="'+esc(B.name)+'">':'<span class="offer-head-name">'+esc(B.name)+'</span>')+'</div></div>'};
+ const head=function(editable){return '<div class="offer-mrow head"><div class="offer-mlabel">Chỉ tiêu</div><div class="offer-mcell">'+(editable?'<input class="name-in" data-i="0" data-k="name" value="'+esc(A.name)+'">':'<span class="offer-head-name" data-offer-head="0">'+esc(A.name)+'</span>')+'</div><div class="offer-mcell">'+(editable?'<input class="name-in" data-i="1" data-k="name" value="'+esc(B.name)+'">':'<span class="offer-head-name" data-offer-head="1">'+esc(B.name)+'</span>')+'</div></div>'};
  const baseCell=function(o,i){return '<div class="control-stack">'+seg(i,'base',o.base,[['full','Theo mặc định'],['custom','Tự nhập']])+(o.base==='custom'?'<div class="sub-input">'+textInput(i,'customBase',o,'vd 7,500,000','numeric',true,'đ')+'</div>':'')+'</div>'};
  const probOn=function(o){return o.probationEnabled==='yes'};
  const probMonthCell=function(o,i){if(!probOn(o))return dash;const raw=hasInput(o.probMon)?Number(String(o.probMon).replace(/,/g,'')):null,invalid=raw!=null&&(!Number.isFinite(raw)||raw<=0),help=invalid?'<p class="benefit-note" style="color:var(--clay);font-weight:600">Số tháng thử việc phải lớn hơn 0.</p>':(!hasInput(o.probMon)?'<p class="benefit-note">Khi chọn Có, số tháng thử việc cần lớn hơn 0.</p>':'');return textInput(i,'probMon',o,'vd 2','decimal',false,'',invalid?'aria-invalid="true"':'')+help};
@@ -226,7 +226,7 @@ host.addEventListener("input",function(e){
  const el=e.target;if(el.tagName==="SELECT")return;const iRaw=el.getAttribute("data-i"),k=el.getAttribute("data-k");if(iRaw==null||!k)return;const i=parseInt(iRaw,10);
  const moneyField=k==="gross"||k==="customBase"||k==="fixedAllowance"||(k==="performanceBonusValue"&&state.offers[i].performanceBonusType==="amount");
  if(moneyField){const f=grp(el.value);el.value=f;state.offers[i][k]=f.replace(/,/g,"")}else state.offers[i][k]=el.value;
- markDirty();scheduleCalculation();if(k==="name")renderSwitchingInputs();
+ markDirty();scheduleCalculation();if(k==="name"){document.querySelectorAll('[data-offer-head="'+i+'"]').forEach(x=>x.textContent=state.offers[i].name);renderSwitchingInputs();}
 });
 host.addEventListener("change",function(e){const el=e.target;if(el.tagName!=="SELECT")return;const iRaw=el.getAttribute("data-i"),k=el.getAttribute("data-k");if(iRaw==null||!k)return;state.offers[parseInt(iRaw,10)][k]=el.value;markDirty();scheduleCalculation()});
 host.addEventListener("click",function(e){
