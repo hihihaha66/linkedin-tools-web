@@ -88,15 +88,16 @@ jobs:
           const fs=require('fs');
           const {JSDOM}=require('jsdom');
           let html=fs.readFileSync('net-cao-hon-co-that-tot-hon-v2.html','utf8').replace(/<link[^>]+fonts\.googleapis\.com[^>]*>/g,'').replace(/<link[^>]+fonts\.gstatic\.com[^>]*>/g,'');
+          const doms=[];
           function run(old,expected){
             const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://example.test/',beforeParse(w){w.localStorage.setItem('net-cao-hon-v2-state',JSON.stringify({deps:null,region:'I',offers:[old,{name:'Offer B',gross:null,base:'full'}]}));w.fetch=async()=>({status:200,ok:true,json:async()=>({hasResults:false})})}});
+            doms.push(dom);
             const v=dom.window.document.querySelector('select[data-i="0"][data-k="bhMode"]').value;
             if(v!==expected)throw new Error('legacy '+old.base+' mapped to '+v+' instead of '+expected);
-            dom.window.close();
           }
           run({name:'Offer A',gross:'30000000',base:'full',customBase:null},'salary');
           run({name:'Offer A',gross:'30000000',base:'custom',customBase:'5800000'},'custom');
-          console.log('PASS legacy BH migration');
+          setTimeout(()=>{doms.forEach(x=>x.window.close());console.log('PASS legacy BH migration')},1000);
           JS
       - name: Commit update and remove bootstrap files
         shell: bash
