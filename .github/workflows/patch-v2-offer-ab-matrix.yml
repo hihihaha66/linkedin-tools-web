@@ -1,0 +1,52 @@
+name: Patch V2 offer A/B matrix
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v2-offer-ab-matrix.py'
+      - '.github/workflows/patch-v2-offer-ab-matrix.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/v2-offer-ab-matrix
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply A/B matrix refactor
+        run: python .github/patch-v2-offer-ab-matrix.py
+      - name: Validate structure, CSP and inline JS
+        shell: bash
+        run: |
+          python scripts/check-v2-csp.py
+          python - <<'PY'
+          from pathlib import Path
+          html=Path('net-cao-hon-co-that-tot-hon-v2.html').read_text()
+          assert 'Nhập hai offer để so sánh' in html
+          assert 'class="offer-matrix"' in html
+          assert 'grid-template-columns:34% 33% 33%' in html
+          assert "const A=state.offers[0],B=state.offers[1]" in html
+          assert html.count('Thưởng, phụ cấp & phúc lợi') == 1
+          assert "state.offers.map(function(o,i)" not in html
+          assert '.events .erow{grid-template-columns:38% 31% 31%' in html
+          a=html.index('<script>')+len('<script>'); b=html.index('</script>',a)
+          Path('/tmp/v2-inline.js').write_text(html[a:b])
+          print('PASS: input and result comparison stay in three-column A/B mental model')
+          PY
+          node --check /tmp/v2-inline.js
+      - name: Commit refactor and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-offer-ab-matrix.py .github/workflows/patch-v2-offer-ab-matrix.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html
+          git commit -m "Refactor V2 offer inputs into A/B matrix"
+          git push origin HEAD:refactor/v2-offer-ab-matrix
