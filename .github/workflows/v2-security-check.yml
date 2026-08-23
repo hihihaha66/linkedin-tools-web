@@ -5,12 +5,14 @@ on:
     paths:
       - 'net-cao-hon-co-that-tot-hon-v2.html'
       - 'scripts/check-v2-csp.py'
+      - 'tests/ot-turn4-smoke.js'
       - '.github/workflows/v2-security-check.yml'
   push:
     branches: [main]
     paths:
       - 'net-cao-hon-co-that-tot-hon-v2.html'
       - 'scripts/check-v2-csp.py'
+      - 'tests/ot-turn4-smoke.js'
       - '.github/workflows/v2-security-check.yml'
 
 jobs:
@@ -34,3 +36,7 @@ jobs:
           Path('/tmp/v2-inline.js').write_text(html[start:end])
           PY
           node --check /tmp/v2-inline.js
+      - name: Install DOM test dependency
+        run: npm install --no-save jsdom@24
+      - name: Run Turn 4 OT behavioral smoke test
+        run: node tests/ot-turn4-smoke.js
