@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 
 const browser=await chromium.launch({headless:true});
-const cases=[['desktop',1280,900],['mobile',375,812]];
+const cases=[['desktop',1280,900],['mobile-320',320,740],['mobile-360',360,800],['mobile-375',375,812],['mobile-390',390,844],['mobile-430',430,932]];
 try{
  for(const [label,width,height] of cases){
   const page=await browser.newPage({viewport:{width,height}});
@@ -28,14 +28,14 @@ try{
     return{ctxDisplay:getComputedStyle(ctx).display,ctxCols:getComputedStyle(ctx).gridTemplateColumns,cells,bhHeight:bh.getBoundingClientRect().height,rowCount:rows.length,sharedNote:!!document.querySelector('.bh-shared-note')};
   });
   if(setupLayout.ctxDisplay!=='grid'||setupLayout.ctxCols.split(' ').filter(Boolean).length<2)throw new Error(`${label}: common context is not a compact two-column grid`);
-  if(label==='mobile'&&Math.abs(setupLayout.cells[0].y-setupLayout.cells[1].y)>2)throw new Error('mobile: common-context fields stacked instead of sharing a row');
+  if(label.startsWith('mobile')&&Math.abs(setupLayout.cells[0].y-setupLayout.cells[1].y)>2)throw new Error('mobile: common-context fields stacked instead of sharing a row');
   if(setupLayout.rowCount!==2||!setupLayout.sharedNote)throw new Error(`${label}: BHXH simulator is not 2 compact rows + shared note`);
   await page.locator('#bhSim summary').click();
   await page.locator('#sickDays').fill('5');
   await page.locator('#matSeg [data-v="show"]').click();
   const bhState=await page.locator('#bhSummaryState').textContent();
   if(!bhState.includes('5 ngày ốm')||!bhState.includes('Thai sản: Có'))throw new Error(`${label}: collapsed BHXH summary did not mirror current settings (${bhState})`);
-  if(label==='mobile'){
+  if(label.startsWith('mobile')){
     const openHeight=await page.locator('#bhSim').evaluate(e=>e.getBoundingClientRect().height);
     if(openHeight>300)throw new Error(`mobile: compact BHXH simulator still too tall (${openHeight}px)`);
   }
@@ -59,6 +59,17 @@ try{
   await page.locator('[data-seg="otPaid"][data-i="0"] [data-v="yes"]').click();
   await page.locator('select[data-i="0"][data-k="otType"]').selectOption('mixed');
   await check('expanded-trial-ot');
+  const containment=await page.evaluate(()=>{
+    const sels=['.switch-result','.verdict','.events','.offer-matrix','.bh-sim','.switch-scenarios'];
+    const bad=[];
+    for(const sel of sels)for(const el of document.querySelectorAll(sel)){
+      const r=el.getBoundingClientRect();
+      if(el.scrollWidth>el.clientWidth+2)bad.push(sel+':scroll '+el.scrollWidth+'>'+el.clientWidth);
+      if(r.left<-2||r.right>innerWidth+2)bad.push(sel+':viewport '+Math.round(r.left)+'..'+Math.round(r.right)+' / '+innerWidth);
+    }
+    return bad;
+  });
+  if(containment.length)throw new Error(`${label}: result containment failed: ${containment.join(' | ')}`);
   await page.close();
   console.log(`PASS Turn 6 responsive: ${label}`);
  }
