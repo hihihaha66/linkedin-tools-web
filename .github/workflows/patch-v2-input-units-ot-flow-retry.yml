@@ -1,0 +1,158 @@
+name: Retry V2 input units and OT flow
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v2-input-units-ot-flow.py'
+      - '.github/workflows/patch-v2-input-units-ot-flow-retry.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: refactor/v2-input-units-ot-flow
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply update
+        run: python .github/patch-v2-input-units-ot-flow.py
+      - name: Static checks
+        shell: bash
+        run: |
+          python scripts/check-v2-csp.py
+          python - <<'PY'
+          from pathlib import Path
+          html=Path('net-cao-hon-co-that-tot-hon-v2.html').read_text()
+          required=[
+            'Vị trí này thuộc nhóm nào?',
+            'Quản lý doanh nghiệp · tối đa 180 ngày',
+            'Cao đẳng trở lên · tối đa 60 ngày',
+            'Trung cấp / kỹ thuật / nghiệp vụ · tối đa 30 ngày',
+            'Công việc khác · tối đa 6 ngày làm việc',
+            'Làm thêm giờ (OT) trung bình / tháng',
+            'OT có được trả tiền không?',
+            "textInput(0,'paidLeaveDays',A,'vd 12','decimal',false,'ngày')",
+            "textInput(0,'otMonthly',A,'vd 8','decimal',false,'giờ')",
+            'function apiState()',
+            'n/UI_WKS',
+          ]
+          for x in required:
+              assert x in html, x
+          assert "textInput(0,'ot',A" not in html
+          assert "Buổi lên VP / tuần" not in html
+          assert "Nhóm công việc (để kiểm tra thời gian thử việc)" not in html
+          a=html.index('<script>')+len('<script>'); b=html.index('</script>',a)
+          Path('/tmp/v2-inline.js').write_text(html[a:b])
+          print('PASS static: trial group, units, OT monthly adapter')
+          PY
+          node --check /tmp/v2-inline.js
+      - name: Install DOM test dependency
+        run: npm install --no-save jsdom@24
+      - name: Behavioral smoke test current state
+        shell: bash
+        run: |
+          node <<'JS'
+          const fs=require('fs');
+          const {JSDOM}=require('jsdom');
+          let html=fs.readFileSync('net-cao-hon-co-that-tot-hon-v2.html','utf8')
+            .replace(/<link[^>]+fonts\.googleapis\.com[^>]*>/g,'')
+            .replace(/<link[^>]+fonts\.gstatic\.com[^>]*>/g,'');
+          const requests=[];
+          const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://example.test/',beforeParse(w){
+            w.fetch=async (_url,opts)=>{requests.push(JSON.parse(opts.body));return{status:200,ok:true,json:async()=>({hasResults:false})}};
+          }});
+          const w=dom.window,d=w.document;
+          const click=el=>el.dispatchEvent(new w.MouseEvent('click',{bubbles:true}));
+          const input=(el,value)=>{el.value=value;el.dispatchEvent(new w.Event('input',{bubbles:true}));};
+          const visible=el=>el&&el.style.display!=='none';
+          const suffixFor=(k,i=0)=>d.querySelector(`input[data-i="${i}"][data-k="${k}"]`)?.parentElement.querySelector('.suffix')?.textContent;
+
+          const first=d.querySelector('#offersIn .offer-mrow');
+          if(!first||first.children.length!==3)throw new Error('matrix is not 3 columns');
+
+          if(suffixFor('days')!=='buổi')throw new Error('office unit missing');
+          if(suffixFor('commute')!=='phút')throw new Error('commute unit missing');
+          if(suffixFor('otMonthly')!=='giờ')throw new Error('OT unit missing');
+          if(suffixFor('paidLeaveDays')!=='ngày')throw new Error('paid leave unit missing');
+          if(suffixFor('guaranteedBonusMonths')!=='tháng')throw new Error('guaranteed bonus unit missing');
+
+          click(d.querySelector('[data-seg="probationEnabled"][data-i="0"] [data-v="yes"]'));
+          const job=d.querySelector('select[data-i="0"][data-k="probJobType"]');
+          const opts=[...job.options].map(x=>x.textContent).join('|');
+          for(const needle of ['180 ngày','60 ngày','30 ngày','6 ngày làm việc'])if(!opts.includes(needle))throw new Error('trial limit mapping missing: '+needle);
+          const jobRow=job.closest('.offer-mrow');
+          if(!jobRow.textContent.includes('cảnh báo nếu thời gian thử việc'))throw new Error('trial helper not simplified');
+          if(suffixFor('probMon')!=='tháng')throw new Error('probation month unit missing');
+
+          let paidRow=d.querySelector('.ot-paid-row');
+          if(paidRow.style.display!=='none')throw new Error('paid OT row visible at zero hours');
+          let otA=d.querySelector('input[data-i="0"][data-k="otMonthly"]');
+          input(otA,'8');
+          paidRow=d.querySelector('.ot-paid-row');
+          if(!visible(paidRow))throw new Error('paid OT row did not appear');
+          if(!visible(paidRow.querySelector('[data-ot-paid-cell="0"] .ot-paid-controls')))throw new Error('A paid controls missing');
+          if(paidRow.querySelector('[data-ot-paid-cell="1"] .ot-paid-dash').style.display==='none')throw new Error('B should show dash at zero OT');
+
+          click(paidRow.querySelector('[data-seg="otPaid"][data-i="0"] [data-v="yes"]'));
+          if(!d.querySelector('input[data-i="0"][data-k="otFactor"]'))throw new Error('OT factor missing after Yes');
+
+          otA=d.querySelector('input[data-i="0"][data-k="otMonthly"]');
+          input(otA,'0');
+          if(d.querySelector('.ot-paid-row').style.display!=='none')throw new Error('paid OT row stayed visible after all OT became zero');
+
+          const otB=d.querySelector('input[data-i="1"][data-k="otMonthly"]');
+          input(otB,'4');
+          paidRow=d.querySelector('.ot-paid-row');
+          if(!visible(paidRow))throw new Error('paid OT row missing for B-only OT');
+          if(paidRow.querySelector('[data-ot-paid-cell="0"] .ot-paid-dash').style.display==='none')throw new Error('A dash missing for B-only OT');
+          if(!visible(paidRow.querySelector('[data-ot-paid-cell="1"] .ot-paid-controls')))throw new Error('B paid controls missing');
+
+          input(d.querySelector('input[data-i="1"][data-k="otMonthly"]'),'0');
+          input(d.querySelector('input[data-i="0"][data-k="otMonthly"]'),'8.66');
+          input(d.querySelector('input[data-i="0"][data-k="gross"]'),'20,000,000');
+          setTimeout(()=>{
+            try{
+              const body=requests.at(-1);if(!body)throw new Error('no API request captured');
+              const apiOt=body.offers[0].ot;
+              if(Math.abs(apiOt-2)>0.0001)throw new Error('8.66 monthly did not normalize to 2 weekly: '+apiOt);
+              if('otMonthly' in body.offers[0])throw new Error('frontend-only otMonthly leaked to backend payload');
+              console.log('PASS behavior: conditional OT + units + API adapter');
+              w.close();
+            }catch(e){console.error(e);process.exitCode=1;w.close();}
+          },750);
+          JS
+      - name: Behavioral smoke test legacy OT migration
+        shell: bash
+        run: |
+          node <<'JS'
+          const fs=require('fs');
+          const {JSDOM}=require('jsdom');
+          let html=fs.readFileSync('net-cao-hon-co-that-tot-hon-v2.html','utf8')
+            .replace(/<link[^>]+fonts\.googleapis\.com[^>]*>/g,'')
+            .replace(/<link[^>]+fonts\.gstatic\.com[^>]*>/g,'');
+          const old={deps:null,region:'I',offers:[{name:'Offer A',gross:'20000000',ot:'2',otPaid:'no'},{name:'Offer B',gross:'18000000',ot:null,otPaid:'no'}]};
+          const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://example.test/',beforeParse(w){
+            w.localStorage.setItem('net-cao-hon-v2-state',JSON.stringify(old));
+            w.fetch=async()=>({status:200,ok:true,json:async()=>({hasResults:false})});
+          }});
+          const d=dom.window.document;
+          const v=d.querySelector('input[data-i="0"][data-k="otMonthly"]').value;
+          if(Math.abs(Number(v)-8.66)>0.001)throw new Error('legacy 2h/week did not migrate to 8.66h/month: '+v);
+          console.log('PASS migration: legacy weekly OT preserved as monthly UI value');
+          dom.window.close();
+          JS
+      - name: Commit update and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-input-units-ot-flow.py .github/workflows/patch-v2-input-units-ot-flow.yml .github/workflows/patch-v2-input-units-ot-flow-retry.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html
+          git commit -m "Clarify V2 units and OT input flow"
+          git push origin HEAD:refactor/v2-input-units-ot-flow
