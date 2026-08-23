@@ -1,0 +1,115 @@
+name: Fix V2 probation inline validation sync
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v2-probation-inline-sync.py'
+      - '.github/workflows/patch-v2-probation-inline-sync.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/v2-probation-inline-sync
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply fix
+        run: python .github/patch-v2-probation-inline-sync.py
+      - name: Static checks
+        shell: bash
+        run: |
+          python scripts/check-v2-csp.py
+          python - <<'PY'
+          from pathlib import Path
+          html=Path('net-cao-hon-co-that-tot-hon-v2.html').read_text()
+          assert 'syncProbMonthInline' in html
+          assert 'data-probmon-help' in html
+          assert 'if(k==="probMon")syncProbMonthInline(el,i);' in html
+          a=html.index('<script>')+len('<script>'); b=html.index('</script>',a)
+          Path('/tmp/v2-inline.js').write_text(html[a:b])
+          print('PASS static probation validation sync')
+          PY
+          node --check /tmp/v2-inline.js
+      - name: Install DOM test dependency
+        run: npm install --no-save jsdom@24
+      - name: Behavioral smoke test matrix interactions
+        shell: bash
+        run: |
+          node <<'JS'
+          const fs=require('fs');
+          const {JSDOM}=require('jsdom');
+          let html=fs.readFileSync('net-cao-hon-co-that-tot-hon-v2.html','utf8');
+          // Prevent external font/resource loading; inline application script still runs.
+          html=html.replace(/<link[^>]+fonts\.googleapis\.com[^>]*>/g,'').replace(/<link[^>]+fonts\.gstatic\.com[^>]*>/g,'');
+          const dom=new JSDOM(html,{runScripts:'dangerously',url:'https://example.test/'});
+          const {document,Event}=dom.window;
+          const click=(el)=>el.dispatchEvent(new dom.window.MouseEvent('click',{bubbles:true}));
+          const input=(el,value)=>{el.value=value;el.dispatchEvent(new Event('input',{bubbles:true}));};
+
+          // Turn-1 invariant: one real 3-column matrix mental model.
+          const firstRow=document.querySelector('#offersIn .offer-mrow');
+          if(!firstRow || firstRow.children.length!==3) throw new Error('A/B input matrix is not three columns');
+
+          // Enable probation for Offer B and verify the shared comparison rows appear.
+          const probSegB=document.querySelector('[data-seg="probationEnabled"][data-i="1"]');
+          click(probSegB.querySelector('[data-v="yes"]'));
+          let probInput=document.querySelector('input[data-i="1"][data-k="probMon"]');
+          let help=document.querySelector('[data-probmon-help="1"]');
+          if(!probInput||!help) throw new Error('Probation duration row did not appear');
+          if(!help.textContent.includes('cần lớn hơn 0')) throw new Error('Blank probation helper missing');
+
+          // Reproduce reported bug: 0 -> 2 must clear immediately without a full rerender.
+          input(probInput,'0');
+          help=document.querySelector('[data-probmon-help="1"]');
+          if(!help.textContent.includes('phải lớn hơn 0')) throw new Error('0 did not show invalid warning');
+          if(probInput.getAttribute('aria-invalid')!=='true') throw new Error('0 did not set aria-invalid');
+          input(probInput,'2');
+          help=document.querySelector('[data-probmon-help="1"]');
+          if(help.textContent.trim()!=='' || help.style.display!=='none') throw new Error('0 -> 2 left stale warning visible');
+          if(probInput.hasAttribute('aria-invalid')) throw new Error('2 did not clear aria-invalid');
+
+          // Back to blank should restore neutral helper.
+          input(probInput,'');
+          help=document.querySelector('[data-probmon-help="1"]');
+          if(!help.textContent.includes('cần lớn hơn 0') || help.style.display==='none') throw new Error('blank did not restore neutral helper');
+
+          // Conditional rows: turning probation off removes detail fields only for that offer.
+          click(document.querySelector('[data-seg="probationEnabled"][data-i="1"] [data-v="no"]'));
+          if(document.querySelector('input[data-i="1"][data-k="probMon"]')) throw new Error('probation detail remained after turning off');
+
+          // Custom BH remains isolated by offer and matrix stays 3 columns.
+          click(document.querySelector('[data-seg="base"][data-i="0"] [data-v="custom"]'));
+          if(!document.querySelector('input[data-i="0"][data-k="customBase"]')) throw new Error('custom BH input missing for A');
+          if(document.querySelector('input[data-i="1"][data-k="customBase"]')) throw new Error('custom BH leaked into B');
+
+          // Benefits accordion should survive rerenders triggered from inside it.
+          const benefits=document.querySelector('.compare-benefits');
+          benefits.open=true;
+          click(document.querySelector('[data-seg="performanceBonusType"][data-i="0"] [data-v="amount"]'));
+          const benefitsAfter=document.querySelector('.compare-benefits');
+          if(!benefitsAfter.open) throw new Error('benefits accordion collapsed after rerender');
+
+          // Rename A should synchronize the read-only header in benefits.
+          const nameA=document.querySelector('input.name-in[data-i="0"]');
+          input(nameA,'Offer Alpha');
+          const mirror=document.querySelector('[data-offer-head="0"]');
+          if(!mirror || mirror.textContent!=='Offer Alpha') throw new Error('offer name mirror did not sync');
+
+          console.log('PASS behavioral smoke: matrix + conditional controls + live validation');
+          JS
+      - name: Commit fix and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v2-probation-inline-sync.py .github/workflows/patch-v2-probation-inline-sync.yml
+          git add net-cao-hon-co-that-tot-hon-v2.html
+          git commit -m "Fix V2 probation inline validation sync"
+          git push origin HEAD:fix/v2-probation-inline-sync
