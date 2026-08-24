@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/patch-v3-copy-year-ui.py'
+      - '.github/fix-v3-copy-baseline.py'
       - '.github/workflows/patch-v3-copy-year-ui.yml'
 
 permissions:
@@ -22,6 +23,8 @@ jobs:
           node-version: '20'
       - name: Apply V3 copy/year UI patch
         run: python .github/patch-v3-copy-year-ui.py
+      - name: Remove remaining baseline wording
+        run: python .github/fix-v3-copy-baseline.py
       - name: Verify V2 untouched
         run: git diff --exit-code HEAD -- net-cao-hon-co-that-tot-hon-v2.html
       - name: Check V3 CSP and JavaScript syntax
@@ -49,7 +52,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm .github/patch-v3-copy-year-ui.py .github/workflows/patch-v3-copy-year-ui.yml
+          git rm .github/patch-v3-copy-year-ui.py .github/fix-v3-copy-baseline.py .github/workflows/patch-v3-copy-year-ui.yml
           git add -- net-cao-hon-co-that-tot-hon-v3.html tests/v3-current-offers-responsive.mjs
           git commit -m "Polish V3 copy and dynamic year UI"
           git push origin HEAD:polish/v3-copy-year-semantics
