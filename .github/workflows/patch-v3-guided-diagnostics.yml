@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/patch-v3-guided-diagnostics.py'
+      - '.github/fix-v3-guided-diagnostic-smoke.py'
       - '.github/workflows/patch-v3-guided-diagnostics.yml'
 
 permissions:
@@ -22,6 +23,8 @@ jobs:
           node-version: '20'
       - name: Apply V3 diagnostics UI patch
         run: python .github/patch-v3-guided-diagnostics.py
+      - name: Stabilize diagnostic smoke after patch
+        run: python .github/fix-v3-guided-diagnostic-smoke.py
       - name: Verify V2 untouched and V3 syntax/CSP
         shell: bash
         run: |
@@ -48,7 +51,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm .github/patch-v3-guided-diagnostics.py .github/workflows/patch-v3-guided-diagnostics.yml
+          git rm .github/patch-v3-guided-diagnostics.py .github/fix-v3-guided-diagnostic-smoke.py .github/workflows/patch-v3-guided-diagnostics.yml
           git add -- net-cao-hon-co-that-tot-hon-v3.html tests/v3-current-offers-responsive.mjs
           git commit -m "Add V3 guided diagnostic navigation"
           git push origin HEAD:feature/v3-guided-diagnostics
