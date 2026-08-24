@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-jTk7ERUayTQ0ljFyeHu1yWfk70afkJjua+E9KVXx4ho='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-lcmFRteJGva/27YlSaiee5I86YVE04BD0dQ6JNPPlVs='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -65,11 +65,11 @@
 <div class="v3-offer-intro"><div><p class="eyebrow">Offer mới</p><h2 class="sec">Nhập offer đang cân nhắc</h2><p class="hint">Có một offer thì chỉ nhập Offer A. Khi có Offer B, bật “2 offer” để so A/B hoặc so từng offer với công việc hiện tại.</p></div><div class="v3-offer-count"><label>Bạn đang có</label><div class="seg" id="offerCountSeg"><button data-v="1" class="on">1 offer</button><button data-v="2">2 offer</button></div></div></div>
 <div class="offers-in one-offer" id="offersIn"></div>
 <p class="hint" style="max-width:none;margin:10px 0 14px"><b>Chưa biết mức đóng bảo hiểm?</b> Chọn “Chưa rõ”. Tool tạm lấy mức lương offer làm mức dùng để tính BH; nếu có phụ cấp cố định, phần phụ cấp được xử lý theo lựa chọn bạn nhập. Nếu HR cho biết một mức riêng, chọn “Tôi biết mức cụ thể” và nhập số tiền.</p>
-<div id="empty" class="empty">Nhập lương cho ít nhất một offer để bắt đầu.</div>
+<div id="empty" class="empty">Nhập lương cho ít nhất một phương án để bắt đầu.</div>
 <div class="results hidden" id="results">
 <div class="v3-results-head"><div id="v3Summary"></div><h2 class="v3-mode-title" id="v3ModeTitle"></h2><div class="v3-pairs" id="v3Pairs"></div></div>
 <div class="layer"><p class="lnum">Lớp 1 · <b>Tiền về tay mỗi tháng</b></p><div class="cols" id="l1cols"></div><div class="delta" id="l1delta"></div></div>
-<div class="layer"><p class="lnum">Lớp 2 · <b>Nếu làm đủ 12 tháng</b></p><p class="hint" style="margin-top:-2px;margin-bottom:14px">Đưa hai offer về cùng 12 tháng làm việc để so tổng thu nhập. Không phải số tiền từ hôm nay đến 31/12.</p><div class="cols" id="annualcols"></div><div class="delta" id="annualdelta"></div></div>
+<div class="layer"><p class="lnum">Lớp 2 · <b>Nếu làm đủ 12 tháng</b></p><p class="hint" style="margin-top:-2px;margin-bottom:14px">Đưa hai phương án đang chọn về cùng 12 tháng làm việc để so tổng thu nhập. Không phải số tiền từ hôm nay đến 31/12.</p><div class="cols" id="annualcols"></div><div class="delta" id="annualdelta"></div></div>
 <div class="layer"><p class="lnum">Lớp 3 · <b>Thời gian bạn bỏ ra để có mức thu nhập đó</b></p><p class="hint" style="margin-top:-2px">176h/tháng là giả định so sánh. Đi lại và OT được cộng vào tổng thời gian bạn bỏ ra. Nếu OT có lương, tool ước tính thêm tiền OT từ số giờ và hệ số bạn nhập. Ngày phép hưởng lương chỉ làm giảm thời gian bạn bỏ ra - không cộng thành một khoản tiền mới.</p><div class="cols" id="tcols"></div><div class="delta" id="tdelta"></div></div>
 <div class="layer"><p class="lnum">Lớp 4 · <b>Căn cứ đóng bảo hiểm</b></p><p class="hint" style="margin-top:-2px">BHXH/BHYT và BHTN có trần căn cứ khác nhau, nên không có một “nền tính mọi quyền lợi” duy nhất ở các mức lương cao.</p><div class="cols" id="l2basis"></div></div>
 <div class="layer"><p class="lnum">Lớp 5 · <b>Nếu có biến cố</b></p><p class="hint" style="margin-top:-2px">Các mô phỏng ở đây dùng mức lương làm căn cứ đóng BH đã nhập. Tool chỉ mô phỏng số tiền, không kiểm tra đủ điều kiện hưởng.</p><div class="events" id="l3events"></div></div>
@@ -173,7 +173,7 @@ function syncOtInline(i){
  [['otFactor',o.otType==='rest'?200:150],['otFactorWeekday',150],['otFactorRest',200],['otFactorHoliday',300]].forEach(([key,min])=>{const h=document.querySelector('[data-ot-factor-help="'+i+'-'+key+'"]');if(h){h.textContent=otFactorText(o,key,min);h.style.display=h.textContent?'':'none'}})
 }
 function syncOtPaidVisibility(){
- const anyOt=state.offers.some(otActive),anyPaid=state.offers.some(otPaidActive),anySingle=state.offers.some(o=>otPaidActive(o)&&o.otType!=='mixed'),anyMixed=state.offers.some(o=>otPaidActive(o)&&o.otType==='mixed');
+ const activeOffers=state.offerCount===2?state.offers:[state.offers[0]],anyOt=activeOffers.some(otActive),anyPaid=activeOffers.some(otPaidActive),anySingle=activeOffers.some(o=>otPaidActive(o)&&o.otType!=='mixed'),anyMixed=activeOffers.some(o=>otPaidActive(o)&&o.otType==='mixed');
  const toggle=(sel,on)=>{const el=document.querySelector(sel);if(el)el.style.display=on?'grid':'none'};
  toggle('#offersIn .ot-paid-row',anyOt);toggle('#offersIn .ot-type-row',anyPaid);toggle('#offersIn .ot-factor-row',anySingle);toggle('#offersIn .ot-mixed-weekday-row',anyMixed);toggle('#offersIn .ot-mixed-rest-row',anyMixed);toggle('#offersIn .ot-mixed-holiday-row',anyMixed);toggle('#offersIn .ot-base-row',anyPaid);
  state.offers.forEach((o,i)=>{
@@ -223,7 +223,7 @@ function renderInputs(){
  const otBaseCell=function(o,i){return otWrap('base',i,'<div class="control-stack"><select data-i="'+i+'" data-k="otBaseMode"><option value="offer" '+(o.otBaseMode==='offer'?'selected':'')+'>Ước tính theo lương offer</option><option value="custom" '+(o.otBaseMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.otBaseMode==='custom'?'<div class="sub-input">'+textInput(i,'otBaseAmount',o,'Ví dụ: 20,000,000','numeric',true,'đ')+'</div><p class="benefit-note" style="margin-bottom:0">Nhập mức lương tháng công ty thực tế dùng để tính OT.</p>':'')+'</div>');};
  const otHoursCell=function(o,i){return textInput(i,'otMonthly',o,'Ví dụ: 8','decimal',false,'giờ')+'<p class="ot-inline-help" data-ot-guard="'+i+'">'+esc(otGuardrailText(o))+'</p>';};
  const perfCell=function(o,i){const amount=o.performanceBonusType==='amount';return '<div class="control-stack">'+seg(i,'performanceBonusType',o.performanceBonusType,[['months','Tháng lương'],['amount','Số tiền']])+'<div class="sub-input">'+textInput(i,'performanceBonusValue',o,amount?'vd 60,000,000':'vd 3',amount?'numeric':'decimal',amount,amount?'đ':'tháng')+'</div></div>'};
- const anyTrial=probOn(A)||probOn(B),open=benefitsWasOpen||shouldOpenBenefits(A)||shouldOpenBenefits(B);
+ const anyTrial=probOn(A)||(state.offerCount===2&&probOn(B)),open=benefitsWasOpen||shouldOpenBenefits(A)||(state.offerCount===2&&shouldOpenBenefits(B));
  let html='<div class="offer-matrix">'+head(true);
  html+=row('Con số trong offer là',seg(0,'pay',A.payType,[['gross','Gross (trước trừ)'],['net','Net (về tay)']]),seg(1,'pay',B.payType,[['gross','Gross (trước trừ)'],['net','Net (về tay)']]));
  html+=row('Lương / tháng',textInput(0,'gross',A,'vd 20,000,000','numeric',true,'đ'),textInput(1,'gross',B,'vd 20,000,000','numeric',true,'đ'));
@@ -260,8 +260,8 @@ function renderInputs(){
 
 
 function renderCurrentInputs(){
- const host=document.getElementById('currentFields'),seg=document.getElementById('currentEnabledSeg'),o=state.currentJob=ensureCurrent(state.currentJob);[].forEach.call(seg.children,b=>b.classList.toggle('on',b.getAttribute('data-v')===(state.currentJobEnabled?'on':'off')));host.style.display=state.currentJobEnabled?'':'none';if(!state.currentJobEnabled){host.innerHTML='';return}
- const sg=(k,val,opts)=>'<div class="seg" data-current-seg="'+k+'">'+opts.map(x=>'<button data-v="'+x[0]+'" class="'+(val===x[0]?'on':'')+'">'+x[1]+'</button>').join('')+'</div>';
+ const host=document.getElementById('currentFields'),benefitsOpen=!!host.querySelector('.v3-current-benefits')?.open,seg=document.getElementById('currentEnabledSeg'),o=state.currentJob=ensureCurrent(state.currentJob);[].forEach.call(seg.children,b=>b.classList.toggle('on',b.getAttribute('data-v')===(state.currentJobEnabled?'on':'off')));host.style.display=state.currentJobEnabled?'':'none';if(!state.currentJobEnabled){host.innerHTML='';return}
+ const sg=(k,val,opts)=>'<div class="seg'+(opts.length===3?' three':'')+'" data-current-seg="'+k+'">'+opts.map(x=>'<button data-v="'+x[0]+'" class="'+(val===x[0]?'on':'')+'">'+x[1]+'</button>').join('')+'</div>';
  const inp=(k,v,ph,suf='',money=false)=>'<div class="suffix-row"><input type="text" data-current="'+k+'" inputmode="'+(money?'numeric':'decimal')+'" placeholder="'+ph+'" value="'+(money?grp(v==null?'':v):esc(v==null?'':v))+'">'+(suf?'<span class="suffix">'+suf+'</span>':'')+'</div>';
  const bh='<div class="control-stack"><select data-current="bhMode"><option value="unknown" '+(o.bhMode==='unknown'?'selected':'')+'>Chưa rõ</option><option value="salary" '+(o.bhMode==='salary'?'selected':'')+'>Theo mức lương hiện tại</option><option value="custom" '+(o.bhMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.bhMode==='custom'?'<div class="sub-input">'+inp('customBase',o.customBase,'7,500,000','đ',true)+'</div>':'')+'</div>';
  const otActive=otNumber(o.otMonthly)>0,paid=otActive&&o.otPaid==='yes',mixed=paid&&o.otType==='mixed';
@@ -279,7 +279,7 @@ function renderCurrentInputs(){
   +(paid&&!mixed?'<div class="field"><label>Hệ số OT</label>'+inp('otFactor',o.otFactor,o.otType==='rest'?'200':'150','%')+'</div>':'')
   +(mixed?'<div class="field wide"><label>Phân bổ OT nhiều loại - giờ / hệ số</label><div class="v3-mini-pair">'+inp('otBreakdownWeekday',o.otBreakdownWeekday,'Giờ','h')+inp('otFactorWeekday',o.otFactorWeekday,'150','%')+'</div><div class="v3-mini-pair" style="margin-top:5px">'+inp('otBreakdownRest',o.otBreakdownRest,'Giờ','h')+inp('otFactorRest',o.otFactorRest,'200','%')+'</div><div class="v3-mini-pair" style="margin-top:5px">'+inp('otBreakdownHoliday',o.otBreakdownHoliday,'Giờ','h')+inp('otFactorHoliday',o.otFactorHoliday,'300','%')+'</div></div>':'')
   +(paid?'<div class="field"><label>Mức lương dùng để tính OT</label><select data-current="otBaseMode"><option value="offer" '+(o.otBaseMode==='offer'?'selected':'')+'>Ước tính theo lương hiện tại</option><option value="custom" '+(o.otBaseMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.otBaseMode==='custom'?'<div class="sub-input">'+inp('otBaseAmount',o.otBaseAmount,'20,000,000','đ',true)+'</div>':'')+'</div>':'')
-  +'<details class="v3-current-benefits"><summary>Thưởng, phụ cấp & ngày phép</summary><div class="v3-current-benefits-body">'
+  +'<details class="v3-current-benefits"'+(benefitsOpen?' open':'')+'><summary>Thưởng, phụ cấp & ngày phép</summary><div class="v3-current-benefits-body">'
     +'<div class="field"><label>Thưởng đảm bảo / năm</label>'+inp('guaranteedBonusMonths',o.guaranteedBonusMonths,'1','tháng')+'</div>'
     +'<div class="field"><label>Thưởng hiệu suất / năm</label>'+sg('performanceBonusType',o.performanceBonusType,[['months','Tháng lương'],['amount','Số tiền']])+'<div class="sub-input">'+inp('performanceBonusValue',o.performanceBonusValue,perfAmount?'60,000,000':'2',perfAmount?'đ':'tháng',perfAmount)+'</div></div>'
     +'<div class="field"><label>Phụ cấp cố định ngoài lương / tháng</label>'+inp('fixedAllowance',o.fixedAllowance,'1,000,000','đ',true)+'</div>'
@@ -338,7 +338,7 @@ function renderSolverInputs(){
 
 function applyResult(data){
  const empty=document.getElementById("empty"),results=document.getElementById("results"),solverLayer=document.getElementById("solverLayer");renderV3ResultHead(data||{});document.getElementById("solverResult").innerHTML=(data&&data.layer6Html)||"";solverLayer.style.display=data&&data.showLayer6?"":"none";
- if(!data||!data.hasResults){empty.style.display="";empty.textContent=state.solver&&state.solver.enabled?"Layer 6 có thể tính dù mức lương template đang để trống; xem kết quả bên dưới.":"Nhập lương cho ít nhất một offer để bắt đầu.";results.classList.add("hidden");return}
+ if(!data||!data.hasResults){empty.style.display="";empty.textContent=state.solver&&state.solver.enabled?"Layer 6 có thể tính dù mức lương template đang để trống; xem kết quả bên dưới.":"Nhập lương cho ít nhất một phương án để bắt đầu.";results.classList.add("hidden");return}
  empty.style.display="none";results.classList.remove("hidden");
  document.getElementById("l1cols").innerHTML=data.l1cols||"";const d1=document.getElementById("l1delta");d1.innerHTML=data.l1delta||"";d1.style.display=data.showL1Delta?"":"none";
  document.getElementById("annualcols").innerHTML=data.annualcols||"";const ad=document.getElementById("annualdelta");ad.innerHTML=data.annualdelta||"";ad.style.display=data.showAnnualDelta?"":"none";
@@ -348,7 +348,7 @@ function applyResult(data){
  const sl=document.getElementById("switchLayer");document.getElementById("switchingResult").innerHTML=data.switchingHtml||"";sl.style.display=data.showSwitching?"":"none";
 }
 function showApiError(msg){const e=document.getElementById("empty");e.style.display="";e.textContent=msg||"Không kết nối được máy chủ tính toán. Thử tải lại trang sau ít phút.";document.getElementById("results").classList.add("hidden");document.getElementById("solverLayer").style.display="none";document.getElementById("solverResult").innerHTML="";renderV3ResultHead({})}
-function hasAnySalary(){const arr=[...state.offers];if(state.currentJobEnabled)arr.push(state.currentJob);return arr.some(o=>{const n=Number(String(o.gross??"").replace(/,/g,""));return Number.isFinite(n)&&n>0})}
+function hasAnySalary(){const arr=state.offerCount===2?[...state.offers]:[state.offers[0]];if(state.currentJobEnabled)arr.push(state.currentJob);return arr.some(o=>{const n=Number(String(o.gross??"").replace(/,/g,""));return Number.isFinite(n)&&n>0})}
 function apiState(){
  const out=JSON.parse(JSON.stringify(state));
  const adapt=(o,src,isCurrent)=>{const raw=src.otMonthly,n=hasInput(raw)?Number(String(raw).replace(/,/g,"")):0;o.otMonthly=Number.isFinite(n)&&n>=0?n:0;o.ot=Number.isFinite(n)&&n>0?n/UI_WKS:0;o.probMon=isCurrent?0:probDurationMonthsForApi(src);delete o.probDurationValue;delete o.probDurationUnit;o.base=src.bhMode==='custom'?'custom':'full';if(isCurrent){o.probationEnabled='no';o.probInsurance='yes'}};
@@ -380,9 +380,9 @@ function syncCtx(){document.getElementById("deps").value=state.deps==null?"":sta
 function download(name,text,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 
 document.getElementById('currentEnabledSeg').addEventListener('click',function(e){const b=e.target.closest('button');if(!b)return;state.currentJobEnabled=b.getAttribute('data-v')==='on';markDirty();renderCurrentInputs();renderSwitchingInputs();scheduleCalculation()});
-document.getElementById('offerCountSeg').addEventListener('click',function(e){const b=e.target.closest('button');if(!b)return;state.offerCount=b.getAttribute('data-v')==='2'?2:1;if(state.offerCount===1&&state.switching.targetOffer==='1')state.switching.targetOffer='0';markDirty();syncOfferCount();renderSwitchingInputs();renderSolverInputs();scheduleCalculation()});
+document.getElementById('offerCountSeg').addEventListener('click',function(e){const b=e.target.closest('button');if(!b)return;state.offerCount=b.getAttribute('data-v')==='2'?2:1;if(state.offerCount===1&&state.switching.targetOffer==='1')state.switching.targetOffer='0';markDirty();renderInputs();renderSwitchingInputs();renderSolverInputs();scheduleCalculation()});
 const currentHost=document.getElementById('currentFields');
-currentHost.addEventListener('input',function(e){const el=e.target,k=el.getAttribute('data-current');if(!k||el.tagName==='SELECT')return;const money=['gross','customBase','fixedAllowance','otBaseAmount'].includes(k)||(k==='performanceBonusValue'&&state.currentJob.performanceBonusType==='amount');if(money){const f=grp(el.value);el.value=f;state.currentJob[k]=f.replace(/,/g,'')}else state.currentJob[k]=el.value;markDirty();scheduleCalculation()});
+currentHost.addEventListener('input',function(e){const el=e.target,k=el.getAttribute('data-current');if(!k||el.tagName==='SELECT')return;const money=['gross','customBase','fixedAllowance','otBaseAmount'].includes(k)||(k==='performanceBonusValue'&&state.currentJob.performanceBonusType==='amount');if(money){const f=grp(el.value);el.value=f;state.currentJob[k]=f.replace(/,/g,'')}else state.currentJob[k]=el.value;if(k==='name'){renderSwitchingInputs();renderSolverInputs()}markDirty();scheduleCalculation()});
 currentHost.addEventListener('change',function(e){const el=e.target,k=el.getAttribute('data-current');if(!k||el.tagName!=='SELECT')return;state.currentJob[k]=el.value;markDirty();if(['bhMode','otType','otBaseMode'].includes(k))renderCurrentInputs();scheduleCalculation()});
 currentHost.addEventListener('click',function(e){const b=e.target.closest('[data-current-seg] button');if(!b)return;const wrap=b.closest('[data-current-seg]'),k=wrap.getAttribute('data-current-seg'),v=b.getAttribute('data-v');if(k==='payType')state.currentJob.payType=v;else if(k==='otPaid')state.currentJob.otPaid=v;else if(k==='allowanceBh')state.currentJob.allowanceBh=v;else if(k==='performanceBonusType'){if(state.currentJob.performanceBonusType!==v)state.currentJob.performanceBonusValue=null;state.currentJob.performanceBonusType=v}markDirty();renderCurrentInputs();scheduleCalculation()});
 document.getElementById('v3Pairs').addEventListener('click',function(e){const b=e.target.closest('.v3-pair-btn');if(!b)return;state.comparison={left:b.dataset.left,right:b.dataset.right};markDirty();scheduleCalculation()});
