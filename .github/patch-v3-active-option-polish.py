@@ -13,6 +13,12 @@ new="const anyTrial=probOn(A)||(state.offerCount===2&&probOn(B)),open=benefitsWa
 if old not in s: raise SystemExit('trial active-offer anchor missing')
 s=s.replace(old,new,1)
 
+# Changing 1↔2 offers must rebuild the matrix immediately so hidden B rows disappear/return without losing B data.
+old="document.getElementById('offerCountSeg').addEventListener('click',function(e){const b=e.target.closest('button');if(!b)return;state.offerCount=b.getAttribute('data-v')==='2'?2:1;if(state.offerCount===1&&state.switching.targetOffer==='1')state.switching.targetOffer='0';markDirty();syncOfferCount();renderSwitchingInputs();renderSolverInputs();scheduleCalculation()});"
+new="document.getElementById('offerCountSeg').addEventListener('click',function(e){const b=e.target.closest('button');if(!b)return;state.offerCount=b.getAttribute('data-v')==='2'?2:1;if(state.offerCount===1&&state.switching.targetOffer==='1')state.switching.targetOffer='0';markDirty();renderInputs();renderSwitchingInputs();renderSolverInputs();scheduleCalculation()});"
+if old not in s: raise SystemExit('offer-count rerender anchor missing')
+s=s.replace(old,new,1)
+
 # A hidden retained B salary must not be the only reason an otherwise empty one-offer page calls the API.
 old='function hasAnySalary(){const arr=[...state.offers];if(state.currentJobEnabled)arr.push(state.currentJob);return arr.some(o=>{const n=Number(String(o.gross??"").replace(/,/g,""));return Number.isFinite(n)&&n>0})}'
 new='function hasAnySalary(){const arr=state.offerCount===2?[...state.offers]:[state.offers[0]];if(state.currentJobEnabled)arr.push(state.currentJob);return arr.some(o=>{const n=Number(String(o.gross??"").replace(/,/g,""));return Number.isFinite(n)&&n>0})}'
