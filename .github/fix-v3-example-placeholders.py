@@ -5,6 +5,9 @@ s=p.read_text()
 # Offer mixed OT rows.
 s=s.replace("textInput(i,hourKey,o,'Giờ','decimal',false,'h')","textInput(i,hourKey,o,'Ví dụ: 4','decimal',false,'giờ')")
 s=s.replace("textInput(i,factorKey,o,String(min),'decimal',false,'%')","textInput(i,factorKey,o,'Ví dụ: '+min,'decimal',false,'%')")
+# Trial salary percentage is also an example placeholder.
+s=s.replace("textInput(0,'probPct',A,'100','decimal',false,'%')","textInput(0,'probPct',A,'Ví dụ: 100','decimal',false,'%')")
+s=s.replace("textInput(1,'probPct',B,'100','decimal',false,'%')","textInput(1,'probPct',B,'Ví dụ: 100','decimal',false,'%')")
 # Current Job OT rows.
 s=s.replace("inp('otFactor',o.otFactor,o.otType==='rest'?'200':'150','%')","inp('otFactor',o.otFactor,'Ví dụ: '+(o.otType==='rest'?'200':'150'),'%')")
 s=s.replace("'Ví dụ: giờ','giờ'","'Ví dụ: 4','giờ'")
