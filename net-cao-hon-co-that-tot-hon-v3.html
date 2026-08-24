@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-Qzv6OBXWc+r9W9IqBYd396iCLyr1LEQOBys5MUVWkLk='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-inK9+qJMmGMnA9/QIKumH1dGROT1Zth1d9w9f8zHMbo='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -344,7 +344,7 @@ function renderSolverInputs(){
 
 function applyResult(data){
  const empty=document.getElementById("empty"),results=document.getElementById("results"),solverLayer=document.getElementById("solverLayer");renderV3ResultHead(data||{});document.getElementById("solverResult").innerHTML=(data&&data.layer6Html)||"";solverLayer.style.display=data&&data.showLayer6?"":"none";
- if(!data||!data.hasResults){empty.style.display="";empty.textContent=state.solver&&state.solver.enabled?"Lớp 6 có thể tính dù mức lương template đang để trống; xem kết quả bên dưới.":"Nhập lương cho ít nhất một phương án để bắt đầu.";results.classList.add("hidden");return}
+ if(!data||!data.hasResults){empty.style.display="";empty.textContent=state.solver&&state.solver.enabled?"Lớp 6 có thể tính dù mức lương của cấu trúc đã chọn đang để trống; xem kết quả bên dưới.":"Nhập lương cho ít nhất một phương án để bắt đầu.";results.classList.add("hidden");return}
  empty.style.display="none";results.classList.remove("hidden");
  document.getElementById("l1cols").innerHTML=data.l1cols||"";const d1=document.getElementById("l1delta");d1.innerHTML=data.l1delta||"";d1.style.display=data.showL1Delta?"":"none";
  document.getElementById("annualcols").innerHTML=data.annualcols||"";const ad=document.getElementById("annualdelta");ad.innerHTML=data.annualdelta||"";ad.style.display=data.showAnnualDelta?"":"none";
