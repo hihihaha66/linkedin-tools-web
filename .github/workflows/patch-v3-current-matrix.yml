@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/patch-v3-current-matrix.py'
+      - '.github/fix-v3-current-matrix-bootstrap.py'
       - '.github/workflows/patch-v3-current-matrix.yml'
 
 permissions:
@@ -20,6 +21,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Fix browser QA insertion anchor
+        run: python .github/fix-v3-current-matrix-bootstrap.py
       - name: Apply Current Job matrix patch
         run: python .github/patch-v3-current-matrix.py
       - name: Verify V2 untouched and V3 syntax/CSP
@@ -48,7 +51,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm .github/patch-v3-current-matrix.py .github/workflows/patch-v3-current-matrix.yml
+          git rm .github/patch-v3-current-matrix.py .github/fix-v3-current-matrix-bootstrap.py .github/workflows/patch-v3-current-matrix.yml
           git add -- net-cao-hon-co-that-tot-hon-v3.html tests/v3-current-offers-responsive.mjs
           git commit -m "Refactor V3 Current Job into matrix UI"
           git push origin HEAD:refactor/v3-current-matrix
