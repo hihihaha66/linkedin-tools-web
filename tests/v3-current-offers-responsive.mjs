@@ -48,6 +48,24 @@ try{
   for(const ph of copyAudit.placeholders){if(/^vd\b/i.test(ph))throw new Error(label+': abbreviated placeholder '+ph);if(/^\d[\d,]*(?:\.\d+)?$/.test(ph))throw new Error(label+': numeric example placeholder missing “Ví dụ:” '+ph);}
   const publicText=await page.locator('body').innerText();for(const bad of ['backend','threshold','baseline','template','timeline mục tiêu','target Net','target thu nhập'])if(publicText.toLowerCase().includes(bad.toLowerCase()))throw new Error(label+': developer wording remains visible: '+bad);
 
+  // Guided diagnostic navigation - Current Job can be activated from the error card.
+  await page.locator('#currentEnabledSeg [data-v="off"]').click();
+  await page.evaluate(()=>{document.querySelector('#solverLayer').style.display='';document.querySelector('#solverResult').innerHTML='<div class="solver-needs diag-card"><div class="diag-item"><div class="diag-copy"><b>Thiếu lương hiện tại</b><span class="diag-path">Công việc hiện tại → Lương / tháng</span></div><button type="button" class="diag-action" data-diag-scope="current" data-diag-field="gross" data-diag-activate="1">Đi tới</button></div></div>'});
+  await page.locator('#solverResult .diag-action').click();await page.waitForTimeout(120);
+  if(!(await page.locator('#currentEnabledSeg [data-v="on"]').evaluate(e=>e.classList.contains('on'))))throw new Error(label+': diagnostic CTA did not activate Current Job');
+  const currentFocused=await page.evaluate(()=>document.activeElement?.getAttribute('data-current')==='gross'&&document.querySelector('[data-current="gross"]')?.classList.contains('diag-focus'));
+  if(!currentFocused)throw new Error(label+': diagnostic CTA did not focus/highlight Current salary');
+
+  // Transition and Layer 6 actions also land on the exact requested field.
+  await page.evaluate(()=>{document.querySelector('#solverResult').innerHTML='<button type="button" class="diag-action" data-diag-scope="switching" data-diag-field="onboardDate">Đi tới</button>'});
+  await page.evaluate(()=>document.querySelector('#solverResult .diag-action')?.click());await page.waitForTimeout(100);
+  if(!(await page.evaluate(()=>document.activeElement?.getAttribute('data-sw')==='onboardDate')))throw new Error(label+': switching diagnostic did not focus onboard date');
+  await page.waitForTimeout(650);
+  await page.evaluate(()=>{document.querySelector('#solverLayer').style.display='';document.querySelector('#solverResult').innerHTML='<button type="button" class="diag-action" data-diag-scope="solver" data-diag-field="targetMonthlyNet">Chỉnh mục tiêu</button>'});
+  await page.evaluate(()=>document.querySelector('#solverResult .diag-action')?.click());await page.waitForTimeout(100);
+  if(!(await page.evaluate(()=>document.activeElement?.getAttribute('data-sol')==='targetMonthlyNet')))throw new Error(label+': solver diagnostic did not focus monthly Net target');
+  const diagOverflow=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);if(diagOverflow>2)throw new Error(label+': diagnostic UI caused horizontal overflow '+diagOverflow);
+
   await page.close();console.log('PASS V3 responsive '+label);
  }
 }finally{await browser.close()}
