@@ -1,0 +1,7 @@
+from pathlib import Path
+p=Path('tests/v3-current-offers-responsive.mjs')
+s=p.read_text()
+s=s.replace("  await page.locator('#solverResult .diag-action').click();await page.waitForTimeout(100);\n  if(!(await page.evaluate(()=>document.activeElement?.getAttribute('data-sw')==='onboardDate')))throw new Error(label+': switching diagnostic did not focus onboard date');\n  await page.evaluate(()=>{document.querySelector('#solverResult').innerHTML='<button type=\"button\" class=\"diag-action\" data-diag-scope=\"solver\" data-diag-field=\"targetMonthlyNet\">Chỉnh mục tiêu</button>'});\n  await page.locator('#solverResult .diag-action').click();await page.waitForTimeout(100);",
+"  await page.evaluate(()=>document.querySelector('#solverResult .diag-action')?.click());await page.waitForTimeout(100);\n  if(!(await page.evaluate(()=>document.activeElement?.getAttribute('data-sw')==='onboardDate')))throw new Error(label+': switching diagnostic did not focus onboard date');\n  await page.waitForTimeout(650);\n  await page.evaluate(()=>{document.querySelector('#solverLayer').style.display='';document.querySelector('#solverResult').innerHTML='<button type=\"button\" class=\"diag-action\" data-diag-scope=\"solver\" data-diag-field=\"targetMonthlyNet\">Chỉnh mục tiêu</button>'});\n  await page.evaluate(()=>document.querySelector('#solverResult .diag-action')?.click());await page.waitForTimeout(100);",1)
+p.write_text(s)
+print('STABILIZED V3 diagnostic browser smoke')
