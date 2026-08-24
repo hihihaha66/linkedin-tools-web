@@ -51,7 +51,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm .github/patch-v3-current-matrix.py .github/fix-v3-current-matrix-bootstrap.py .github/workflows/patch-v3-current-matrix.yml
+          git rm -f .github/patch-v3-current-matrix.py .github/fix-v3-current-matrix-bootstrap.py .github/workflows/patch-v3-current-matrix.yml
           git add -- net-cao-hon-co-that-tot-hon-v3.html tests/v3-current-offers-responsive.mjs
           git commit -m "Refactor V3 Current Job into matrix UI"
           git push origin HEAD:refactor/v3-current-matrix
