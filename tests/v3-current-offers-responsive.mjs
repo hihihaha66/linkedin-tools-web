@@ -15,12 +15,18 @@ try{
   if(Math.abs(ctxAudit.controlY[0]-ctxAudit.controlY[1])>2||Math.abs(ctxAudit.controlH[0]-ctxAudit.controlH[1])>2)throw new Error(label+': context controls not aligned');
   if(Math.abs(ctxAudit.labelH[0]-ctxAudit.labelH[1])>2)throw new Error(label+': context labels not equal height');
   if(label.startsWith('mobile')&&ctxAudit.height>90)throw new Error(label+': compact context became too tall '+ctxAudit.height+'px');
-  if(ctxAudit.depsPlaceholder!=='Ví dụ: 0'||ctxAudit.depsUnit!=='người')throw new Error(label+': dependent example/unit missing');
+  if(ctxAudit.depsPlaceholder!=='VD: 0 người'||ctxAudit.depsUnit!=='người')throw new Error(label+': dependent example/unit missing');
   await page.locator('#bhSim summary').click();
   const sickAudit=await page.evaluate(()=>({placeholder:document.querySelector('#sickDays').placeholder,unit:document.querySelector('#sickDays').parentElement.querySelector('.suffix')?.textContent||''}));
-  if(sickAudit.placeholder!=='Ví dụ: 5'||sickAudit.unit!=='ngày')throw new Error(label+': sick-days example/unit missing');
+  if(sickAudit.placeholder!=='VD: 5 ngày'||sickAudit.unit!=='ngày')throw new Error(label+': sick-days example/unit missing');
   await page.locator('#bhSim summary').click();
-  await page.locator('#currentEnabledSeg [data-v="on"]').click();await page.locator('[data-current="gross"]').fill('30000000');await page.locator('#offersIn input[data-i="0"][data-k="gross"]').fill('35000000');await page.waitForTimeout(750);
+  await page.locator('#currentEnabledSeg [data-v="on"]').click();
+  const story=await page.evaluate(()=>({current:document.querySelector('[data-current="gross"]')?.placeholder,a:document.querySelector('#offersIn [data-i="0"][data-k="gross"]')?.placeholder}));
+  if(story.current!=='VD: 20 triệu'||story.a!=='VD: 25 triệu')throw new Error(label+': salary placeholder narrative mismatch '+JSON.stringify(story));
+  await page.locator('#offerCountSeg [data-v="2"]').click();await page.waitForTimeout(50);
+  const bPlaceholder=await page.locator('#offersIn [data-i="1"][data-k="gross"]').getAttribute('placeholder');if(bPlaceholder!=='VD: 30 triệu')throw new Error(label+': Offer B salary placeholder narrative mismatch '+bPlaceholder);
+  await page.locator('#offerCountSeg [data-v="1"]').click();await page.waitForTimeout(40);
+  await page.locator('[data-current="gross"]').fill('30000000');await page.locator('#offersIn input[data-i="0"][data-k="gross"]').fill('35000000');await page.waitForTimeout(750);
   const currentMatrix=page.locator('#currentFields > .v3-current-matrix');if(await currentMatrix.count()!==1)throw new Error(label+': Current Job is not using the offer matrix grammar');
   if(await page.locator('#currentFields .v3-current-grid').count())throw new Error(label+': legacy Current Job form grid still rendered');
   const currentLabels=await currentMatrix.locator(':scope > .offer-mrow > .offer-mlabel').allTextContents();
@@ -67,8 +73,14 @@ try{
   });
   for(const must of ['31/12/2027','Bù hết phần hụt do chuyển việc trong','Đạt mục tiêu Net/tháng','Net tối thiểu/tháng','Đạt mục tiêu Net/năm','Net tối thiểu/năm','Tool ước tính phần hụt ban đầu từ khoảng nghỉ và thưởng bị mất','Gồm lương, phụ cấp cố định và thưởng đảm bảo sau bảo hiểm và thuế'])if(!copyAudit.txt.includes(must))throw new Error(label+': missing Layer 6 copy '+must);
   for(const bad of ['backend','threshold','baseline','timeline mục tiêu','target Net','target thu nhập'])if(copyAudit.txt.includes(bad))throw new Error(label+': developer wording leaked '+bad);
-  for(const ph of copyAudit.placeholders){if(/^vd\b/i.test(ph))throw new Error(label+': abbreviated placeholder '+ph);if(/^\d[\d,]*(?:\.\d+)?$/.test(ph))throw new Error(label+': numeric example placeholder missing “Ví dụ:” '+ph);}
+  for(const ph of copyAudit.placeholders){if(!/^VD:\s/.test(ph))throw new Error(label+': placeholder must use compact VD format: '+ph);if(/\d{1,3}(?:,\d{3})+/.test(ph))throw new Error(label+': placeholder uses visually long raw number: '+ph);if(!/(người|ngày|tháng|buổi|phút|giờ|%|triệu|đ|năm)/i.test(ph))throw new Error(label+': placeholder missing unit/context: '+ph);}
   const publicText=await page.locator('body').innerText();for(const bad of ['backend','threshold','baseline','template','timeline mục tiêu','target Net','target thu nhập'])if(publicText.toLowerCase().includes(bad.toLowerCase()))throw new Error(label+': developer wording remains visible: '+bad);
+  if(label.startsWith('mobile')){
+    const zoomRisk=await page.evaluate(()=>[...document.querySelectorAll('input[type=text],input[type=number],input[type=date]')].filter(el=>{const r=el.getBoundingClientRect();return r.width>0&&r.height>0}).map(el=>({field:el.getAttribute('data-k')||el.getAttribute('data-current')||el.getAttribute('data-sw')||el.getAttribute('data-sol')||el.id||el.className,font:parseFloat(getComputedStyle(el).fontSize),placeholder:el.placeholder})).filter(x=>x.font<15.99));
+    if(zoomRisk.length)throw new Error(label+': iOS focus-zoom risk '+JSON.stringify(zoomRisk));
+    const matrixPlaceholders=await page.evaluate(()=>[...document.querySelectorAll('#offersIn .offer-mcell input[placeholder],#currentFields .offer-mcell input[placeholder]')].filter(el=>{const r=el.getBoundingClientRect();return r.width>0&&r.height>0&&el.value===''}).map(el=>({ph:el.placeholder,w:el.clientWidth,font:getComputedStyle(el,'::placeholder').fontSize})));
+    for(const x of matrixPlaceholders){if(x.ph.length>18)throw new Error(label+': matrix placeholder too verbose '+JSON.stringify(x));}
+  }
 
   // Guided diagnostic navigation - Current Job can be activated from the error card.
   await page.locator('#currentEnabledSeg [data-v="off"]').click();
