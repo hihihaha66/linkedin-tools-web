@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-HOjZKvPzjfQAYSrU6toIFRI7judQ3IMQaFVZ8s7bs7A='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-zDNIaKIeh8jahX+MxGafxDR/Wl2WYfXFRZzQ3VEkZLU='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -468,6 +468,24 @@ solverHost.addEventListener("change",function(e){const el=e.target,k=el.getAttri
 solverHost.addEventListener("input",function(e){const el=e.target,k=el.getAttribute("data-sol");if(!k||el.type==="checkbox"||el.tagName==="SELECT")return;if(el.hasAttribute("data-sol-money")){const f=grp(el.value);el.value=f;state.solver[k]=f.replace(/,/g,"")}else state.solver[k]=el.value;markDirty();scheduleCalculation()});
 
 document.getElementById("solverResult").addEventListener("click",function(e){const b=e.target.closest(".diag-action");if(!b)return;e.preventDefault();focusDiagnosticTarget(b)});
+
+// Mobile browsers can keep the final edit in the focused control until it loses focus.
+// Always re-read the DOM value on blur and calculate immediately; pressing Done/OK must not be required.
+function commitV3ControlOnBlur(el){
+ if(!el||el.tagName==="SELECT"||el.type==="checkbox"||el.tagName==="BUTTON")return false;
+ const sw=el.getAttribute("data-sw");
+ if(sw){if(["currentBonusIfLeave","newBonusCustom"].includes(sw)){const f=grp(el.value);el.value=f;state.switching[sw]=f.replace(/,/g,"")}else state.switching[sw]=el.value;return true}
+ const sol=el.getAttribute("data-sol");
+ if(sol){if(el.hasAttribute("data-sol-money")){const f=grp(el.value);el.value=f;state.solver[sol]=f.replace(/,/g,"")}else state.solver[sol]=el.value;return true}
+ const cur=el.getAttribute("data-current");
+ if(cur){const money=["gross","customBase","fixedAllowance","otBaseAmount"].includes(cur)||(cur==="performanceBonusValue"&&state.currentJob.performanceBonusType==="amount");if(money){const f=grp(el.value);el.value=f;state.currentJob[cur]=f.replace(/,/g,"")}else state.currentJob[cur]=el.value;return true}
+ const iRaw=el.getAttribute("data-i"),k=el.getAttribute("data-k");
+ if(iRaw!=null&&k){const i=parseInt(iRaw,10);if(Number.isInteger(i)&&state.offers[i]){const money=k==="gross"||k==="customBase"||k==="fixedAllowance"||k==="otBaseAmount"||(k==="performanceBonusValue"&&state.offers[i].performanceBonusType==="amount");if(money){const f=grp(el.value);el.value=f;state.offers[i][k]=f.replace(/,/g,"")}else state.offers[i][k]=el.value;if(k==="probDurationValue")syncProbDurationInline(i);return true}}
+ if(el.id==="deps"){state.deps=el.value;return true}
+ if(el.id==="sickDays"){state.sickDays=el.value;syncBhSummary();return true}
+ return false
+}
+document.addEventListener("focusout",function(e){if(!commitV3ControlOnBlur(e.target))return;markDirty();clearTimeout(debounceTimer);calculateNow()});
 
 document.getElementById("saveBtn").addEventListener("click",doSave);
 document.getElementById("exportBtn").addEventListener("click",async function(){const data=await calculateNow();if(!data||!data.exportText)return;download("career-options-v3.txt",data.exportText,"text/plain;charset=utf-8")});
