@@ -23,7 +23,7 @@ jobs:
       - name: Build V3 from stable V2 UI
         run: python .github/patch-v3-current-offers.py
       - name: Check V2 untouched
-        run: git diff --exit-code origin/main -- net-cao-hon-co-that-tot-hon-v2.html
+        run: git diff --exit-code HEAD -- net-cao-hon-co-that-tot-hon-v2.html
       - name: Check V3 CSP and JavaScript syntax
         shell: bash
         run: |
