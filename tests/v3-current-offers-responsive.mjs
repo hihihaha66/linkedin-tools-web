@@ -12,6 +12,18 @@ try{
   await page.locator('#offersIn input[data-i="1"][data-k="otMonthly"]').fill('12');await page.locator('[data-seg="probationEnabled"][data-i="1"] [data-v="yes"]').click();await page.locator('#offerCountSeg [data-v="1"]').click();await page.waitForTimeout(80);const hiddenInfluence=await page.evaluate(()=>({trial:!!document.querySelector('#offersIn [data-k="probDurationValue"]'),otPaid:getComputedStyle(document.querySelector('#offersIn .ot-paid-row')).display}));if(hiddenInfluence.trial||hiddenInfluence.otPaid!=='none')throw new Error(label+': retained hidden Offer B influenced one-offer disclosure');await page.locator('#offerCountSeg [data-v="2"]').click();await page.waitForTimeout(80);
   const body=bodies.at(-1);if(body.offerCount!==2)throw new Error(label+': offerCount=2 missing');if(!body.currentJob||!Array.isArray(body.offers))throw new Error(label+': V3 state shape invalid');
   const overflow=await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,inner:innerWidth,current:document.querySelector('#currentBox').scrollWidth,solver:document.querySelector('#solverBox').scrollWidth}));if(overflow.scroll>overflow.inner+2)throw new Error(label+': horizontal overflow '+overflow.scroll+'>'+overflow.inner);
+  await page.locator('#solverEnabledSeg [data-v="on"]').click();
+  await page.locator('[data-sw="onboardDate"]').fill('2027-01-05');await page.waitForTimeout(60);
+  const copyAudit=await page.evaluate(()=>{
+    const box=document.querySelector('#solverBox'),txt=box.innerText;
+    const placeholders=[...document.querySelectorAll('#offersIn input[placeholder],#currentFields input[placeholder],#switchFields input[placeholder],#solverFields input[placeholder]')].map(x=>x.placeholder).filter(Boolean);
+    return{txt,placeholders};
+  });
+  for(const must of ['31/12/2027','Bù hết phần hụt do chuyển việc trong','Đạt mục tiêu Net/tháng','Net tối thiểu/tháng','Đạt mục tiêu Net/năm','Net tối thiểu/năm','Tool ước tính phần hụt ban đầu từ khoảng nghỉ và thưởng bị mất','Gồm lương, phụ cấp cố định và thưởng đảm bảo sau bảo hiểm và thuế'])if(!copyAudit.txt.includes(must))throw new Error(label+': missing Layer 6 copy '+must);
+  for(const bad of ['backend','threshold','baseline','timeline mục tiêu','target Net','target thu nhập'])if(copyAudit.txt.includes(bad))throw new Error(label+': developer wording leaked '+bad);
+  for(const ph of copyAudit.placeholders){if(/^vd\b/i.test(ph))throw new Error(label+': abbreviated placeholder '+ph);if(/^\d[\d,]*(?:\.\d+)?$/.test(ph))throw new Error(label+': numeric example placeholder missing “Ví dụ:” '+ph);}
+  const publicText=await page.locator('body').innerText();for(const bad of ['backend','threshold','baseline','template','timeline mục tiêu','target Net','target thu nhập'])if(publicText.toLowerCase().includes(bad.toLowerCase()))throw new Error(label+': developer wording remains visible: '+bad);
+
   await page.close();console.log('PASS V3 responsive '+label);
  }
 }finally{await browser.close()}
