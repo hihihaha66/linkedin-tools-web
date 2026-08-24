@@ -76,6 +76,23 @@ try{
   if(!(await page.evaluate(()=>document.activeElement?.getAttribute('data-sol')==='targetMonthlyNet')))throw new Error(label+': solver diagnostic did not focus monthly Net target');
   const diagOverflow=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);if(diagOverflow>2)throw new Error(label+': diagnostic UI caused horizontal overflow '+diagOverflow);
 
+  // Mobile blur commit regression: the visible DOM value must be accepted without pressing Done/OK.
+  await page.locator('#switchEnabledSeg [data-v="on"]').click();await page.waitForTimeout(60);
+  await page.locator('[data-sw="newBonusRule"]').selectOption('custom');await page.waitForTimeout(80);
+  const beforeBlurRequests=bodies.length;
+  await page.evaluate(()=>{const el=document.querySelector('[data-sw="newBonusCustom"]');el.focus();el.value='30000000';document.querySelector('[data-sw="currentBonusRule"]').focus()});
+  await page.waitForTimeout(180);
+  if(bodies.length<=beforeBlurRequests)throw new Error(label+': blur did not trigger an immediate calculation');
+  if(String(bodies.at(-1)?.switching?.newBonusCustom)!=='30000000')throw new Error(label+': switching money value was not committed on blur');
+  if((await page.locator('[data-sw="newBonusCustom"]').inputValue())!=='30,000,000')throw new Error(label+': switching money value was not normalized on blur');
+
+  await page.evaluate(()=>{const el=document.querySelector('#offersIn input[data-i="0"][data-k="gross"]');el.focus();el.value='36000000';document.querySelector('#offerCountSeg button').focus()});await page.waitForTimeout(180);
+  if(String(bodies.at(-1)?.offers?.[0]?.gross)!=='36000000')throw new Error(label+': offer salary was not committed on blur');
+  await page.evaluate(()=>{const el=document.querySelector('[data-current="gross"]');el.focus();el.value='31000000';document.querySelector('#currentEnabledSeg button').focus()});await page.waitForTimeout(180);
+  if(String(bodies.at(-1)?.currentJob?.gross)!=='31000000')throw new Error(label+': Current Job salary was not committed on blur');
+  await page.evaluate(()=>{const el=document.querySelector('[data-sol="targetMonthlyNet"]');el.focus();el.value='37000000';document.querySelector('#solverEnabledSeg button').focus()});await page.waitForTimeout(180);
+  if(String(bodies.at(-1)?.solver?.targetMonthlyNet)!=='37000000')throw new Error(label+': Layer 6 money target was not committed on blur');
+
   await page.close();console.log('PASS V3 responsive '+label);
  }
 }finally{await browser.close()}
