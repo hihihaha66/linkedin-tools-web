@@ -1,0 +1,58 @@
+name: Build V3 current-job multi-option frontend
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v3-current-offers.py'
+      - '.github/workflows/patch-v3-current-offers.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/v3-current-offers
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build V3 from stable V2 UI
+        run: python .github/patch-v3-current-offers.py
+      - name: Check V2 untouched
+        run: git diff --exit-code origin/main -- net-cao-hon-co-that-tot-hon-v2.html
+      - name: Check V3 CSP and JavaScript syntax
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re,hashlib,base64
+          p=Path('net-cao-hon-co-that-tot-hon-v3.html');html=p.read_text()
+          start=html.index('<script>')+len('<script>');end=html.index('</script>',start);js=html[start:end]
+          Path('/tmp/v3-inline.js').write_text(js)
+          m=re.search(r"script-src 'sha256-([^']+)'",html)
+          assert m, 'missing CSP script hash'
+          actual=base64.b64encode(hashlib.sha256(js.encode()).digest()).decode()
+          assert m.group(1)==actual, 'V3 CSP hash mismatch'
+          PY
+          node --check /tmp/v3-inline.js
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start static server
+        run: python3 -m http.server 8000 >/tmp/v3-http.log 2>&1 &
+      - name: Run V3 multi-width browser smoke
+        run: node tests/v3-current-offers-responsive.mjs
+      - name: Commit implementation and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v3-current-offers.py .github/workflows/patch-v3-current-offers.yml
+          git add -- net-cao-hon-co-that-tot-hon-v3.html tests/v3-current-offers-responsive.mjs
+          git commit -m "Build V3 current-job comparison UI"
+          git push origin HEAD:feature/v3-current-offers
