@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-9VVeChHh2Uy2UtoI+NLErkk887pxE9awcbOiofXTkc8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-rPx30WU5cKh4vNcBuQ2T+slwyuApjhDNlGwyZvCrWgE='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V3</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -506,8 +506,8 @@ host.addEventListener("click",function(e){
 
 document.getElementById("switchEnabledSeg").addEventListener("click",function(e){const b=e.target.closest("button");if(!b)return;state.switching.enabled=b.getAttribute("data-v")==="on";state.switching.enabledExplicit=true;markDirty();renderSwitchingInputs();scheduleCalculation()});
 const swHost=document.getElementById("switchFields");
-swHost.addEventListener("input",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k||el.tagName==="SELECT")return;if(["currentBonusIfLeave","newBonusCustom"].includes(k)){const f=grp(el.value);el.value=f;state.switching[k]=f.replace(/,/g,"")}else state.switching[k]=el.value;markDirty();scheduleCalculation()});
-swHost.addEventListener("change",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k)return;if(el.tagName==="SELECT"){state.switching[k]=el.value;if(k==="currentBonusRule")state.switching.currentBonusRuleExplicit=true}else if(el.type==="date")state.switching[k]=el.value;else return;markDirty();if(k==="currentBonusRule"||k==="newBonusRule"||k==="lastWorkingDate"||k==="onboardDate"){renderSwitchingInputs();if(k==="onboardDate")renderSolverInputs()}scheduleCalculation()});
+swHost.addEventListener("input",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k||el.tagName==="SELECT"||el.type==="date")return;if(["currentBonusIfLeave","newBonusCustom"].includes(k)){const f=grp(el.value);el.value=f;state.switching[k]=f.replace(/,/g,"")}else state.switching[k]=el.value;markDirty();scheduleCalculation()});
+swHost.addEventListener("change",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k)return;if(el.tagName==="SELECT"){state.switching[k]=el.value;if(k==="currentBonusRule")state.switching.currentBonusRuleExplicit=true}else if(el.type==="date")state.switching[k]=el.value;else return;markDirty();if(k==="currentBonusRule"||k==="newBonusRule")renderSwitchingInputs();if(k==="onboardDate")renderSolverInputs();scheduleCalculation()});
 
 document.getElementById("solverEnabledSeg").addEventListener("click",function(e){const b=e.target.closest("button");if(!b)return;state.solver.enabled=b.getAttribute("data-v")==="on";if(state.solver.enabled){state.switching.enabled=true;state.switching.enabledExplicit=true;renderSwitchingInputs()}markDirty();renderSolverInputs();scheduleCalculation()});
 const solverHost=document.getElementById("solverFields");
