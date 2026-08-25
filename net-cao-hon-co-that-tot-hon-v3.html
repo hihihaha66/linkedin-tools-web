@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-uZAY/i4erRhAnJCuK4Ocl+APZ82Y5DERnf2Sq5OyhK4='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-8o38gse1BqtXT9tchcbgeSsPfJIy2+ZMl8fKce7RR7w='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V2</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,6 +28,10 @@
 @media(max-width:700px){.v3-section-head,.v3-offer-intro{display:block}.v3-section-actions,.v3-offer-count{width:auto;margin-top:10px}.v3-summary-grid{grid-template-columns:1fr}.v3-summary-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 8px;align-items:start}.v3-summary-card strong{margin:0;text-align:right}.v3-summary-card span:not(.v3-badge){grid-column:1/-1}.v3-solver-wrap{grid-template-columns:1fr}.v3-solver-wrap>.solver-foot{grid-column:auto}}
 @media(max-width:540px){.v3-current-box{padding:11px;margin:12px 0 16px}.v3-current-matrix .offer-mrow{grid-template-columns:minmax(104px,39%) minmax(0,61%)}.v3-current-matrix .offer-mlabel,.v3-current-matrix .offer-mcell{padding:9px 7px}.v3-current-matrix .offer-mrow.head .offer-mlabel,.v3-current-matrix .offer-mrow.head .offer-mcell{padding:8px 6px}.v3-current-matrix .ot-current-help{font-size:9.5px}.v3-mode-title{font-size:18px}.v3-pair-btn{font-size:10.5px;padding:6px 8px}.v3-summary-card{padding:8px}.offers-in.one-offer .offer-mrow{grid-template-columns:minmax(104px,39%) minmax(0,61%)}.ctx{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.ctx .field>label{min-height:38px;font-size:11.5px;line-height:1.3}.ctx input[type=number],.ctx select{font-size:14px;padding-left:9px;padding-right:9px}.ctx .suffix-row input{padding-right:48px}.ctx .suffix-row .suffix{font-size:10.5px;right:8px}.diag-item,.diag-constraint{align-items:flex-start;gap:7px}.diag-action{font-size:10.5px;padding:6px 7px}.diag-copy>b{font-size:12px}.diag-path{font-size:10px}.diag-constraint .diag-action{min-width:72px}.v3-three-matrix .erow{grid-template-columns:minmax(82px,1.08fr) repeat(3,minmax(0,1fr));gap:4px;padding:8px 5px;font-size:10px}.v3-three-matrix .erow.head{font-size:8.5px}.v3-three-value{font-size:9.6px}.v3-three-matrix .lbl small{font-size:8.5px}.v3-pair-note{font-size:9.8px}}
 
+
+/* Unit-field contract: suffix is stable in empty, filled and cleared states. */
+.suffix-row .suffix{opacity:1;visibility:visible}
+.suffix-row[data-unit-field="1"] .suffix{color:var(--ink-soft)}
 
 /* V3 mobile input hygiene: the suffix is the canonical unit; examples stay compact. */
 input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;color:#8E8A80;opacity:.72}
@@ -67,7 +71,7 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
 <hr class="rule">
 <p class="eyebrow">Bối cảnh chung</p>
 <div class="ctx">
-<div class="field"><label for="deps"><span class="ctx-label-main">Người phụ thuộc</span><span class="ctx-label-sub">(tính thuế)</span></label><div class="suffix-row"><input type="number" id="deps" min="0" step="1" inputmode="numeric" placeholder="VD: 0"><span class="suffix">người</span></div></div>
+<div class="field"><label for="deps"><span class="ctx-label-main">Người phụ thuộc</span><span class="ctx-label-sub">(tính thuế)</span></label><div class="suffix-row" data-unit-field="1"><input type="number" id="deps" min="0" step="1" inputmode="numeric" placeholder="VD: 0"><span class="suffix">người</span></div></div>
 <div class="field"><label for="region"><span class="ctx-label-main">Vùng lương tối thiểu</span><span class="ctx-label-sub">(trần BHTN)</span></label><select id="region"><option value="I">Vùng I</option><option value="II">Vùng II</option><option value="III">Vùng III</option><option value="IV">Vùng IV</option></select></div>
 </div>
 <div class="bh-sim-wrap">
@@ -75,7 +79,7 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
 <details class="bh-sim" id="bhSim">
 <summary><span class="bh-summary-title">Ốm đau, thai sản</span><span class="bh-summary-state" id="bhSummaryState">Chưa bật mô phỏng</span></summary>
 <div class="bh-sim-body">
-<div class="bh-compact-row"><label for="sickDays">Số ngày nghỉ ốm</label><div class="bh-control"><div class="suffix-row"><input type="number" id="sickDays" min="0" step="1" inputmode="numeric" placeholder="VD: 5"><span class="suffix">ngày</span></div></div></div>
+<div class="bh-compact-row"><label for="sickDays">Số ngày nghỉ ốm</label><div class="bh-control"><div class="suffix-row" data-unit-field="1"><input type="number" id="sickDays" min="0" step="1" inputmode="numeric" placeholder="VD: 5"><span class="suffix">ngày</span></div></div></div>
 <div class="bh-compact-row"><label>Xét chế độ thai sản (LĐ nữ)</label><div class="bh-control"><div class="seg" id="matSeg"><button data-v="show">Có</button><button data-v="hide" class="on">Không</button></div></div></div>
 <p class="bh-shared-note">Chỉ dùng để mô phỏng quyền lợi BHXH ở mục “Nếu có biến cố”, không ảnh hưởng lương net hay thu nhập so sánh. Thai sản được so theo mức lương làm căn cứ đóng BHXH; tool không kiểm tra điều kiện hưởng.</p>
 </div>
@@ -227,11 +231,16 @@ function syncProbDurationInline(i){
 }
 
 
+function unitInputHtml(attrs,value,placeholder,suffix,inputmode='decimal',money=false,extra=''){
+ const v=money?grp(value==null?'':value):esc(value==null?'':value),unit=String(suffix||''),wide=unit.length>2?' unit-wide':'';
+ return '<div class="suffix-row'+wide+'" data-unit-field="1"><input type="text" '+attrs+' inputmode="'+inputmode+'" placeholder="'+esc(placeholder||'')+'" value="'+v+'" '+(extra||'')+'>'+(unit?'<span class="suffix" aria-hidden="true">'+esc(unit)+'</span>':'')+'</div>';
+}
+
 function renderInputs(){
  const previousBenefits=document.querySelector('#offersIn .compare-benefits'),benefitsWasOpen=!!(previousBenefits&&previousBenefits.open);
  const A=state.offers[0],B=state.offers[1],dash='<span class="offer-mna">-</span>';
  const seg=function(i,kind,value,opts,three){return '<div class="seg'+(three?' three':'')+'" data-seg="'+kind+'" data-i="'+i+'">'+opts.map(function(x){return '<button data-v="'+x[0]+'" class="'+(value===x[0]?'on':'')+'">'+x[1]+'</button>'}).join('')+'</div>'};
- const textInput=function(i,k,o,placeholder,inputmode,money,suffix,extra){const raw=o[k],v=money?grp(raw==null?'':raw):esc(raw==null?'':raw),wide=suffix&&String(suffix).length>2?' unit-wide':'';return '<div class="suffix-row'+wide+'"><input type="text" data-i="'+i+'" data-k="'+k+'" inputmode="'+(inputmode||'decimal')+'" placeholder="'+placeholder+'" value="'+v+'" '+(extra||'')+'>'+(suffix?'<span class="suffix">'+suffix+'</span>':'')+'</div>'};
+ const textInput=function(i,k,o,placeholder,inputmode,money,suffix,extra){return unitInputHtml('data-i="'+i+'" data-k="'+k+'"',o[k],placeholder,suffix,inputmode||'decimal',money,extra||'')};
  const row=function(label,a,b,note,cls){return '<div class="offer-mrow'+(cls?' '+cls:'')+'"><div class="offer-mlabel">'+label+'</div><div class="offer-mcell">'+a+'</div><div class="offer-mcell">'+b+'</div>'+(note?'<div class="offer-mnote">'+note+'</div>':'')+'</div>'};
  const head=function(editable){return '<div class="offer-mrow head"><div class="offer-mlabel">Chỉ tiêu</div><div class="offer-mcell">'+(editable?'<input class="name-in" data-i="0" data-k="name" value="'+esc(A.name)+'">':'<span class="offer-head-name" data-offer-head="0">'+esc(A.name)+'</span>')+'</div><div class="offer-mcell">'+(editable?'<input class="name-in" data-i="1" data-k="name" value="'+esc(B.name)+'">':'<span class="offer-head-name" data-offer-head="1">'+esc(B.name)+'</span>')+'</div></div>'};
  const bhCell=function(o,i){return '<div class="control-stack"><select data-i="'+i+'" data-k="bhMode"><option value="unknown" '+(o.bhMode==='unknown'?'selected':'')+'>Chưa rõ</option><option value="salary" '+(o.bhMode==='salary'?'selected':'')+'>Theo mức lương offer</option><option value="custom" '+(o.bhMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.bhMode==='custom'?'<div class="sub-input">'+textInput(i,'customBase',o,'VD: 10 triệu','numeric',true,'đ')+'</div>':'')+'</div>'};
@@ -296,7 +305,7 @@ function renderCurrentInputs(){
  [].forEach.call(seg.children,b=>b.classList.toggle('on',b.getAttribute('data-v')===(state.currentJobEnabled?'on':'off')));
  host.style.display=state.currentJobEnabled?'':'none';if(!state.currentJobEnabled){host.innerHTML='';return}
  const sg=(k,val,opts,three=false)=>'<div class="seg'+(three?' three':'')+'" data-current-seg="'+k+'">'+opts.map(x=>'<button data-v="'+x[0]+'" class="'+(val===x[0]?'on':'')+'">'+x[1]+'</button>').join('')+'</div>';
- const inp=(k,v,ph,suf='',money=false)=>{const wide=suf&&String(suf).length>2?' unit-wide':'';return '<div class="suffix-row'+wide+'"><input type="text" data-current="'+k+'" inputmode="'+(money?'numeric':'decimal')+'" placeholder="'+ph+'" value="'+(money?grp(v==null?'':v):esc(v==null?'':v))+'">'+(suf?'<span class="suffix">'+suf+'</span>':'')+'</div>'};
+ const inp=(k,v,ph,suf='',money=false)=>unitInputHtml('data-current="'+k+'"',v,ph,suf,money?'numeric':'decimal',money);
  const row=(label,cell,note='',cls='',attrs='')=>'<div class="offer-mrow'+(cls?' '+cls:'')+'" '+attrs+'><div class="offer-mlabel">'+label+'</div><div class="offer-mcell">'+cell+'</div>'+(note?'<div class="offer-mnote">'+note+'</div>':'')+'</div>';
  const head=()=>'<div class="offer-mrow head"><div class="offer-mlabel">Chỉ tiêu</div><div class="offer-mcell"><input class="name-in" data-current="name" value="'+esc(o.name||'Công việc hiện tại')+'" aria-label="Tên công việc hiện tại"></div></div>';
  const bh='<div class="control-stack"><select data-current="bhMode"><option value="unknown" '+(o.bhMode==='unknown'?'selected':'')+'>Chưa rõ</option><option value="salary" '+(o.bhMode==='salary'?'selected':'')+'>Theo mức lương hiện tại</option><option value="custom" '+(o.bhMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.bhMode==='custom'?'<div class="sub-input">'+inp('customBase',o.customBase,'VD: 10 triệu','đ',true)+'</div>':'')+'</div>';
