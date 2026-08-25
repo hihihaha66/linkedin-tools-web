@@ -7,15 +7,19 @@ try{
     await page.goto('http://127.0.0.1:8000/net-cao-hon-co-that-tot-hon-v4.html',{waitUntil:'domcontentloaded'});
     if(!(await page.title()).includes('V4')||(await page.title()).includes('V3'))throw new Error(label+': wrong V4 title '+await page.title());
     const text=await page.locator('body').innerText();
-    for(const must of ['So công việc hiện tại với 1-2 offer','Thêm khi muốn so offer mới với phương án ở lại.','Có 1 offer thì nhập Offer A; có thêm Offer B thì bật “2 offer”.','BH chưa rõ?','Chọn mục tiêu; tool tính mức lương tối thiểu cần thương lượng theo điều kiện của offer.'])if(!text.includes(must))throw new Error(label+': compact copy missing '+must);
+    for(const must of ['So công việc hiện tại với 1-2 offer'])if(!text.includes(must))throw new Error(label+': compact copy missing '+must);
     for(const old of ['Tool đưa tiền, thời gian, bảo hiểm và tác động khi chuyển việc về cùng một khung','Không cần nhập lại lương hiện tại ở phần chuyển việc.','Các điều kiện khác của từng offer như bảo hiểm, thử việc, thưởng, OT và phụ cấp được giữ nguyên'])if(text.includes(old))throw new Error(label+': old verbose copy still visible '+old);
     const legal=page.locator('.v4-legal');if(await legal.count()!==1)throw new Error(label+': missing legal disclosure');if(await legal.getAttribute('open')!==null)throw new Error(label+': legal disclosure must default collapsed');
     if(!await legal.locator('summary').getByText('Giả định & nguồn pháp lý').count())throw new Error(label+': legal disclosure label missing');
     await legal.locator('summary').click();if(!(await legal.innerText()).includes('Nguồn pháp lý chính'))throw new Error(label+': legal content was lost');
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);if(overflow>2)throw new Error(label+': horizontal overflow '+overflow);
+    const staticLayerAudit=await page.evaluate(()=>({layers:document.querySelectorAll('.v4-layer').length,details:document.querySelectorAll('.v4-layer-details').length,oldLayerHints:Array.from(document.querySelectorAll('.v4-layer>.hint')).length,currentHint:document.querySelector('#currentBox .hint')?.textContent||'',offerHint:document.querySelector('.v3-offer-intro .hint')?.textContent||''}));
+    if(staticLayerAudit.layers!==5||staticLayerAudit.details!==5||staticLayerAudit.oldLayerHints!==0||staticLayerAudit.currentHint||staticLayerAudit.offerHint)throw new Error(label+': compact static hierarchy failed '+JSON.stringify(staticLayerAudit));
     await page.locator('#offerCountSeg [data-v="2"]').click();await page.locator('#offersIn [data-i="0"][data-k="gross"]').fill('25000000');await page.waitForTimeout(700);
+    const bhHelp=(await page.locator('#v4ConditionalHelp').innerText()).trim();if(!bhHelp.includes('BH chưa rõ:'))throw new Error(label+': conditional BH helper did not appear after salary input '+bhHelp);
     if(!bodies.length||String(bodies.at(-1)?.offers?.[0]?.gross)!=='25000000')throw new Error(label+': V4 no longer sends the V3-compatible offer payload');
     if(!apiUrls.length||apiUrls.some(u=>!u.endsWith('/api/offer-value-v4')||u.includes('/api/offer-value-v3')))throw new Error(label+': V4 endpoint isolation failed '+JSON.stringify(apiUrls));
+    const src=await page.locator('html').evaluate(()=>document.documentElement.outerHTML);if(!src.includes('v4-layer-main')||!src.includes('v4-layer-details'))throw new Error(label+': compact result shell missing');
     await page.close();
   }
   console.log('PASS V4 clean UI clone');
