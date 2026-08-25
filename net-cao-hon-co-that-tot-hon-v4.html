@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-JP1gnBr8DYDK6iJNUtXXv+PRMQt549GR8FRKRKEEM3c='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-VOEWcXHUzqfERV6Yd6RkRvPa2saFDwHQaGkrYVu4Zm0='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,8 +84,8 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
 <hr class="rule">
 <p class="eyebrow">Bối cảnh chung</p>
 <div class="ctx">
-<div class="field"><label for="deps"><span class="ctx-label-main">Người phụ thuộc</span><span class="ctx-label-sub">(tính thuế)</span></label><div class="suffix-row" data-unit-field="1"><input type="number" id="deps" min="0" step="1" inputmode="numeric" placeholder="VD: 0"><span class="suffix">người</span></div></div>
-<div class="field"><label for="region"><span class="ctx-label-main">Vùng lương tối thiểu</span><span class="ctx-label-sub">(trần BHTN)</span></label><select id="region"><option value="I">Vùng I</option><option value="II">Vùng II</option><option value="III">Vùng III</option><option value="IV">Vùng IV</option></select></div>
+<div class="field"><label for="deps"><span class="ctx-label-main">Người phụ thuộc</span></label><div class="suffix-row" data-unit-field="1"><input type="number" id="deps" min="0" step="1" inputmode="numeric" placeholder="VD: 0"><span class="suffix">người</span></div></div>
+<div class="field"><label for="region"><span class="ctx-label-main">Vùng lương tối thiểu</span></label><select id="region"><option value="I">Vùng I</option><option value="II">Vùng II</option><option value="III">Vùng III</option><option value="IV">Vùng IV</option></select></div>
 </div>
 <div class="bh-sim-wrap">
 <p class="eyebrow">Mô phỏng quyền lợi BHXH</p>
@@ -94,7 +94,7 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
 <div class="bh-sim-body">
 <div class="bh-compact-row"><label for="sickDays">Số ngày nghỉ ốm</label><div class="bh-control"><div class="suffix-row" data-unit-field="1"><input type="number" id="sickDays" min="0" step="1" inputmode="numeric" placeholder="VD: 5"><span class="suffix">ngày</span></div></div></div>
 <div class="bh-compact-row"><label>Xét chế độ thai sản (LĐ nữ)</label><div class="bh-control"><div class="seg" id="matSeg"><button data-v="show">Có</button><button data-v="hide" class="on">Không</button></div></div></div>
-<p class="bh-shared-note">Chỉ dùng để mô phỏng quyền lợi BHXH; không ảnh hưởng lương/thu nhập so sánh. Tool không kiểm tra điều kiện hưởng.</p>
+
 </div>
 </details>
 </div>
@@ -263,7 +263,7 @@ function renderInputs(){
  const otTypeCell=function(o,i){return otWrap('type',i,'<select data-i="'+i+'" data-k="otType"><option value="weekday" '+(o.otType==='weekday'?'selected':'')+'>Ngày thường</option><option value="rest" '+(o.otType==='rest'?'selected':'')+'>Ngày nghỉ hằng tuần</option><option value="mixed" '+(o.otType==='mixed'?'selected':'')+'>Nhiều loại</option></select>');};
  const otFactorCell=function(o,i){const min=o.otType==='rest'?200:150;return otWrap('factor',i,textInput(i,'otFactor',o,'VD: '+min,'decimal',false,'%')+'<p class="ot-inline-help" data-ot-factor-help="'+i+'-otFactor">'+esc(otFactorText(o,'otFactor',min))+'</p>');};
  const otMixedCell=function(o,i,hourKey,factorKey,min,showHelp){return otWrap('mixed',i,'<div class="ot-mini-pair">'+textInput(i,hourKey,o,'VD: 4','decimal',false,'giờ')+textInput(i,factorKey,o,'VD: '+min,'decimal',false,'%')+'</div><p class="ot-inline-help" data-ot-factor-help="'+i+'-'+factorKey+'">'+esc(otFactorText(o,factorKey,min))+'</p>'+(showHelp?'<p class="ot-inline-help" data-ot-mixed-help="'+i+'">'+esc(otMixedText(o))+'</p>':''));};
- const otBaseCell=function(o,i){return otWrap('base',i,'<div class="control-stack"><select data-i="'+i+'" data-k="otBaseMode"><option value="offer" '+(o.otBaseMode==='offer'?'selected':'')+'>Ước tính theo lương offer</option><option value="custom" '+(o.otBaseMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.otBaseMode==='custom'?'<div class="sub-input">'+textInput(i,'otBaseAmount',o,i===0?'VD: 25,000,000':'VD: 30,000,000','numeric',true,'đ')+'</div><p class="benefit-note" style="margin-bottom:0">Nhập mức lương tháng công ty thực tế dùng để tính OT.</p>':'')+'</div>');};
+ const otBaseCell=function(o,i){return otWrap('base',i,'<div class="control-stack"><select data-i="'+i+'" data-k="otBaseMode"><option value="offer" '+(o.otBaseMode==='offer'?'selected':'')+'>Ước tính theo lương offer</option><option value="custom" '+(o.otBaseMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.otBaseMode==='custom'?'<div class="sub-input">'+textInput(i,'otBaseAmount',o,i===0?'VD: 25,000,000':'VD: 30,000,000','numeric',true,'đ')+'</div>':'')+'</div>');};
  const otHoursCell=function(o,i){return textInput(i,'otMonthly',o,'VD: 8','decimal',false,'giờ')+'<p class="ot-inline-help" data-ot-guard="'+i+'">'+esc(otGuardrailText(o))+'</p>';};
  const perfCell=function(o,i){const amount=o.performanceBonusType==='amount';return '<div class="control-stack">'+seg(i,'performanceBonusType',o.performanceBonusType,[['months','Tháng lương'],['amount','Số tiền']])+'<div class="sub-input">'+textInput(i,'performanceBonusValue',o,amount?'VD: 60,000,000':'VD: 3',amount?'numeric':'decimal',amount,amount?'đ':'tháng')+'</div></div>'};
  const anyTrial=probOn(A)||(state.offerCount===2&&probOn(B)),open=benefitsWasOpen||shouldOpenBenefits(A)||(state.offerCount===2&&shouldOpenBenefits(B));
@@ -273,28 +273,28 @@ function renderInputs(){
  html+=row('Công ty dùng mức nào để đóng BH?',bhCell(A,0),bhCell(B,1));
  html+=row('Lên văn phòng / tuần',textInput(0,'days',A,'VD: 5','decimal',false,'buổi'),textInput(1,'days',B,'VD: 5','decimal',false,'buổi'));
  html+=row('Di chuyển 1 chiều',textInput(0,'commute',A,'VD: 45','decimal',false,'phút'),textInput(1,'commute',B,'VD: 45','decimal',false,'phút'));
- html+=row('Làm thêm giờ (OT) trung bình / tháng',otHoursCell(A,0),otHoursCell(B,1),(otActive(A)||(state.offerCount===2&&otActive(B)))?'Quy đổi theo 12 tháng để đối chiếu mốc 40 giờ/tháng và 200/300 giờ/năm.':'');
- html+=row('OT có được trả tiền không?',otPaidCell(A,0),otPaidCell(B,1),'OT không lương vẫn được cộng vào tổng thời gian bạn bỏ ra.','ot-paid-row');
- html+=row('OT chủ yếu rơi vào',otTypeCell(A,0),otTypeCell(B,1),'Ngày thường dùng mốc tối thiểu 150%; ngày nghỉ hằng tuần 200%. Chọn Nhiều loại nếu cần tách thêm ngày lễ/Tết.','ot-type-row');
- html+=row('Hệ số OT',otFactorCell(A,0),otFactorCell(B,1),'Tool điền mốc tối thiểu theo loại ngày; bạn có thể sửa nếu chính sách công ty áp dụng hệ số khác.','ot-factor-row');
- html+=row('OT ngày thường',otMixedCell(A,0,'otBreakdownWeekday','otFactorWeekday',150,false),otMixedCell(B,1,'otBreakdownWeekday','otFactorWeekday',150,false),'Nhập giờ/tháng và hệ số tương ứng.','ot-mixed-weekday-row');
+ html+=row('Làm thêm giờ (OT) trung bình / tháng',otHoursCell(A,0),otHoursCell(B,1));
+ html+=row('OT có được trả tiền không?',otPaidCell(A,0),otPaidCell(B,1),'','ot-paid-row');
+ html+=row('OT chủ yếu rơi vào',otTypeCell(A,0),otTypeCell(B,1),'','ot-type-row');
+ html+=row('Hệ số OT',otFactorCell(A,0),otFactorCell(B,1),'','ot-factor-row');
+ html+=row('OT ngày thường',otMixedCell(A,0,'otBreakdownWeekday','otFactorWeekday',150,false),otMixedCell(B,1,'otBreakdownWeekday','otFactorWeekday',150,false),'','ot-mixed-weekday-row');
  html+=row('OT ngày nghỉ hằng tuần',otMixedCell(A,0,'otBreakdownRest','otFactorRest',200,false),otMixedCell(B,1,'otBreakdownRest','otFactorRest',200,false),'','ot-mixed-rest-row');
- html+=row('OT ngày lễ/Tết',otMixedCell(A,0,'otBreakdownHoliday','otFactorHoliday',300,true),otMixedCell(B,1,'otBreakdownHoliday','otFactorHoliday',300,true),'Tổng giờ của 3 loại phải bằng OT trung bình/tháng đã nhập.','ot-mixed-holiday-row');
- html+=row('Mức lương dùng để tính OT',otBaseCell(A,0),otBaseCell(B,1),'Nếu không biết công ty dùng mức riêng nào, để “Ước tính theo lương offer”.','ot-base-row');
- html+=row('Có giai đoạn thử việc cần tính riêng?',seg(0,'probationEnabled',A.probationEnabled,[['no','Không'],['yes','Có']]),seg(1,'probationEnabled',B.probationEnabled,[['no','Không'],['yes','Có']]),anyTrial?'Chỉ tách riêng khi lương hoặc BH thử việc khác giai đoạn chính thức.':'');
+ html+=row('OT ngày lễ/Tết',otMixedCell(A,0,'otBreakdownHoliday','otFactorHoliday',300,true),otMixedCell(B,1,'otBreakdownHoliday','otFactorHoliday',300,true),'','ot-mixed-holiday-row');
+ html+=row('Mức lương dùng để tính OT',otBaseCell(A,0),otBaseCell(B,1),'','ot-base-row');
+ html+=row('Có giai đoạn thử việc cần tính riêng?',seg(0,'probationEnabled',A.probationEnabled,[['no','Không'],['yes','Có']]),seg(1,'probationEnabled',B.probationEnabled,[['no','Không'],['yes','Có']]));
  if(anyTrial){
-  html+=row('Nhóm công việc của vị trí',jobCell(A,0),jobCell(B,1),'Chỉ dùng để cảnh báo giới hạn thời gian thử việc; không làm thay đổi cách tính lương.');
-  html+=row('Thời gian thử việc',probDurationCell(A,0),probDurationCell(B,1),'Nhập theo đúng đơn vị offer hoặc hợp đồng ghi. Nếu chọn Ngày, tool dùng số ngày để kiểm tra giới hạn và chỉ quy đổi sang tháng ở bước mô phỏng thu nhập.');
-  html+=row('Lương thử việc (% mức lương offer)',probOn(A)?textInput(0,'probPct',A,'VD: 100','decimal',false,'%')+ '<p class="benefit-note">Nếu offer là Gross, % này áp trên Gross; nếu là Net, áp trên Net. Hưởng đủ thì để 100%.</p>':dash,probOn(B)?textInput(1,'probPct',B,'VD: 100','decimal',false,'%')+'<p class="benefit-note">Nếu offer là Gross, % này áp trên Gross; nếu là Net, áp trên Net. Hưởng đủ thì để 100%.</p>':dash);
-  html+=row('Trong thời gian thử việc có đóng BH bắt buộc?',probOn(A)?seg(0,'probInsurance',A.probInsurance,[['no','Không'],['yes','Có']]):dash,probOn(B)?seg(1,'probInsurance',B.probInsurance,[['no','Không'],['yes','Có']]):dash,'Chọn theo hợp đồng hoặc chính sách thử việc thực tế.');
+  html+=row('Nhóm công việc của vị trí',jobCell(A,0),jobCell(B,1));
+  html+=row('Thời gian thử việc',probDurationCell(A,0),probDurationCell(B,1));
+  html+=row('Lương thử việc (% mức lương offer)',probOn(A)?textInput(0,'probPct',A,'VD: 100','decimal',false,'%'):dash,probOn(B)?textInput(1,'probPct',B,'VD: 100','decimal',false,'%'):dash);
+  html+=row('Trong thời gian thử việc có đóng BH bắt buộc?',probOn(A)?seg(0,'probInsurance',A.probInsurance,[['no','Không'],['yes','Có']]):dash,probOn(B)?seg(1,'probInsurance',B.probInsurance,[['no','Không'],['yes','Có']]):dash);
  }
  html+='</div>';
  html+='<details class="benefits compare-benefits"'+(open?' open':'')+'><summary>Thưởng, phụ cấp & phúc lợi</summary><div class="benefits-body"><div class="offer-matrix">'+head(false);
- html+=row('Thưởng đảm bảo / năm (tháng lương)',textInput(0,'guaranteedBonusMonths',A,'VD: 1','decimal',false,'tháng'),textInput(1,'guaranteedBonusMonths',B,'VD: 1','decimal',false,'tháng'),'Tháng 13 chắc chắn nhận = 1.');
- html+=row('Thưởng hiệu suất / năm',perfCell(A,0),perfCell(B,1),'Không cộng vào “Thu nhập cố định”.');
+ html+=row('Thưởng đảm bảo / năm (tháng lương)',textInput(0,'guaranteedBonusMonths',A,'VD: 1','decimal',false,'tháng'),textInput(1,'guaranteedBonusMonths',B,'VD: 1','decimal',false,'tháng'));
+ html+=row('Thưởng hiệu suất / năm',perfCell(A,0),perfCell(B,1));
  html+=row('Phụ cấp cố định ngoài mức lương trên / tháng',textInput(0,'fixedAllowance',A,'VD: 1,000,000','numeric',true,'đ'),textInput(1,'fixedAllowance',B,'VD: 1,000,000','numeric',true,'đ'));
- html+=row('Phụ cấp này có tính vào căn cứ BH?',seg(0,'allowanceBh',A.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true),seg(1,'allowanceBh',B.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true),'Nếu để “Chưa rõ”, tool tạm tính <b>Có</b> để tránh làm tiền về tay trông cao hơn thực tế. Nếu bạn chọn “Tôi biết mức cụ thể” ở phần BH phía trên, mức bạn nhập được ưu tiên.');
- html+=row('Nghỉ phép hưởng lương / năm',textInput(0,'paidLeaveDays',A,'VD: 12','decimal',false,'ngày'),textInput(1,'paidLeaveDays',B,'VD: 12','decimal',false,'ngày'),'Ngày phép không được cộng thành “tiền thưởng”. Tool chỉ dùng phép để giảm số giờ bạn phải bỏ ra khi tính giá trị/giờ.');
+ html+=row('Phụ cấp này có tính vào căn cứ BH?',seg(0,'allowanceBh',A.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true),seg(1,'allowanceBh',B.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true));
+ html+=row('Nghỉ phép hưởng lương / năm',textInput(0,'paidLeaveDays',A,'VD: 12','decimal',false,'ngày'),textInput(1,'paidLeaveDays',B,'VD: 12','decimal',false,'ngày'));
  html+='</div></div></details>';
  document.getElementById('offersIn').innerHTML=html;
  syncOfferCount();
@@ -327,27 +327,27 @@ function renderCurrentInputs(){
  html+=row('Công ty dùng mức nào để đóng BH?',bh);
  html+=row('Lên văn phòng / tuần',inp('days',o.days,'VD: 5','buổi'));
  html+=row('Di chuyển 1 chiều',inp('commute',o.commute,'VD: 45','phút'));
- html+=row('Làm thêm giờ (OT) trung bình / tháng',inp('otMonthly',o.otMonthly,'VD: 8','giờ')+'<p class="ot-current-help" data-current-ot-guard>'+esc(otGuardrailText(o))+'</p>','Quy đổi OT trung bình theo tháng ra 12 tháng để đối chiếu mốc 40 giờ/tháng và 200/300 giờ/năm.');
- html+=row('OT có được trả tiền không?',sg('otPaid',o.otPaid,[['no','Không'],['yes','Có']]),'OT không lương vẫn được cộng vào tổng thời gian bạn bỏ ra.','current-ot-row','data-current-ot-row="paid"'+(active?'':' hidden'));
- html+=row('OT chủ yếu rơi vào','<select data-current="otType"><option value="weekday" '+(o.otType==='weekday'?'selected':'')+'>Ngày thường</option><option value="rest" '+(o.otType==='rest'?'selected':'')+'>Ngày nghỉ hằng tuần</option><option value="mixed" '+(o.otType==='mixed'?'selected':'')+'>Nhiều loại</option></select>','Ngày thường dùng mốc tối thiểu 150%; ngày nghỉ hằng tuần 200%. Chọn Nhiều loại nếu cần tách thêm ngày lễ/Tết.','current-ot-row','data-current-ot-row="type"'+(paid?'':' hidden'));
- html+=row('Hệ số OT',inp('otFactor',o.otFactor,'VD: '+factorMin,'%')+'<p class="ot-current-help" data-current-ot-factor>'+esc(otFactorText(o,'otFactor',factorMin))+'</p>','Tool điền mốc tối thiểu theo loại ngày; bạn có thể sửa nếu chính sách công ty áp dụng hệ số khác.','current-ot-row','data-current-ot-row="factor"'+(paid&&!mixed?'':' hidden'));
- html+=row('OT ngày thường','<div class="ot-mini-pair">'+inp('otBreakdownWeekday',o.otBreakdownWeekday,'VD: 4','giờ')+inp('otFactorWeekday',o.otFactorWeekday,'VD: 150','%')+'</div>','Nhập giờ/tháng và hệ số tương ứng.','current-ot-row','data-current-ot-row="mixed-weekday"'+(mixed?'':' hidden'));
+ html+=row('Làm thêm giờ (OT) trung bình / tháng',inp('otMonthly',o.otMonthly,'VD: 8','giờ')+'<p class="ot-current-help" data-current-ot-guard>'+esc(otGuardrailText(o))+'</p>');
+ html+=row('OT có được trả tiền không?',sg('otPaid',o.otPaid,[['no','Không'],['yes','Có']]),'','current-ot-row','data-current-ot-row="paid"'+(active?'':' hidden'));
+ html+=row('OT chủ yếu rơi vào','<select data-current="otType"><option value="weekday" '+(o.otType==='weekday'?'selected':'')+'>Ngày thường</option><option value="rest" '+(o.otType==='rest'?'selected':'')+'>Ngày nghỉ hằng tuần</option><option value="mixed" '+(o.otType==='mixed'?'selected':'')+'>Nhiều loại</option></select>','','current-ot-row','data-current-ot-row="type"'+(paid?'':' hidden'));
+ html+=row('Hệ số OT',inp('otFactor',o.otFactor,'VD: '+factorMin,'%')+'<p class="ot-current-help" data-current-ot-factor>'+esc(otFactorText(o,'otFactor',factorMin))+'</p>','','current-ot-row','data-current-ot-row="factor"'+(paid&&!mixed?'':' hidden'));
+ html+=row('OT ngày thường','<div class="ot-mini-pair">'+inp('otBreakdownWeekday',o.otBreakdownWeekday,'VD: 4','giờ')+inp('otFactorWeekday',o.otFactorWeekday,'VD: 150','%')+'</div>','','current-ot-row','data-current-ot-row="mixed-weekday"'+(mixed?'':' hidden'));
  html+=row('OT ngày nghỉ hằng tuần','<div class="ot-mini-pair">'+inp('otBreakdownRest',o.otBreakdownRest,'VD: 4','giờ')+inp('otFactorRest',o.otFactorRest,'VD: 200','%')+'</div>','','current-ot-row','data-current-ot-row="mixed-rest"'+(mixed?'':' hidden'));
- html+=row('OT ngày lễ/Tết','<div class="ot-mini-pair">'+inp('otBreakdownHoliday',o.otBreakdownHoliday,'VD: 4','giờ')+inp('otFactorHoliday',o.otFactorHoliday,'VD: 300','%')+'</div><p class="ot-current-help" data-current-ot-mixed>'+esc(otMixedText(o))+'</p>','Tổng giờ của 3 loại phải bằng OT trung bình/tháng đã nhập.','current-ot-row','data-current-ot-row="mixed-holiday"'+(mixed?'':' hidden'));
- const otBase='<div class="control-stack"><select data-current="otBaseMode"><option value="offer" '+(o.otBaseMode==='offer'?'selected':'')+'>Ước tính theo lương hiện tại</option><option value="custom" '+(o.otBaseMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.otBaseMode==='custom'?'<div class="sub-input">'+inp('otBaseAmount',o.otBaseAmount,'VD: 20,000,000','đ',true)+'</div><p class="benefit-note" style="margin-bottom:0">Nhập mức lương tháng công ty thực tế dùng để tính OT.</p>':'')+'</div>';
- html+=row('Mức lương dùng để tính OT',otBase,'Nếu không biết công ty dùng mức riêng nào, để “Ước tính theo lương hiện tại”.','current-ot-row','data-current-ot-row="base"'+(paid?'':' hidden'));
+ html+=row('OT ngày lễ/Tết','<div class="ot-mini-pair">'+inp('otBreakdownHoliday',o.otBreakdownHoliday,'VD: 4','giờ')+inp('otFactorHoliday',o.otFactorHoliday,'VD: 300','%')+'</div><p class="ot-current-help" data-current-ot-mixed>'+esc(otMixedText(o))+'</p>','','current-ot-row','data-current-ot-row="mixed-holiday"'+(mixed?'':' hidden'));
+ const otBase='<div class="control-stack"><select data-current="otBaseMode"><option value="offer" '+(o.otBaseMode==='offer'?'selected':'')+'>Ước tính theo lương hiện tại</option><option value="custom" '+(o.otBaseMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.otBaseMode==='custom'?'<div class="sub-input">'+inp('otBaseAmount',o.otBaseAmount,'VD: 20,000,000','đ',true)+'</div>':'')+'</div>';
+ html+=row('Mức lương dùng để tính OT',otBase,'','current-ot-row','data-current-ot-row="base"'+(paid?'':' hidden'));
  html+='</div>';
  html+='<details class="benefits compare-benefits v3-current-benefits"'+(benefitsOpen?' open':'')+'><summary>Thưởng, phụ cấp & phúc lợi</summary><div class="benefits-body"><div class="offer-matrix v3-current-matrix">'+head();
- html+=row('Thưởng đảm bảo / năm (tháng lương)',inp('guaranteedBonusMonths',o.guaranteedBonusMonths,'VD: 1','tháng'),'Ví dụ tháng 13 chắc chắn nhận = 1. Khoản này dùng cùng loại Gross/Net của công việc hiện tại.');
- html+=row('Thưởng hiệu suất / năm','<div class="control-stack">'+sg('performanceBonusType',o.performanceBonusType,[['months','Tháng lương'],['amount','Số tiền']])+'<div class="sub-input">'+inp('performanceBonusValue',o.performanceBonusValue,perfAmount?'VD: 60,000,000':'VD: 2',perfAmount?'đ':'tháng',perfAmount)+'</div></div>','Nhập đúng cách công ty nêu khoản thưởng: ví dụ 2 tháng lương hoặc 60,000,000đ. Khoản này không được cộng vào “Thu nhập cố định”.');
+ html+=row('Thưởng đảm bảo / năm (tháng lương)',inp('guaranteedBonusMonths',o.guaranteedBonusMonths,'VD: 1','tháng'));
+ html+=row('Thưởng hiệu suất / năm','<div class="control-stack">'+sg('performanceBonusType',o.performanceBonusType,[['months','Tháng lương'],['amount','Số tiền']])+'<div class="sub-input">'+inp('performanceBonusValue',o.performanceBonusValue,perfAmount?'VD: 60,000,000':'VD: 2',perfAmount?'đ':'tháng',perfAmount)+'</div></div>');
  html+=row('Phụ cấp cố định ngoài mức lương trên / tháng',inp('fixedAllowance',o.fixedAllowance,'VD: 1,000,000','đ',true));
- html+=row('Phụ cấp này có tính vào căn cứ BH?',sg('allowanceBh',o.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true),'Nếu để “Chưa rõ”, tool tạm tính Có để tránh làm tiền về tay trông cao hơn thực tế. Nếu bạn chọn “Tôi biết mức cụ thể” ở phần BH phía trên, mức bạn nhập được ưu tiên.');
- html+=row('Nghỉ phép hưởng lương / năm',inp('paidLeaveDays',o.paidLeaveDays,'VD: 12','ngày'),'Ngày phép không được cộng thành “tiền thưởng”. Tool chỉ dùng phép để giảm số giờ bạn phải bỏ ra khi tính giá trị/giờ.');
+ html+=row('Phụ cấp này có tính vào căn cứ BH?',sg('allowanceBh',o.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true));
+ html+=row('Nghỉ phép hưởng lương / năm',inp('paidLeaveDays',o.paidLeaveDays,'VD: 12','ngày'));
  html+='</div></div></details>';
  host.innerHTML=html;syncCurrentOtVisibility();
 }
 function syncOfferCount(){const seg=document.getElementById('offerCountSeg');[].forEach.call(seg.children,b=>b.classList.toggle('on',b.getAttribute('data-v')===String(state.offerCount)));document.getElementById('offersIn').classList.toggle('one-offer',state.offerCount!==2)}
-function renderV3ResultHead(data){document.getElementById('v3Summary').innerHTML=data&&data.summaryHtml||'';document.getElementById('v3ModeTitle').textContent=data&&data.modeTitle||'';const host=document.getElementById('v3Pairs'),hint=document.getElementById('v3PairHint');host.innerHTML='';hint.textContent='';const opts=(data&&data.availableOptions)||[],pair=data&&data.comparison||{},allMode=data&&data.comparisonMode==='all';if(opts.length<3)return;const all=document.createElement('button');all.type='button';all.className='v3-pair-btn all'+(allMode?' on':'');all.textContent='Cả 3';all.dataset.view='all';host.appendChild(all);for(let i=0;i<opts.length;i++)for(let j=i+1;j<opts.length;j++){const a=opts[i],b=opts[j],btn=document.createElement('button');btn.type='button';btn.className='v3-pair-btn'+(!allMode&&((pair.left===a.id&&pair.right===b.id)||(pair.left===b.id&&pair.right===a.id))?' on':'');btn.textContent=a.name+' ↔ '+b.name;btn.dataset.view='pair';btn.dataset.left=a.id;btn.dataset.right=b.id;host.appendChild(btn)}hint.textContent=allMode?'Đang xem nhanh cả 3 ở Lớp 1-5. Chọn một cặp để xem chênh lệch và cách tính chi tiết.':'Lựa chọn này áp dụng đồng bộ cho Lớp 1-5.'}
+function renderV3ResultHead(data){document.getElementById('v3Summary').innerHTML=data&&data.summaryHtml||'';document.getElementById('v3ModeTitle').textContent=data&&data.modeTitle||'';const host=document.getElementById('v3Pairs'),hint=document.getElementById('v3PairHint');host.innerHTML='';hint.textContent='';const opts=(data&&data.availableOptions)||[],pair=data&&data.comparison||{},allMode=data&&data.comparisonMode==='all';if(opts.length<3)return;const all=document.createElement('button');all.type='button';all.className='v3-pair-btn all'+(allMode?' on':'');all.textContent='Cả 3';all.dataset.view='all';host.appendChild(all);for(let i=0;i<opts.length;i++)for(let j=i+1;j<opts.length;j++){const a=opts[i],b=opts[j],btn=document.createElement('button');btn.type='button';btn.className='v3-pair-btn'+(!allMode&&((pair.left===a.id&&pair.right===b.id)||(pair.left===b.id&&pair.right===a.id))?' on':'');btn.textContent=a.name+' ↔ '+b.name;btn.dataset.view='pair';btn.dataset.left=a.id;btn.dataset.right=b.id;host.appendChild(btn)}hint.textContent=''}
 
 function switchingCurrentNetStatus(v){
  const raw=String(v==null?'':v).replace(/,/g,'').trim();if(raw==='')return{kind:'empty',text:''};
@@ -368,15 +368,14 @@ function renderSwitchingInputs(){
  const oldExtra=sw.currentBonusRule==='custom'?'<div class="field suffix-row"><label>Số thưởng bên hiện tại dự kiến vẫn nhận khi nghỉ</label><input type="text" data-sw="currentBonusIfLeave" inputmode="numeric" placeholder="VD: 10,000,000" value="'+grp(sw.currentBonusIfLeave==null?'':sw.currentBonusIfLeave)+'"><span class="suffix">đ</span></div>':'';
  const newExtra=sw.newBonusRule==='custom'?'<div class="field suffix-row"><label>Số thưởng đảm bảo dự kiến về tay trong năm onboard</label><input type="text" data-sw="newBonusCustom" inputmode="numeric" placeholder="VD: 20,000,000" value="'+grp(sw.newBonusCustom==null?'':sw.newBonusCustom)+'"><span class="suffix">đ</span></div>':'';
  box.innerHTML='<div class="switch-grid">'
-  +'<p class="v3-baseline-note switch-wide"><b>Mốc so sánh:</b> lương net và thưởng đảm bảo nếu ở lại được lấy trực tiếp từ “Công việc hiện tại”. '+(!state.currentJobEnabled?'Bạn chưa thêm Công việc hiện tại nên phần này sẽ báo thiếu mốc so sánh.':'')+'</p>'
+  +(!state.currentJobEnabled?'<p class="v3-baseline-note switch-wide" style="color:var(--clay)"><b>Thiếu mốc so sánh:</b> thêm Công việc hiện tại để tính phần chuyển việc.</p>':'')
   +'<div class="field"><label>Bạn muốn so ở lại với offer nào?</label><select data-sw="targetOffer">'+candidates.map(x=>'<option value="'+x[0]+'" '+(sw.targetOffer===x[0]?'selected':'')+'>'+esc(x[1])+'</option>').join('')+'</select></div>'
   +'<div class="field"><label>Ngày làm việc cuối cùng ở công ty hiện tại</label><input type="date" data-sw="lastWorkingDate" value="'+esc(sw.lastWorkingDate||'')+'"></div>'
   +'<div class="field"><label>Ngày onboard công ty mới</label><input type="date" data-sw="onboardDate" value="'+esc(sw.onboardDate||'')+'"></div>'
-  +'<div class="field"><label>Nếu nghỉ vào ngày trên, thưởng đảm bảo bên hiện tại sẽ thế nào?</label><select data-sw="currentBonusRule"><option value="unknown" '+(sw.currentBonusRule==='unknown'?'selected':'')+'>Chưa rõ</option><option value="lost" '+(sw.currentBonusRule==='lost'?'selected':'')+'>Mất toàn bộ</option><option value="time" '+(sw.currentBonusRule==='time'?'selected':'')+'>Nhận theo thời gian đã làm</option><option value="full" '+(sw.currentBonusRule==='full'?'selected':'')+'>Vẫn nhận đủ</option><option value="custom" '+(sw.currentBonusRule==='custom'?'selected':'')+'>Tôi biết số sẽ nhận</option></select><p class="benefit-note">Tổng thưởng đảm bảo nếu ở lại lấy từ thông tin Công việc hiện tại.</p></div>'
+  +'<div class="field"><label>Nếu nghỉ vào ngày trên, thưởng đảm bảo bên hiện tại sẽ thế nào?</label><select data-sw="currentBonusRule"><option value="unknown" '+(sw.currentBonusRule==='unknown'?'selected':'')+'>Chưa rõ</option><option value="lost" '+(sw.currentBonusRule==='lost'?'selected':'')+'>Mất toàn bộ</option><option value="time" '+(sw.currentBonusRule==='time'?'selected':'')+'>Nhận theo thời gian đã làm</option><option value="full" '+(sw.currentBonusRule==='full'?'selected':'')+'>Vẫn nhận đủ</option><option value="custom" '+(sw.currentBonusRule==='custom'?'selected':'')+'>Tôi biết số sẽ nhận</option></select></div>'
   +oldExtra
   +'<div class="field"><label>Trong năm onboard, thưởng đảm bảo ở công ty mới sẽ thế nào?</label><select data-sw="newBonusRule"><option value="unknown" '+(sw.newBonusRule==='unknown'?'selected':'')+'>Chưa rõ</option><option value="time" '+(sw.newBonusRule==='time'?'selected':'')+'>Theo số tháng làm</option><option value="full" '+(sw.newBonusRule==='full'?'selected':'')+'>Nhận đủ</option><option value="none" '+(sw.newBonusRule==='none'?'selected':'')+'>Không nhận</option><option value="custom" '+(sw.newBonusRule==='custom'?'selected':'')+'>Tôi biết số sẽ nhận</option></select></div>'
   +newExtra
-  +'<p class="benefit-note switch-wide">Phần này chỉ hỏi dữ liệu phát sinh khi chuyển việc. Lương/BH/OT/thưởng của từng phương án đã lấy từ thông tin phía trên.</p>'
   +'</div>';
 }
 
@@ -391,12 +390,12 @@ function renderSolverInputs(){
  const money=(v,ph)=>'<input type="text" data-sol-money inputmode="numeric" placeholder="'+ph+'" value="'+grp(v==null?'':v)+'">',goal=(key,label,field)=>'<div class="solver-goal"><label class="solver-goal-head"><input type="checkbox" data-sol="'+key+'" '+(sol[key]?'checked':'')+'><span>'+label+'</span></label>'+field+'</div>',disabled=k=>sol[k]?'':' aria-disabled="true"';
  const templates=[['0',state.offers[0].name||'Offer A']];if(state.offerCount===2){templates.push(['1',state.offers[1].name||'Offer B'],['both','Cả hai'])}if(!templates.some(x=>x[0]===sol.templateOffer))sol.templateOffer=templates[0][0];
  box.innerHTML='<div class="solver-grid">'
-  +'<div class="field solver-wide"><label>Bạn cần tìm mức lương tối thiểu cho offer nào?</label><select data-sol="templateOffer">'+templates.map(x=>'<option value="'+x[0]+'" '+(sol.templateOffer===x[0]?'selected':'')+'>'+esc(x[1])+'</option>').join('')+'</select><p class="solver-note">Tool giữ nguyên bảo hiểm, thử việc, thưởng, OT và phụ cấp của offer được chọn, rồi chỉ thay đổi mức lương để tìm mức tối thiểu đạt các mục tiêu bên dưới. Nếu chọn Cả hai, tool tính riêng cho từng offer.</p></div>'
+  +'<div class="field solver-wide"><label>Bạn cần tìm mức lương tối thiểu cho offer nào?</label><select data-sol="templateOffer">'+templates.map(x=>'<option value="'+x[0]+'" '+(sol.templateOffer===x[0]?'selected':'')+'>'+esc(x[1])+'</option>').join('')+'</select></div>'
   +goal('goalNoLoss','Đến '+solverYearEndLabelV3()+', tổng thu nhập khi chuyển việc không thấp hơn ở lại','<div class="sub-input"'+disabled('goalNoLoss')+'><label>Muốn cao hơn phương án ở lại ít nhất</label><div class="suffix-row">'+money(sol.noLossBuffer,'VD: 0')+'<span class="suffix">đ</span></div></div>')
-  +goal('goalBreakEven','Bù hết phần hụt do chuyển việc trong','<div class="sub-input"'+disabled('goalBreakEven')+'><label>Thời gian tối đa</label><div class="suffix-row"><input type="text" data-sol="breakEvenMonths" inputmode="decimal" value="'+esc(sol.breakEvenMonths??6)+'"><span class="suffix">tháng</span></div><p class="solver-note">Tool ước tính phần hụt ban đầu từ khoảng nghỉ và thưởng bị mất, sau đó dùng chênh lệch Net hàng tháng để tính thời gian bù lại. OT và thưởng hiệu suất không được dùng để xác định mốc này.</p></div>')
+  +goal('goalBreakEven','Bù hết phần hụt do chuyển việc trong','<div class="sub-input"'+disabled('goalBreakEven')+'><label>Thời gian tối đa</label><div class="suffix-row"><input type="text" data-sol="breakEvenMonths" inputmode="decimal" value="'+esc(sol.breakEvenMonths??6)+'"><span class="suffix">tháng</span></div></div>')
   +goal('goalMonthlyNet','Đạt mục tiêu Net/tháng','<div class="sub-input"'+disabled('goalMonthlyNet')+'><label>Net tối thiểu/tháng</label><div class="suffix-row">'+money(sol.targetMonthlyNet,'VD: 40,000,000')+'<span class="suffix">đ</span></div></div>')
-  +goal('goalAnnualFixed','Đạt mục tiêu Net/năm','<div class="sub-input"'+disabled('goalAnnualFixed')+'><label>Net tối thiểu/năm</label><div class="suffix-row">'+money(sol.targetAnnualFixed,'VD: 500,000,000')+'<span class="suffix">đ</span></div><p class="solver-note">Gồm lương, phụ cấp cố định và thưởng đảm bảo sau bảo hiểm và thuế. Không gồm OT và thưởng hiệu suất.</p></div>')
-  +'<p class="solver-note solver-wide">Lớp 6 cần Công việc hiện tại làm mốc so sánh. OT và thưởng hiệu suất vẫn là kịch bản riêng; mức lương tối thiểu chính dựa trên phần cố định/đảm bảo.</p></div>';
+  +goal('goalAnnualFixed','Đạt mục tiêu Net/năm','<div class="sub-input"'+disabled('goalAnnualFixed')+'><label>Net tối thiểu/năm</label><div class="suffix-row">'+money(sol.targetAnnualFixed,'VD: 500,000,000')+'<span class="suffix">đ</span></div></div>')
+  +(!state.currentJobEnabled?'<p class="solver-note solver-wide" style="color:var(--clay)"><b>Thiếu mốc so sánh:</b> thêm Công việc hiện tại để tính Lớp 6.</p>':'')+'</div>';
  const m=box.querySelectorAll('[data-sol-money]');if(m[0])m[0].setAttribute('data-sol','noLossBuffer');if(m[1])m[1].setAttribute('data-sol','targetMonthlyNet');if(m[2])m[2].setAttribute('data-sol','targetAnnualFixed');
 }
 
@@ -474,8 +473,11 @@ function v4CompactLayers(){
 function syncV4ConditionalHelp(){
  const el=document.getElementById('v4ConditionalHelp');if(!el)return;
  const arr=state.offerCount===2?[state.offers[0],state.offers[1]]:[state.offers[0]];if(state.currentJobEnabled)arr.unshift(state.currentJob);
- const hasUnknownBh=arr.some(o=>{const n=Number(String(o.gross??'').replace(/,/g,''));return Number.isFinite(n)&&n>0&&o.bhMode==='unknown'});
- el.innerHTML=hasUnknownBh?'<b>BH chưa rõ:</b> tool dùng giả định tạm và ghi rõ trong kết quả.':'';el.style.display=hasUnknownBh?'':'none';
+ const active=o=>{const n=Number(String(o.gross??'').replace(/,/g,''));return Number.isFinite(n)&&n>0};
+ const hasUnknownBh=arr.some(o=>active(o)&&o.bhMode==='unknown');
+ const hasUnknownAllowanceBh=arr.some(o=>active(o)&&hasPositiveValue(o.fixedAllowance)&&o.allowanceBh==='unknown'&&o.bhMode!=='custom');
+ const parts=[];if(hasUnknownBh)parts.push('<b>BH chưa rõ:</b> tool dùng giả định tạm và ghi rõ trong kết quả.');if(hasUnknownAllowanceBh)parts.push('<b>Phụ cấp chưa rõ BH:</b> tool tạm tính Có vào căn cứ BH.');
+ el.innerHTML=parts.join(' ');el.style.display=parts.length?'':'none';
 }
 
 function applyResult(data){
