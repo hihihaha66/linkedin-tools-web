@@ -50,6 +50,7 @@ try{
 
     if(audit.overflow>2)throw new Error(label+': horizontal overflow '+audit.overflow);
     if(!audit.suffixes.length)throw new Error(label+': no visible unit-suffix rows audited');
+    const uncontracted=await page.evaluate(()=>[...document.querySelectorAll('#offersIn .suffix-row,#currentFields .suffix-row')].filter(row=>row.querySelector('.suffix')&&!row.hasAttribute('data-unit-field')).length);if(uncontracted)throw new Error(label+': offer/current unit fields bypass shared renderer: '+uncontracted);
     for(const x of audit.suffixes){
       if(!x.unit)throw new Error(label+': empty suffix '+JSON.stringify(x));
       if(x.opacity<0.99||x.display==='none'||x.visibility==='hidden')throw new Error(label+': suffix hidden '+JSON.stringify(x));
@@ -57,6 +58,34 @@ try{
       if(x.placeholder&&!x.placeholder.startsWith('VD: '))throw new Error(label+': placeholder convention drift '+JSON.stringify(x));
       if(label.startsWith('mobile')&&x.placeholder&&x.phWidth>x.available+3)throw new Error(label+': placeholder collides with visible suffix '+JSON.stringify(x));
     }
+
+
+    // Contract examples requested for the compact matrix: example value + stable suffix.
+    const exact=await page.evaluate(()=>{
+      const pick=(sel)=>{const el=document.querySelector(sel),suffix=el?.parentElement?.querySelector('.suffix');return el?{ph:el.placeholder,unit:suffix?.textContent.trim(),suffixOpacity:suffix?Number(getComputedStyle(suffix).opacity):null}:null};
+      return{
+        aOffice:pick('#offersIn [data-i="0"][data-k="days"]'),
+        aCommute:pick('#offersIn [data-i="0"][data-k="commute"]'),
+        aOt:pick('#offersIn [data-i="0"][data-k="otMonthly"]'),
+        currentOffice:pick('#currentFields [data-current="days"]'),
+        currentCommute:pick('#currentFields [data-current="commute"]')
+      };
+    });
+    for(const [name,x,ph,unit] of [['aOffice',exact.aOffice,'VD: 5','buổi'],['aCommute',exact.aCommute,'VD: 45','phút'],['aOt',exact.aOt,'VD: 8','giờ'],['currentOffice',exact.currentOffice,'VD: 5','buổi'],['currentCommute',exact.currentCommute,'VD: 45','phút']]){
+      if(!x||x.ph!==ph||x.unit!==unit||x.suffixOpacity!==1)throw new Error(label+': exact unit-field contract failed '+name+' '+JSON.stringify(x));
+    }
+
+    // Empty -> typed -> cleared must never hide or move semantic ownership of the unit.
+    const transition=page.locator('#offersIn [data-i="0"][data-k="days"]');
+    const readTransition=()=>transition.evaluate(el=>{const s=el.parentElement.querySelector('.suffix'),r=s.getBoundingClientRect();return{value:el.value,ph:el.placeholder,unit:s.textContent.trim(),opacity:Number(getComputedStyle(s).opacity),display:getComputedStyle(s).display,visibility:getComputedStyle(s).visibility,suffixX:r.x}});
+    const emptyState=await readTransition();
+    await transition.fill('3');const filledState=await readTransition();
+    await transition.fill('');const clearedState=await readTransition();
+    for(const [stateName,x] of [['empty',emptyState],['filled',filledState],['cleared',clearedState]]){
+      if(x.unit!=='buổi'||x.opacity!==1||x.display==='none'||x.visibility==='hidden')throw new Error(label+': suffix changed in '+stateName+' state '+JSON.stringify(x));
+    }
+    if(emptyState.ph!=='VD: 5'||clearedState.ph!=='VD: 5'||filledState.value!=='3')throw new Error(label+': example/value transition failed');
+    if(Math.abs(emptyState.suffixX-filledState.suffixX)>1||Math.abs(emptyState.suffixX-clearedState.suffixX)>1)throw new Error(label+': suffix shifted between input states');
 
     // Specific regression from the screenshot: empty salary fields must show both the example and the real currency unit.
     const salary=await page.evaluate(()=>[...document.querySelectorAll('#offersIn [data-k="gross"],#currentFields [data-current="gross"]')].filter(el=>{const r=el.getBoundingClientRect();return r.width>0&&r.height>0}).map(el=>({ph:el.placeholder,unit:el.parentElement.querySelector('.suffix')?.textContent.trim(),opacity:getComputedStyle(el.parentElement.querySelector('.suffix')).opacity})));
