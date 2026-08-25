@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-Wk1RidnCnNMzYwQQVJje4Vz+DuDMITxfVESQzJWeQMo='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-JP1gnBr8DYDK6iJNUtXXv+PRMQt549GR8FRKRKEEM3c='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,6 +57,10 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
 
 
 /* V4: copy-light presentation. V3 logic/layout primitives are intentionally preserved. */
+/* V4 compact UX: show decision signal first, details on demand. */
+.v4-conditional-help{margin:8px 0 14px;padding:8px 10px;border-left:3px solid var(--moss);background:rgba(47,94,84,.055);font-size:12px;color:var(--ink-soft)}
+.v4-layer{padding:18px 0}.v4-layer .lnum{margin-bottom:10px}.v4-layer-main{margin:0 0 7px}.v4-primary-label{font-size:11px;color:var(--ink-soft);margin-bottom:5px}.v4-primary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}.v4-primary-option{background:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-width:0}.v4-primary-option>span{display:block;font-size:10.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.v4-primary-option>strong{display:block;margin-top:2px;font-family:var(--mono);font-size:15px;line-height:1.35;overflow-wrap:anywhere}.v4-layer-insight{margin:5px 0 8px!important;padding:0!important;background:none!important;border:0!important;font-size:12.5px!important;color:var(--ink-soft)!important}.v4-layer-details{margin-top:6px;border-top:1px solid var(--line)}.v4-layer-details>summary{cursor:pointer;list-style:none;color:var(--moss);font-size:12.5px;font-weight:600;padding:8px 0}.v4-layer-details>summary::-webkit-details-marker{display:none}.v4-layer-details>summary:before{content:'＋';font-family:var(--mono);margin-right:6px}.v4-layer-details[open]>summary:before{content:'−'}.v4-layer-details>.cols,.v4-layer-details>.events{padding-top:4px}.v4-backend-detail{margin-top:8px}.v4 .v3-current-box .v3-section-copy,.v4 .v3-offer-intro>div:first-child{align-self:center}
+
 .v4 p.hint{margin-bottom:10px}.v4 .rule{margin:18px 0}.v4 .toolbar{margin-bottom:14px}
 .v4 .v3-current-box{margin-bottom:14px}.v4 .solver-box{margin-top:18px}.v4 .switch-box{margin-top:14px}
 .v4-legal{margin:18px 0 0;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.45);padding:0 12px}
@@ -95,26 +99,25 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
 </details>
 </div>
 <div class="v3-current-box" id="currentBox">
-  <div class="v3-section-head"><div class="v3-section-copy"><p class="eyebrow">Mốc so sánh</p><h2 class="sec">Công việc hiện tại</h2><p class="hint">Thêm khi muốn so offer mới với phương án ở lại.</p></div><div class="v3-section-actions"><label>Dùng Công việc hiện tại</label><div class="seg" id="currentEnabledSeg"><button data-v="on">Thêm</button><button data-v="off" class="on">Bỏ qua</button></div></div></div>
+  <div class="v3-section-head"><div class="v3-section-copy"><p class="eyebrow">Mốc so sánh</p><h2 class="sec">Công việc hiện tại</h2></div><div class="v3-section-actions"><label>Dùng Công việc hiện tại</label><div class="seg" id="currentEnabledSeg"><button data-v="on">Thêm</button><button data-v="off" class="on">Bỏ qua</button></div></div></div>
   <div class="v3-current-fields" id="currentFields" style="display:none"></div>
 </div>
-<div class="v3-offer-intro"><div><p class="eyebrow">Offer mới</p><h2 class="sec">Nhập offer đang cân nhắc</h2><p class="hint">Có 1 offer thì nhập Offer A; có thêm Offer B thì bật “2 offer”.</p></div><div class="v3-offer-count"><label>Bạn đang có</label><div class="seg" id="offerCountSeg"><button data-v="1" class="on">1 offer</button><button data-v="2">2 offer</button></div></div></div>
+<div class="v3-offer-intro"><div><p class="eyebrow">Offer mới</p><h2 class="sec">Nhập offer đang cân nhắc</h2></div><div class="v3-offer-count"><label>Bạn đang có</label><div class="seg" id="offerCountSeg"><button data-v="1" class="on">1 offer</button><button data-v="2">2 offer</button></div></div></div>
 <div class="offers-in one-offer" id="offersIn"></div>
-<p class="hint" style="max-width:none;margin:10px 0 14px"><b>BH chưa rõ?</b> Chọn “Chưa rõ”; tool sẽ nêu giả định trong kết quả.</p>
+<div id="v4ConditionalHelp" class="v4-conditional-help" style="display:none"></div>
 <div id="empty" class="empty">Nhập lương cho ít nhất một phương án để bắt đầu.</div>
 <div class="results hidden" id="results">
 <div class="v3-results-head"><div id="v3Summary"></div><h2 class="v3-mode-title" id="v3ModeTitle"></h2><div class="v3-pairs" id="v3Pairs"></div><p class="v3-pair-note" id="v3PairHint"></p></div>
-<div class="layer"><p class="lnum">Lớp 1 · <b>Tiền về tay mỗi tháng</b></p><div class="cols" id="l1cols"></div><div class="delta" id="l1delta"></div></div>
-<div class="layer"><p class="lnum">Lớp 2 · <b>Nếu làm đủ 12 tháng</b></p><p class="hint" style="margin-top:-2px;margin-bottom:14px">Đưa hai phương án đang chọn về cùng 12 tháng làm việc để so tổng thu nhập. Không phải số tiền từ hôm nay đến 31/12.</p><div class="cols" id="annualcols"></div><div class="delta" id="annualdelta"></div></div>
-<div class="layer"><p class="lnum">Lớp 3 · <b>Thời gian bạn bỏ ra để có mức thu nhập đó</b></p><p class="hint" style="margin-top:-2px">176h/tháng là giả định so sánh. Đi lại và OT được cộng vào tổng thời gian bạn bỏ ra. Nếu OT có lương, tool ước tính thêm tiền OT từ số giờ và hệ số bạn nhập. Ngày phép hưởng lương chỉ làm giảm thời gian bạn bỏ ra - không cộng thành một khoản tiền mới.</p><div class="cols" id="tcols"></div><div class="delta" id="tdelta"></div></div>
-<div class="layer"><p class="lnum">Lớp 4 · <b>Căn cứ đóng bảo hiểm</b></p><p class="hint" style="margin-top:-2px">BHXH/BHYT và BHTN có trần căn cứ khác nhau, nên không có một “nền tính mọi quyền lợi” duy nhất ở các mức lương cao.</p><div class="cols" id="l2basis"></div></div>
-<div class="layer"><p class="lnum">Lớp 5 · <b>Nếu có biến cố</b></p><p class="hint" style="margin-top:-2px">Các mô phỏng ở đây dùng mức lương làm căn cứ đóng BH đã nhập. Tool chỉ mô phỏng số tiền, không kiểm tra đủ điều kiện hưởng.</p><div class="events" id="l3events"></div></div>
+<div class="layer v4-layer" data-v4-layer="1"><p class="lnum">Lớp 1 · <b>Tiền về tay mỗi tháng</b></p><div class="v4-layer-main" id="l1main"></div><div class="delta v4-layer-insight" id="l1delta"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="l1cols"></div></details></div>
+<div class="layer v4-layer" data-v4-layer="2"><p class="lnum">Lớp 2 · <b>Nếu làm đủ 12 tháng</b></p><div class="v4-layer-main" id="annualmain"></div><div class="delta v4-layer-insight" id="annualdelta"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="annualcols"></div></details></div>
+<div class="layer v4-layer" data-v4-layer="3"><p class="lnum">Lớp 3 · <b>Thời gian bạn bỏ ra</b></p><div class="v4-layer-main" id="tmain"></div><div class="delta v4-layer-insight" id="tdelta"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="tcols"></div></details></div>
+<div class="layer v4-layer" data-v4-layer="4"><p class="lnum">Lớp 4 · <b>Căn cứ đóng bảo hiểm</b></p><div class="v4-layer-main" id="l2main"></div><div class="v4-layer-insight" id="l4insight"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="l2basis"></div></details></div>
+<div class="layer v4-layer" data-v4-layer="5"><p class="lnum">Lớp 5 · <b>Nếu có biến cố</b></p><div class="v4-layer-main" id="l3main"></div><div class="v4-layer-insight" id="l5insight"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="events" id="l3events"></div></details></div>
 <div class="switch-box switch-box-results">
   <div class="switch-head">
     <div class="switch-copy">
       <p class="eyebrow">Thời điểm chuyển việc</p>
       <h2 class="sec">Nếu chuyển việc thì sao?</h2>
-      <p class="hint">So phương án ở lại và chuyển việc từ ngày nghỉ đến 31/12 của năm onboard.</p>
     </div>
     <div class="switch-toggle">
       <label>Tính thêm tác động khi chuyển việc</label>
@@ -132,7 +135,6 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
     <div class="solver-copy">
       <p class="eyebrow">Lớp 6</p>
       <h2 class="sec">Mức lương tối thiểu để đạt mục tiêu tài chính</h2>
-      <p class="hint">Chọn mục tiêu; tool tính mức lương tối thiểu cần thương lượng theo điều kiện của offer.</p>
     </div>
     <div class="solver-toggle"><label>Bật Lớp 6</label><div class="seg" id="solverEnabledSeg"><button data-v="on">Tính</button><button data-v="off" class="on">Bỏ qua</button></div></div>
   </div>
@@ -271,7 +273,7 @@ function renderInputs(){
  html+=row('Công ty dùng mức nào để đóng BH?',bhCell(A,0),bhCell(B,1));
  html+=row('Lên văn phòng / tuần',textInput(0,'days',A,'VD: 5','decimal',false,'buổi'),textInput(1,'days',B,'VD: 5','decimal',false,'buổi'));
  html+=row('Di chuyển 1 chiều',textInput(0,'commute',A,'VD: 45','decimal',false,'phút'),textInput(1,'commute',B,'VD: 45','decimal',false,'phút'));
- html+=row('Làm thêm giờ (OT) trung bình / tháng',otHoursCell(A,0),otHoursCell(B,1),'Quy đổi OT trung bình theo tháng ra 12 tháng để đối chiếu mốc 40 giờ/tháng và 200/300 giờ/năm.');
+ html+=row('Làm thêm giờ (OT) trung bình / tháng',otHoursCell(A,0),otHoursCell(B,1),(otActive(A)||(state.offerCount===2&&otActive(B)))?'Quy đổi theo 12 tháng để đối chiếu mốc 40 giờ/tháng và 200/300 giờ/năm.':'');
  html+=row('OT có được trả tiền không?',otPaidCell(A,0),otPaidCell(B,1),'OT không lương vẫn được cộng vào tổng thời gian bạn bỏ ra.','ot-paid-row');
  html+=row('OT chủ yếu rơi vào',otTypeCell(A,0),otTypeCell(B,1),'Ngày thường dùng mốc tối thiểu 150%; ngày nghỉ hằng tuần 200%. Chọn Nhiều loại nếu cần tách thêm ngày lễ/Tết.','ot-type-row');
  html+=row('Hệ số OT',otFactorCell(A,0),otFactorCell(B,1),'Tool điền mốc tối thiểu theo loại ngày; bạn có thể sửa nếu chính sách công ty áp dụng hệ số khác.','ot-factor-row');
@@ -279,7 +281,7 @@ function renderInputs(){
  html+=row('OT ngày nghỉ hằng tuần',otMixedCell(A,0,'otBreakdownRest','otFactorRest',200,false),otMixedCell(B,1,'otBreakdownRest','otFactorRest',200,false),'','ot-mixed-rest-row');
  html+=row('OT ngày lễ/Tết',otMixedCell(A,0,'otBreakdownHoliday','otFactorHoliday',300,true),otMixedCell(B,1,'otBreakdownHoliday','otFactorHoliday',300,true),'Tổng giờ của 3 loại phải bằng OT trung bình/tháng đã nhập.','ot-mixed-holiday-row');
  html+=row('Mức lương dùng để tính OT',otBaseCell(A,0),otBaseCell(B,1),'Nếu không biết công ty dùng mức riêng nào, để “Ước tính theo lương offer”.','ot-base-row');
- html+=row('Có giai đoạn thử việc cần tính riêng?',seg(0,'probationEnabled',A.probationEnabled,[['no','Không'],['yes','Có']]),seg(1,'probationEnabled',B.probationEnabled,[['no','Không'],['yes','Có']]),'Chọn Có khi thử việc khác giai đoạn chính thức về lương hoặc BH.');
+ html+=row('Có giai đoạn thử việc cần tính riêng?',seg(0,'probationEnabled',A.probationEnabled,[['no','Không'],['yes','Có']]),seg(1,'probationEnabled',B.probationEnabled,[['no','Không'],['yes','Có']]),anyTrial?'Chỉ tách riêng khi lương hoặc BH thử việc khác giai đoạn chính thức.':'');
  if(anyTrial){
   html+=row('Nhóm công việc của vị trí',jobCell(A,0),jobCell(B,1),'Chỉ dùng để cảnh báo giới hạn thời gian thử việc; không làm thay đổi cách tính lương.');
   html+=row('Thời gian thử việc',probDurationCell(A,0),probDurationCell(B,1),'Nhập theo đúng đơn vị offer hoặc hợp đồng ghi. Nếu chọn Ngày, tool dùng số ngày để kiểm tra giới hạn và chỉ quy đổi sang tháng ở bước mô phỏng thu nhập.');
@@ -288,8 +290,8 @@ function renderInputs(){
  }
  html+='</div>';
  html+='<details class="benefits compare-benefits"'+(open?' open':'')+'><summary>Thưởng, phụ cấp & phúc lợi</summary><div class="benefits-body"><div class="offer-matrix">'+head(false);
- html+=row('Thưởng đảm bảo / năm (tháng lương)',textInput(0,'guaranteedBonusMonths',A,'VD: 1','decimal',false,'tháng'),textInput(1,'guaranteedBonusMonths',B,'VD: 1','decimal',false,'tháng'),'Ví dụ tháng 13 chắc chắn nhận = 1. Khoản này dùng cùng loại Gross/Net đã chọn cho offer.');
- html+=row('Thưởng hiệu suất / năm',perfCell(A,0),perfCell(B,1),'Nhập đúng cách HR/offer nêu khoản thưởng: ví dụ 3 tháng lương hoặc 60,000,000đ. Khoản này dùng cùng loại Gross/Net của offer và không được cộng vào “Thu nhập cố định”.');
+ html+=row('Thưởng đảm bảo / năm (tháng lương)',textInput(0,'guaranteedBonusMonths',A,'VD: 1','decimal',false,'tháng'),textInput(1,'guaranteedBonusMonths',B,'VD: 1','decimal',false,'tháng'),'Tháng 13 chắc chắn nhận = 1.');
+ html+=row('Thưởng hiệu suất / năm',perfCell(A,0),perfCell(B,1),'Không cộng vào “Thu nhập cố định”.');
  html+=row('Phụ cấp cố định ngoài mức lương trên / tháng',textInput(0,'fixedAllowance',A,'VD: 1,000,000','numeric',true,'đ'),textInput(1,'fixedAllowance',B,'VD: 1,000,000','numeric',true,'đ'));
  html+=row('Phụ cấp này có tính vào căn cứ BH?',seg(0,'allowanceBh',A.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true),seg(1,'allowanceBh',B.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true),'Nếu để “Chưa rõ”, tool tạm tính <b>Có</b> để tránh làm tiền về tay trông cao hơn thực tế. Nếu bạn chọn “Tôi biết mức cụ thể” ở phần BH phía trên, mức bạn nhập được ưu tiên.');
  html+=row('Nghỉ phép hưởng lương / năm',textInput(0,'paidLeaveDays',A,'VD: 12','decimal',false,'ngày'),textInput(1,'paidLeaveDays',B,'VD: 12','decimal',false,'ngày'),'Ngày phép không được cộng thành “tiền thưởng”. Tool chỉ dùng phép để giảm số giờ bạn phải bỏ ra khi tính giá trị/giờ.');
@@ -439,6 +441,43 @@ function focusDiagnosticTarget(btn){
  }));
 }
 
+function v4TextOnlyLabel(cell){
+ if(!cell)return'';const c=cell.cloneNode(true);c.querySelectorAll('small').forEach(x=>x.remove());return c.textContent.trim();
+}
+function v4FlattenBackendDetails(host){
+ if(!host)return;host.querySelectorAll('details').forEach(d=>{const box=document.createElement('div');box.className='v4-backend-detail';Array.from(d.children).forEach(ch=>{if(ch.tagName!=='SUMMARY')box.appendChild(ch)});d.replaceWith(box)});
+}
+function v4PrimaryFromHost(hostId,targetId){
+ const host=document.getElementById(hostId),target=document.getElementById(targetId);if(!host||!target)return null;
+ const head=host.querySelector('.erow.head'),row=host.querySelector('.erow:not(.head)');
+ if(!head||!row){target.innerHTML='';v4FlattenBackendDetails(host);return null}
+ const names=Array.from(head.children).slice(1).map(x=>x.textContent.trim());
+ const vals=Array.from(row.children).slice(1),label=v4TextOnlyLabel(row.children[0]);
+ const cards=vals.map((v,i)=>'<div class="v4-primary-option"><span>'+esc(names[i]||('Phương án '+(i+1)))+'</span><strong>'+v.innerHTML+'</strong></div>').join('');
+ target.innerHTML='<div class="v4-primary-label">'+esc(label)+'</div><div class="v4-primary-grid">'+cards+'</div>';
+ const out={label,names,values:vals.map(x=>x.textContent.trim())};v4FlattenBackendDetails(host);return out;
+}
+function v4EnsureInsight(id,text){const el=document.getElementById(id);if(!el)return;if(!el.textContent.trim())el.textContent=text;el.style.display=''}
+function v4CompactLayers(){
+ const p1=v4PrimaryFromHost('l1cols','l1main');
+ const p2=v4PrimaryFromHost('annualcols','annualmain');
+ const p3=v4PrimaryFromHost('tcols','tmain');
+ const p4=v4PrimaryFromHost('l2basis','l2main');
+ const p5=v4PrimaryFromHost('l3events','l3main');
+ v4EnsureInsight('l1delta','So tiền về tay sau BH bắt buộc và thuế.');
+ v4EnsureInsight('annualdelta','So thu nhập cố định nếu làm đủ 12 tháng.');
+ v4EnsureInsight('tdelta','So thời gian bỏ ra và giá trị nhận lại trên mỗi giờ.');
+ const l4=(p4&&p4.values.length>1&&new Set(p4.values).size===1)?'Các phương án đang có cùng mức dùng để tính BH.':'Căn cứ BH khác nhau có thể làm quyền lợi an sinh khác nhau, trong giới hạn trần.';
+ v4EnsureInsight('l4insight',l4);
+ v4EnsureInsight('l5insight','Kết quả mô phỏng dựa trên căn cứ BH đã nhập; điều kiện hưởng thực tế chưa được kiểm tra.');
+}
+function syncV4ConditionalHelp(){
+ const el=document.getElementById('v4ConditionalHelp');if(!el)return;
+ const arr=state.offerCount===2?[state.offers[0],state.offers[1]]:[state.offers[0]];if(state.currentJobEnabled)arr.unshift(state.currentJob);
+ const hasUnknownBh=arr.some(o=>{const n=Number(String(o.gross??'').replace(/,/g,''));return Number.isFinite(n)&&n>0&&o.bhMode==='unknown'});
+ el.innerHTML=hasUnknownBh?'<b>BH chưa rõ:</b> tool dùng giả định tạm và ghi rõ trong kết quả.':'';el.style.display=hasUnknownBh?'':'none';
+}
+
 function applyResult(data){
  const empty=document.getElementById("empty"),results=document.getElementById("results"),solverLayer=document.getElementById("solverLayer");renderV3ResultHead(data||{});document.getElementById("solverResult").innerHTML=(data&&data.layer6Html)||"";solverLayer.style.display=data&&data.showLayer6?"":"none";
  if(!data||!data.hasResults){empty.style.display="";empty.textContent=state.solver&&state.solver.enabled?"Lớp 6 có thể tính dù mức lương của cấu trúc đã chọn đang để trống; xem kết quả bên dưới.":"Nhập lương cho ít nhất một phương án để bắt đầu.";results.classList.add("hidden");return}
@@ -449,6 +488,7 @@ function applyResult(data){
  document.getElementById("l2basis").innerHTML=data.l2basis||"";document.getElementById("l3events").innerHTML=data.l3events||"";document.getElementById("verdict").innerHTML=data.verdictHtml||"";
  const al=document.getElementById("assumptionLayer");document.getElementById("assumptionContent").innerHTML=data.assumptionsHtml||"";al.style.display=data.showAssumptions?"":"none";
  const sl=document.getElementById("switchLayer");document.getElementById("switchingResult").innerHTML=data.switchingHtml||"";sl.style.display=data.showSwitching?"":"none";
+ v4CompactLayers();syncV4ConditionalHelp();
 }
 function showApiError(msg){const e=document.getElementById("empty");e.style.display="";e.textContent=msg||"Không kết nối được máy chủ tính toán. Thử tải lại trang sau ít phút.";document.getElementById("results").classList.add("hidden");document.getElementById("solverLayer").style.display="none";document.getElementById("solverResult").innerHTML="";renderV3ResultHead({})}
 function hasAnySalary(){const arr=state.offerCount===2?[...state.offers]:[state.offers[0]];if(state.currentJobEnabled)arr.push(state.currentJob);return arr.some(o=>{const n=Number(String(o.gross??"").replace(/,/g,""));return Number.isFinite(n)&&n>0})}
@@ -472,7 +512,7 @@ async function calculateNow(){
  }catch(e){if(e&&e.name==="AbortError")return null;if(seq===requestSeq)showApiError();return null}
  finally{if(activeController===controller)activeController=null}
 }
-function scheduleCalculation(){clearTimeout(debounceTimer);debounceTimer=setTimeout(calculateNow,600)}
+function scheduleCalculation(){syncV4ConditionalHelp();clearTimeout(debounceTimer);debounceTimer=setTimeout(calculateNow,600)}
 function markDirty(){dirty=true;updateSaveUI()}
 function updateSaveUI(){const btn=document.getElementById("saveBtn");if(!canStore){btn.style.display="none";document.getElementById("saveState").textContent="Chế độ tạm - dùng Tải dữ liệu để giữ dữ liệu";return}btn.style.display="";if(dirty){btn.textContent="Lưu";document.getElementById("saveState").textContent="● Có thay đổi chưa lưu"}else{btn.textContent="Đã lưu ✓";document.getElementById("saveState").textContent="Đã lưu trên máy này"}}
 function doSave(){if(!canStore)return;try{localStorage.setItem(KEY,JSON.stringify(state));dirty=false;updateSaveUI()}catch(e){document.getElementById("saveState").textContent="Không lưu được - thử Tải dữ liệu"}}
