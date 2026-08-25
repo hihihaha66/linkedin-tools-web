@@ -27,6 +27,12 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
  .bh-control .suffix-row input{padding-right:42px}
  .bh-control .suffix-row .suffix{font-size:10px;right:7px}
 }
+@media(max-width:340px){
+ .offers-in:not(.one-offer) .offer-mcell input::placeholder{font-size:8px;letter-spacing:-.03em}
+ .offers-in:not(.one-offer) .offer-mcell .suffix-row input{padding-left:4px;padding-right:22px}
+ .offers-in:not(.one-offer) .offer-mcell .suffix-row.unit-wide input{padding-right:34px}
+ .offers-in:not(.one-offer) .offer-mcell .suffix-row .suffix{right:3px;font-size:8.5px}
+}
 """
 if old not in s: raise SystemExit('mobile hygiene block missing')
 s=s.replace(old,new,1)
