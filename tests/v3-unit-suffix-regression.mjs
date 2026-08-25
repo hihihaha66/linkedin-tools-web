@@ -56,6 +56,8 @@ try{
       if(x.opacity<0.99||x.display==='none'||x.visibility==='hidden')throw new Error(label+': suffix hidden '+JSON.stringify(x));
       if(label.startsWith('mobile')&&x.inputFont<15.99)throw new Error(label+': iOS zoom-risk input '+JSON.stringify(x));
       if(x.placeholder&&!x.placeholder.startsWith('VD: '))throw new Error(label+': placeholder convention drift '+JSON.stringify(x));
+      if(x.unit==='đ'&&x.placeholder&&!/^VD: (?:0|[1-9]\d{0,2}(?:,\d{3})+)$/.test(x.placeholder))throw new Error(label+': currency example must be full comma-formatted VND '+JSON.stringify(x));
+      if(x.unit!=='đ'&&x.placeholder&&/(triệu|tỷ|nghìn)/i.test(x.placeholder))throw new Error(label+': non-currency field contains a money scale '+JSON.stringify(x));
       if(label.startsWith('mobile')&&x.placeholder&&x.phWidth>x.available+3)throw new Error(label+': placeholder collides with visible suffix '+JSON.stringify(x));
     }
 
@@ -89,9 +91,9 @@ try{
 
     // Specific regression from the screenshot: empty salary fields must show both the example and the real currency unit.
     const salary=await page.evaluate(()=>[...document.querySelectorAll('#offersIn [data-k="gross"],#currentFields [data-current="gross"]')].filter(el=>{const r=el.getBoundingClientRect();return r.width>0&&r.height>0}).map(el=>({ph:el.placeholder,unit:el.parentElement.querySelector('.suffix')?.textContent.trim(),opacity:getComputedStyle(el.parentElement.querySelector('.suffix')).opacity})));
-    if(!salary.some(x=>x.ph==='VD: 20 triệu'&&x.unit==='đ'&&Number(x.opacity)===1))throw new Error(label+': Current Job salary example/unit regression');
-    if(!salary.some(x=>x.ph==='VD: 25 triệu'&&x.unit==='đ'&&Number(x.opacity)===1))throw new Error(label+': Offer A salary example/unit regression');
-    if(!salary.some(x=>x.ph==='VD: 30 triệu'&&x.unit==='đ'&&Number(x.opacity)===1))throw new Error(label+': Offer B salary example/unit regression');
+    if(!salary.some(x=>x.ph==='VD: 20,000,000'&&x.unit==='đ'&&Number(x.opacity)===1))throw new Error(label+': Current Job salary example/unit regression');
+    if(!salary.some(x=>x.ph==='VD: 25,000,000'&&x.unit==='đ'&&Number(x.opacity)===1))throw new Error(label+': Offer A salary example/unit regression');
+    if(!salary.some(x=>x.ph==='VD: 30,000,000'&&x.unit==='đ'&&Number(x.opacity)===1))throw new Error(label+': Offer B salary example/unit regression');
 
     await page.close();console.log('PASS V3 unit suffix regression '+label+' ('+audit.suffixes.length+' fields)');
   }
