@@ -1,0 +1,73 @@
+name: Build V4 clean UI
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v4-clean-ui.py'
+      - '.github/workflows/patch-v4-clean-ui.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/v4-clean-ui
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Build V4 from frozen V3
+        run: python .github/patch-v4-clean-ui.py
+      - name: Verify V3 freeze
+        shell: bash
+        run: |
+          git diff --exit-code HEAD -- net-cao-hon-co-that-tot-hon-v3.html
+          cmp net-cao-hon-co-that-tot-hon-v3.html <(git show ea0f7360261ee73ff33ff97317743bdf77619867:net-cao-hon-co-that-tot-hon-v3.html)
+          ! grep -q 'uiLabelBtn\|uiLabelsOverlay\|UI_COMPONENT_RULES' net-cao-hon-co-that-tot-hon-v3.html
+      - name: Verify V4 version isolation and API compatibility
+        shell: bash
+        run: |
+          grep -q '<title>Net cao hơn có thật tốt hơn? - V4</title>' net-cao-hon-co-that-tot-hon-v4.html
+          grep -q 'const KEY="net-cao-hon-v4-state"' net-cao-hon-co-that-tot-hon-v4.html
+          grep -q '/api/offer-value-v3' net-cao-hon-co-that-tot-hon-v4.html
+          grep -q 'career-options-v4.txt' net-cao-hon-co-that-tot-hon-v4.html
+          grep -q 'career-options-v4-du-lieu.json' net-cao-hon-co-that-tot-hon-v4.html
+          ! grep -q 'uiLabelBtn\|uiLabelsOverlay\|UI_COMPONENT_RULES' net-cao-hon-co-that-tot-hon-v4.html
+      - name: Verify V4 syntax/CSP
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re,hashlib,base64
+          html=Path('net-cao-hon-co-that-tot-hon-v4.html').read_text();start=html.index('<script>')+len('<script>');end=html.index('</script>',start);js=html[start:end]
+          Path('/tmp/v4-inline.js').write_text(js)
+          m=re.search(r"script-src 'sha256-([^']+)'",html);assert m
+          assert m.group(1)==base64.b64encode(hashlib.sha256(js.encode()).digest()).decode()
+          PY
+          node --check /tmp/v4-inline.js
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start static server
+        run: python3 -m http.server 8000 >/tmp/v4-http.log 2>&1 &
+      - name: Run frozen V3 regressions
+        run: |
+          node tests/v3-current-offers-responsive.mjs
+          node tests/v3-unit-suffix-regression.mjs
+      - name: Run V4 clean UI regression
+        run: node tests/v4-clean-ui.mjs
+      - name: Commit V4 only
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v4-clean-ui.py .github/workflows/patch-v4-clean-ui.yml
+          git add -- net-cao-hon-co-that-tot-hon-v4.html tests/v4-clean-ui.mjs
+          git commit -m "Create V4 clean UI clone"
+          git push origin HEAD:feature/v4-clean-ui
