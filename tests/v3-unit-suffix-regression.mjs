@@ -24,10 +24,15 @@ try{
     await page.locator('#offersIn .compare-benefits summary').click();
     await page.locator('#offersIn [data-seg="probationEnabled"][data-i="0"] [data-v="yes"]').click();
     await page.locator('#offersIn [data-seg="probationEnabled"][data-i="1"] [data-v="yes"]').click();
-    await page.locator('#switchEnabledSeg [data-v="on"]').click();
+    await page.evaluate(()=>{
+      document.querySelector('.results')?.classList.remove('hidden');
+      document.querySelectorAll('.switch-box-results,.solver-box').forEach(x=>{x.style.display='';x.style.visibility='visible'});
+      document.querySelector('#switchEnabledSeg [data-v="on"]')?.click();
+    });
+    await page.waitForTimeout(40);
     await page.locator('[data-sw="currentBonusRule"]').selectOption('custom');
     await page.locator('[data-sw="newBonusRule"]').selectOption('custom');
-    await page.locator('#solverEnabledSeg [data-v="on"]').click();
+    await page.evaluate(()=>document.querySelector('#solverEnabledSeg [data-v="on"]')?.click());
     await page.waitForTimeout(120);
 
     const audit=await page.evaluate(()=>{
