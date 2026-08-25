@@ -1,0 +1,66 @@
+name: V4 compact UX
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/patch-v4-compact-ux.py'
+      - '.github/workflows/patch-v4-compact-ux.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/v4-compact-ux
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Apply V4 compact UX patch
+        run: python .github/patch-v4-compact-ux.py
+      - name: Verify V3 freeze and V4-only change
+        shell: bash
+        run: |
+          git diff --exit-code HEAD -- net-cao-hon-co-that-tot-hon-v3.html
+          grep -q 'v4-layer-main' net-cao-hon-co-that-tot-hon-v4.html
+          grep -q 'v4-layer-details' net-cao-hon-co-that-tot-hon-v4.html
+          grep -q '/api/offer-value-v4' net-cao-hon-co-that-tot-hon-v4.html
+          ! grep -q 'Thêm khi muốn so offer mới với phương án ở lại.' net-cao-hon-co-that-tot-hon-v4.html
+          ! grep -q 'Có 1 offer thì nhập Offer A; có thêm Offer B thì bật' net-cao-hon-co-that-tot-hon-v4.html
+      - name: Verify V4 syntax/CSP
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re,hashlib,base64
+          html=Path('net-cao-hon-co-that-tot-hon-v4.html').read_text();start=html.index('<script>')+len('<script>');end=html.index('</script>',start);js=html[start:end]
+          Path('/tmp/v4-inline.js').write_text(js)
+          m=re.search(r"script-src 'sha256-([^']+)'",html);assert m
+          assert m.group(1)==base64.b64encode(hashlib.sha256(js.encode()).digest()).decode()
+          PY
+          node --check /tmp/v4-inline.js
+      - name: Install browser test dependencies
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start static server
+        run: python3 -m http.server 8000 >/tmp/v4-compact-http.log 2>&1 &
+      - name: Run frozen V3 regressions
+        run: |
+          node tests/v3-current-offers-responsive.mjs
+          node tests/v3-unit-suffix-regression.mjs
+      - name: Run V4 regression
+        run: node tests/v4-clean-ui.mjs
+      - name: Commit implementation and remove bootstrap files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/patch-v4-compact-ux.py .github/workflows/patch-v4-compact-ux.yml
+          git add -- net-cao-hon-co-that-tot-hon-v4.html tests/v4-clean-ui.mjs
+          git commit -m "Compact V4 input help and result layers"
+          git push origin HEAD:feature/v4-compact-ux
