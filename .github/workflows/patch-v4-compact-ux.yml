@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/patch-v4-compact-ux.py'
+      - '.github/patch-v4-compact-ux-testfix.py'
       - '.github/workflows/patch-v4-compact-ux.yml'
 
 permissions:
@@ -21,7 +22,9 @@ jobs:
         with:
           node-version: '20'
       - name: Apply V4 compact UX patch
-        run: python .github/patch-v4-compact-ux.py
+        run: |
+          python .github/patch-v4-compact-ux.py
+          python .github/patch-v4-compact-ux-testfix.py
       - name: Verify V3 freeze and V4-only change
         shell: bash
         run: |
@@ -60,7 +63,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm .github/patch-v4-compact-ux.py .github/workflows/patch-v4-compact-ux.yml
+          git rm .github/patch-v4-compact-ux.py .github/patch-v4-compact-ux-testfix.py .github/workflows/patch-v4-compact-ux.yml
           git add -- net-cao-hon-co-that-tot-hon-v4.html tests/v4-clean-ui.mjs
           git commit -m "Compact V4 input help and result layers"
           git push origin HEAD:feature/v4-compact-ux
