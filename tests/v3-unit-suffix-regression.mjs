@@ -4,7 +4,7 @@ const browser=await chromium.launch({headless:true});
 try{
   for(const [label,width,height] of [['desktop',1280,900],['mobile-320',320,740],['mobile-375',375,812],['mobile-430',430,932]]){
     const page=await browser.newPage({viewport:{width,height}});
-    await page.route('**/api/offer-value-v3',async route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({hasResults:false,v3:true,availableOptions:[],comparison:{left:null,right:null},comparisonMode:'pair',summaryHtml:'',modeTitle:'',l1cols:'',annualcols:'',tcols:'',l2basis:'',l3events:'',verdictHtml:'',showSwitching:false,switchingHtml:'',showLayer6:false,layer6Html:'',exportText:''})}));
+    await page.route('**/api/offer-value-v3',async route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({hasResults:true,v3:true,availableOptions:[{id:'current',name:'Công việc hiện tại',kind:'current'},{id:'0',name:'Offer A',kind:'offer'}],comparison:{left:'current',right:'0'},comparisonMode:'pair',summaryHtml:'',modeTitle:'So sánh phương án',l1cols:'',l1delta:'',showL1Delta:false,annualcols:'',annualdelta:'',showAnnualDelta:false,tcols:'',tdelta:'',showTDelta:false,l2basis:'',l3events:'',verdictHtml:'',showAssumptions:false,assumptionsHtml:'',showSwitching:false,switchingHtml:'',showLayer6:false,layer6Html:'',exportText:''})}));
     await page.goto('http://127.0.0.1:8000/net-cao-hon-co-that-tot-hon-v3.html',{waitUntil:'domcontentloaded'});
 
     // Reveal every input family that can carry a unit suffix.
