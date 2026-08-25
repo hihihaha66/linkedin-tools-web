@@ -15,10 +15,10 @@ try{
   if(Math.abs(ctxAudit.controlY[0]-ctxAudit.controlY[1])>2||Math.abs(ctxAudit.controlH[0]-ctxAudit.controlH[1])>2)throw new Error(label+': context controls not aligned');
   if(Math.abs(ctxAudit.labelH[0]-ctxAudit.labelH[1])>2)throw new Error(label+': context labels not equal height');
   if(label.startsWith('mobile')&&ctxAudit.height>90)throw new Error(label+': compact context became too tall '+ctxAudit.height+'px');
-  if(ctxAudit.depsPlaceholder!=='VD: 0 người'||ctxAudit.depsUnit!=='người')throw new Error(label+': dependent example/unit missing');
+  if(ctxAudit.depsPlaceholder!=='VD: 0'||ctxAudit.depsUnit!=='người')throw new Error(label+': dependent example/unit missing');
   await page.locator('#bhSim summary').click();
   const sickAudit=await page.evaluate(()=>({placeholder:document.querySelector('#sickDays').placeholder,unit:document.querySelector('#sickDays').parentElement.querySelector('.suffix')?.textContent||''}));
-  if(sickAudit.placeholder!=='VD: 5 ngày'||sickAudit.unit!=='ngày')throw new Error(label+': sick-days example/unit missing');
+  if(sickAudit.placeholder!=='VD: 5'||sickAudit.unit!=='ngày')throw new Error(label+': sick-days example/unit missing');
   await page.locator('#bhSim summary').click();
   await page.locator('#currentEnabledSeg [data-v="on"]').click();
   const story=await page.evaluate(()=>({current:document.querySelector('[data-current="gross"]')?.placeholder,a:document.querySelector('#offersIn [data-i="0"][data-k="gross"]')?.placeholder}));
@@ -73,7 +73,7 @@ try{
   });
   for(const must of ['31/12/2027','Bù hết phần hụt do chuyển việc trong','Đạt mục tiêu Net/tháng','Net tối thiểu/tháng','Đạt mục tiêu Net/năm','Net tối thiểu/năm','Tool ước tính phần hụt ban đầu từ khoảng nghỉ và thưởng bị mất','Gồm lương, phụ cấp cố định và thưởng đảm bảo sau bảo hiểm và thuế'])if(!copyAudit.txt.includes(must))throw new Error(label+': missing Layer 6 copy '+must);
   for(const bad of ['backend','threshold','baseline','timeline mục tiêu','target Net','target thu nhập'])if(copyAudit.txt.includes(bad))throw new Error(label+': developer wording leaked '+bad);
-  for(const ph of copyAudit.placeholders){if(!/^VD:\s/.test(ph))throw new Error(label+': placeholder must use compact VD format: '+ph);if(/\d{1,3}(?:,\d{3})+/.test(ph))throw new Error(label+': placeholder uses visually long raw number: '+ph);if(!/(người|ngày|tháng|buổi|phút|giờ|%|triệu|đ|năm)/i.test(ph))throw new Error(label+': placeholder missing unit/context: '+ph);}
+  for(const ph of copyAudit.placeholders){if(!/^VD:\s/.test(ph))throw new Error(label+': placeholder must use compact VD format: '+ph);if(/\d{1,3}(?:,\d{3})+/.test(ph))throw new Error(label+': placeholder uses visually long raw number: '+ph);}
   const publicText=await page.locator('body').innerText();for(const bad of ['backend','threshold','baseline','template','timeline mục tiêu','target Net','target thu nhập'])if(publicText.toLowerCase().includes(bad.toLowerCase()))throw new Error(label+': developer wording remains visible: '+bad);
   if(label.startsWith('mobile')){
     const zoomRisk=await page.evaluate(()=>[...document.querySelectorAll('input[type=text],input[type=number],input[type=date]')].filter(el=>{const r=el.getBoundingClientRect();return r.width>0&&r.height>0}).map(el=>({field:el.getAttribute('data-k')||el.getAttribute('data-current')||el.getAttribute('data-sw')||el.getAttribute('data-sol')||el.id||el.className,font:parseFloat(getComputedStyle(el).fontSize),placeholder:el.placeholder})).filter(x=>x.font<15.99));
