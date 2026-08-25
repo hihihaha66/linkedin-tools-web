@@ -33,6 +33,11 @@ for old,new in [
     if old not in r: raise SystemExit('responsive expectation missing: '+old)
     r=r.replace(old,new,1)
 
+old_copy_audit="for(const ph of copyAudit.placeholders){if(!/^VD:\\s/.test(ph))throw new Error(label+': placeholder must use compact VD format: '+ph);if(/\\d{1,3}(?:,\\d{3})+/.test(ph))throw new Error(label+': placeholder uses visually long raw number: '+ph);}"
+new_copy_audit="for(const ph of copyAudit.placeholders){if(!/^VD:\\s/.test(ph))throw new Error(label+': placeholder must use compact VD format: '+ph);const m=ph.match(/^VD:\\s*(\\d[\\d,]*)$/);if(m&&m[1].includes(',')&&!/^\\d{1,3}(?:,\\d{3})+$/.test(m[1]))throw new Error(label+': malformed comma grouping in placeholder: '+ph);}"
+if old_copy_audit not in r: raise SystemExit('responsive placeholder audit anchor missing')
+r=r.replace(old_copy_audit,new_copy_audit,1)
+
 # Update dedicated suffix regression expectations.
 for old,new in [
     ("x.ph==='VD: 20 triệu'","x.ph==='VD: 20,000,000'"),
