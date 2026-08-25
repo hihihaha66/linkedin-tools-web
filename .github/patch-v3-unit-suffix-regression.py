@@ -71,4 +71,19 @@ start=s.index('<script>')+len('<script>');end=s.index('</script>',start);js=s[st
 h=base64.b64encode(hashlib.sha256(js.encode()).digest()).decode();s,n=re.subn(r"script-src 'sha256-[^']+'",f"script-src 'sha256-{h}'",s,count=1)
 if n!=1: raise SystemExit('CSP hash anchor missing')
 p.write_text(s)
-print('PATCHED V3 suffix visibility + non-duplicated examples')
+
+# Keep the long-running responsive suite aligned with the UI rule: example + visible suffix
+# forms the full visual unit; the placeholder itself must not repeat a suffix.
+tp=Path('tests/v3-current-offers-responsive.mjs');t=tp.read_text()
+for a,b in [
+ ("ctxAudit.depsPlaceholder!=='VD: 0 người'","ctxAudit.depsPlaceholder!=='VD: 0'"),
+ ("sickAudit.placeholder!=='VD: 5 ngày'","sickAudit.placeholder!=='VD: 5'"),
+]:
+    if a not in t: raise SystemExit('responsive expectation missing: '+a)
+    t=t.replace(a,b,1)
+old_audit="for(const ph of copyAudit.placeholders){if(!/^VD:\\s/.test(ph))throw new Error(label+': placeholder must use compact VD format: '+ph);if(/\\d{1,3}(?:,\\d{3})+/.test(ph))throw new Error(label+': placeholder uses visually long raw number: '+ph);if(!/(người|ngày|tháng|buổi|phút|giờ|%|triệu|đ|năm)/i.test(ph))throw new Error(label+': placeholder missing unit/context: '+ph);}"
+new_audit="for(const ph of copyAudit.placeholders){if(!/^VD:\\s/.test(ph))throw new Error(label+': placeholder must use compact VD format: '+ph);if(/\\d{1,3}(?:,\\d{3})+/.test(ph))throw new Error(label+': placeholder uses visually long raw number: '+ph);}"
+if old_audit not in t: raise SystemExit('responsive placeholder audit anchor missing')
+t=t.replace(old_audit,new_audit,1)
+tp.write_text(t)
+print('PATCHED V3 suffix visibility + non-duplicated examples + responsive QA')
