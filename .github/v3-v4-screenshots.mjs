@@ -42,7 +42,7 @@ try{
     await fillCommon(page);
 
     // Input comparison: Context + Current + Offer section.
-    const ctx = await page.locator('.context').boundingBox();
+    const ctx = await page.locator('.ctx').boundingBox();
     const offers = await page.locator('#offersIn').boundingBox();
     if(!ctx || !offers) throw new Error(ver+': input bounds missing');
     const inputY=Math.max(0,ctx.y-18), inputBottom=offers.y+offers.height+24;
@@ -55,7 +55,7 @@ try{
     const swOn=page.locator('#switchEnabledSeg [data-v="on"]'); if(await swOn.count()) await swOn.click();
     const solOn=page.locator('#solverEnabledSeg [data-v="on"]'); if(await solOn.count()) await solOn.click();
     await page.waitForTimeout(400);
-    const sw=await page.locator('.switch-box-results').boundingBox();
+    const sw=await page.locator('.switch-box').boundingBox();
     const solver=await page.locator('#solverBox').boundingBox();
     if(!sw || !solver) throw new Error(ver+': switch/solver bounds missing');
     const y=Math.max(0,sw.y-18), bottom=solver.y+solver.height+20;
