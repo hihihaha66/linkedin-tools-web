@@ -1,0 +1,33 @@
+name: V3 V4 screenshot comparison
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/v3-v4-screenshots.mjs'
+      - '.github/workflows/v3-v4-screenshots.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  screenshots:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install Playwright
+        run: |
+          npm install --no-save playwright@1.55.0
+          npx playwright install --with-deps chromium
+      - name: Start local server
+        run: python3 -m http.server 8000 >/tmp/compare-http.log 2>&1 &
+      - name: Capture V3 and V4
+        run: node .github/v3-v4-screenshots.mjs
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v3-v4-screenshots
+          path: comparison-shots/*.png
+          if-no-files-found: error
