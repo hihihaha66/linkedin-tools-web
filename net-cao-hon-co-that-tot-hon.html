@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-VOEWcXHUzqfERV6Yd6RkRvPa2saFDwHQaGkrYVu4Zm0='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'sha256-2qoNCTgP/XmKIHUvL83aFu0A6L1WfRyqJSCZxzA13cA='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://linkedin-tools-api-test.vercel.app; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -537,7 +537,19 @@ function normalizeState(d){if(!d||!Array.isArray(d.offers)||d.offers.length!==2)
 function load(){if(!canStore)return;try{const raw=localStorage.getItem(KEY);if(raw){const d=normalizeState(JSON.parse(raw));if(d)state=d}}catch(e){}}
 function syncBhSummary(){const el=document.getElementById("bhSummaryState");if(!el)return;const n=Number(state.sickDays),parts=[];if(Number.isFinite(n)&&n>0)parts.push(Math.round(n)+" ngày ốm");if(state.mat==="show")parts.push("Thai sản: Có");else if(parts.length)parts.push("Thai sản: Không");el.textContent=parts.length?parts.join(" · "): "Chưa bật mô phỏng"}
 function syncCtx(){document.getElementById("deps").value=state.deps==null?"":state.deps;document.getElementById("region").value=state.region||"I";document.getElementById("sickDays").value=state.sickDays==null?"":state.sickDays;[].forEach.call(document.getElementById("matSeg").children,x=>x.classList.toggle("on",x.getAttribute("data-v")===state.mat));syncBhSummary();const bh=document.getElementById("bhSim");if(bh)bh.open=hasPositiveValue(state.sickDays)||state.mat==="show"}
-function download(name,text,type){const blob=new Blob([text],{type}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function isAppleTouchDevice(){return /iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1)}
+async function download(name,text,type){
+ const sourceType=type||"application/octet-stream";
+ if(isAppleTouchDevice()&&typeof File==="function"&&navigator.share&&navigator.canShare){
+  try{
+   const file=new File([text],name,{type:sourceType});
+   if(navigator.canShare({files:[file]})){await navigator.share({files:[file],title:name});return}
+  }catch(e){if(e&&e.name==="AbortError")return}
+ }
+ const blob=new Blob([text],{type:"application/octet-stream"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download=name;a.rel="noopener";a.style.display="none";document.body.appendChild(a);a.click();
+ setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},60000)
+}
 
 document.getElementById('currentEnabledSeg').addEventListener('click',function(e){const b=e.target.closest('button');if(!b)return;state.currentJobEnabled=b.getAttribute('data-v')==='on';markDirty();renderCurrentInputs();renderSwitchingInputs();scheduleCalculation()});
 document.getElementById('offerCountSeg').addEventListener('click',function(e){const b=e.target.closest('button');if(!b)return;state.offerCount=b.getAttribute('data-v')==='2'?2:1;if(state.offerCount===1&&state.switching.targetOffer==='1')state.switching.targetOffer='0';markDirty();renderInputs();renderSwitchingInputs();renderSolverInputs();scheduleCalculation()});
