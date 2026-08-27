@@ -67,6 +67,18 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
 .v4-legal>summary{cursor:pointer;list-style:none;color:var(--moss);font-weight:600;font-size:13px;padding:10px 0;display:flex;align-items:center;gap:7px}
 .v4-legal>summary::-webkit-details-marker{display:none}.v4-legal>summary:before{content:'＋';font-family:var(--mono);font-size:15px}.v4-legal[open]>summary:before{content:'−'}
 .v4-legal-body{border-top:1px solid var(--line);padding:10px 0 2px}.v4-legal-body .disclaim{margin-top:0}
+.v4-micro-note{margin:4px 0 9px;color:#777267;font-size:11px;line-height:1.38;font-weight:400;letter-spacing:-.01em}
+.v4-header-note{margin-top:5px;max-width:92ch}
+.v4-insurance-note{margin:8px 0 10px}
+.v4-layer-note{margin:0 0 8px}
+.v4-switch-note{margin:3px 0 0}
+@media(max-width:540px){
+ .v4-micro-note{font-size:clamp(7px,2.05vw,9px);line-height:1.28;letter-spacing:-.035em;margin-bottom:7px}
+ .v4-header-note{margin-top:4px}
+ .v4-insurance-note{margin-top:7px}
+ .v4-layer-note{margin-bottom:6px}
+ .v4-switch-note{margin-top:3px}
+}
 
 </style>
 </head>
@@ -74,7 +86,8 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
 <div class="wrap">
 <header>
 <h1>Net cao hơn có thật tốt hơn?</h1>
-<p class="sub">So công việc hiện tại với 1-2 offer theo tiền, thời gian, bảo hiểm và tác động khi chuyển việc.</p>
+<p class="sub">So sánh công việc hiện tại với 1-2 offer theo tiền, thời gian, bảo hiểm và tác động khi chuyển việc - để bạn thấy mình đang đổi gì lấy gì.</p>
+<p class="v4-micro-note v4-header-note">Dữ liệu bạn nhập được gửi tới máy chủ để tính, không lưu vào cơ sở dữ liệu. Chỉ khi bấm "Lưu" mới giữ trên trình duyệt của bạn.</p>
 </header>
 <div class="toolbar toolbar-top">
 <button class="btn ghost tiny" id="importBtn">↑ Nhập dữ liệu (.json)</button>
@@ -105,19 +118,21 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
 <div class="v3-offer-intro"><div><p class="eyebrow">Offer mới</p><h2 class="sec">Nhập offer đang cân nhắc</h2></div><div class="v3-offer-count"><label>Bạn đang có</label><div class="seg" id="offerCountSeg"><button data-v="1" class="on">1 offer</button><button data-v="2">2 offer</button></div></div></div>
 <div class="offers-in one-offer" id="offersIn"></div>
 <div id="v4ConditionalHelp" class="v4-conditional-help" style="display:none"></div>
+<p class="v4-micro-note v4-insurance-note">Chưa biết mức đóng bảo hiểm? Chọn "Chưa rõ" - tool tạm lấy lương offer làm căn cứ BH, nên kết quả Lớp 4 và Lớp 5 có thể cao hơn thực tế. Nếu HR cho biết mức riêng, chọn "Tôi biết mức cụ thể".</p>
 <div id="empty" class="empty">Nhập lương cho ít nhất một phương án để bắt đầu.</div>
 <div class="results hidden" id="results">
 <div class="v3-results-head"><div id="v3Summary"></div><h2 class="v3-mode-title" id="v3ModeTitle"></h2><div class="v3-pairs" id="v3Pairs"></div><p class="v3-pair-note" id="v3PairHint"></p></div>
 <div class="layer v4-layer" data-v4-layer="1"><p class="lnum">Lớp 1 · <b>Tiền về tay mỗi tháng</b></p><div class="v4-layer-main" id="l1main"></div><div class="delta v4-layer-insight" id="l1delta"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="l1cols"></div></details></div>
-<div class="layer v4-layer" data-v4-layer="2"><p class="lnum">Lớp 2 · <b>Nếu làm đủ 12 tháng</b></p><div class="v4-layer-main" id="annualmain"></div><div class="delta v4-layer-insight" id="annualdelta"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="annualcols"></div></details></div>
-<div class="layer v4-layer" data-v4-layer="3"><p class="lnum">Lớp 3 · <b>Thời gian bạn bỏ ra</b></p><div class="v4-layer-main" id="tmain"></div><div class="delta v4-layer-insight" id="tdelta"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="tcols"></div></details></div>
+<div class="layer v4-layer" data-v4-layer="2"><p class="lnum">Lớp 2 · <b>Nếu làm đủ 12 tháng</b></p><p class="v4-micro-note v4-layer-note">Quy cả hai phương án về cùng 12 tháng làm việc. Không phải số tiền từ hôm nay đến 31/12.</p><div class="v4-layer-main" id="annualmain"></div><div class="delta v4-layer-insight" id="annualdelta"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="annualcols"></div></details></div>
+<div class="layer v4-layer" data-v4-layer="3"><p class="lnum">Lớp 3 · <b>Thời gian bạn bỏ ra để có mức thu nhập đó</b></p><p class="v4-micro-note v4-layer-note">Giả định 176h/tháng; đi lại và OT được cộng vào thời gian. Ngày phép chỉ giảm thời gian bỏ ra, không cộng thành tiền.</p><div class="v4-layer-main" id="tmain"></div><div class="delta v4-layer-insight" id="tdelta"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="tcols"></div></details></div>
 <div class="layer v4-layer" data-v4-layer="4"><p class="lnum">Lớp 4 · <b>Căn cứ đóng bảo hiểm</b></p><div class="v4-layer-main" id="l2main"></div><div class="v4-layer-insight" id="l4insight"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="l2basis"></div></details></div>
-<div class="layer v4-layer" data-v4-layer="5"><p class="lnum">Lớp 5 · <b>Nếu có biến cố</b></p><div class="v4-layer-main" id="l3main"></div><div class="v4-layer-insight" id="l5insight"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="events" id="l3events"></div></details></div>
+<div class="layer v4-layer" data-v4-layer="5"><p class="lnum">Lớp 5 · <b>Nếu có biến cố</b></p><p class="v4-micro-note v4-layer-note">Dùng mức lương làm căn cứ đóng BH đã nhập ở trên. Tool chỉ mô phỏng số tiền, không kiểm tra điều kiện hưởng.</p><div class="v4-layer-main" id="l3main"></div><div class="v4-layer-insight" id="l5insight"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="events" id="l3events"></div></details></div>
 <div class="switch-box switch-box-results">
   <div class="switch-head">
     <div class="switch-copy">
       <p class="eyebrow">Thời điểm chuyển việc</p>
       <h2 class="sec">Nếu chuyển việc thì sao?</h2>
+      <p class="v4-micro-note v4-switch-note">So sánh phần còn lại của năm từ ngày sau khi nghỉ đến 31/12: ở lại nhận bao nhiêu, sang offer mới nhận bao nhiêu. Chưa mô phỏng quyết toán thuế khi đổi nơi làm việc.</p>
     </div>
     <div class="switch-toggle">
       <label>Tính thêm tác động khi chuyển việc</label>
