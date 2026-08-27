@@ -4,7 +4,7 @@ fs.mkdirSync('comparison-shots', {recursive:true});
 
 const browser=await chromium.launch({headless:true});
 try{
-  const page=await browser.newPage({viewport:{width:393,height:852},deviceScaleFactor:2});
+  const page=await browser.newPage({viewport:{width:430,height:932},deviceScaleFactor:2});
   await page.goto('http://127.0.0.1:8000/net-cao-hon-co-that-tot-hon-v4.html',{waitUntil:'domcontentloaded'});
 
   await page.locator('#currentEnabledSeg [data-v="on"]').click();
@@ -33,7 +33,7 @@ try{
   await note.scrollIntoViewIfNeeded(); await page.waitForTimeout(120);
   const b=await note.boundingBox(); if(!b)throw new Error('insurance note box missing');
   const y=Math.max(0,b.y-115), bottom=b.y+b.height+105;
-  await page.screenshot({path:'comparison-shots/v4-mobile-item-2-insurance.png',clip:{x:0,y,width:393,height:bottom-y},animations:'disabled'});
+  await page.screenshot({path:'comparison-shots/v4-mobile-item-2-insurance.png',clip:{x:0,y,width:430,height:bottom-y},animations:'disabled'});
 
   await shotElement('[data-v4-layer="2"]','comparison-shots/v4-mobile-item-3-layer2.png');
   await shotElement('[data-v4-layer="5"]','comparison-shots/v4-mobile-item-5-layer5.png');
