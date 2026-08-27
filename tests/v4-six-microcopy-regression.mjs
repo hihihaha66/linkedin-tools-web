@@ -40,8 +40,8 @@ try {
         return {text:el.textContent.trim(),fontSize:parseFloat(cs.fontSize),color:cs.color,fontWeight:cs.fontWeight,lines:lh>0?h/lh:0};
       });
       if(info.fontWeight!=='400') throw new Error(label+': micro-note became bold: '+info.text);
-      if(label==='mobile-320' && info.lines>3.12) throw new Error(label+': micro-note exceeds 3 compact lines ('+info.lines.toFixed(2)+'): '+info.text);
-      if((label==='mobile-375'||label==='mobile-430') && info.lines>2.12) throw new Error(label+': micro-note exceeds 2 lines ('+info.lines.toFixed(2)+'): '+info.text);
+      if((label==='mobile-320'||label==='mobile-375') && info.lines>3.12) throw new Error(label+': micro-note exceeds 3 compact lines ('+info.lines.toFixed(2)+'): '+info.text);
+      if(label==='mobile-430' && info.lines>2.12) throw new Error(label+': micro-note exceeds 2 lines on the target mobile width ('+info.lines.toFixed(2)+'): '+info.text);
     }
 
     for(const n of [2,3,5]){
