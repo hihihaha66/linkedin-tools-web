@@ -29,7 +29,9 @@ try {
       layer5:(await page.locator('[data-v4-layer="5"] .v4-layer-note').innerText()).trim(),
       switching:(await page.locator('.v4-switch-note').innerText()).trim()
     };
-    for (const [k,v] of Object.entries(expected)) if(actual[k]!==v) throw new Error(\`\${label}: \${k} mismatch\\n\${actual[k]}\\n!=\\n\${v}\`);
+    for (const [k,v] of Object.entries(expected)) {
+      if(actual[k]!==v) throw new Error(label+': '+k+' mismatch\n'+actual[k]+'\n!=\n'+v);
+    }
 
     const notes = page.locator('.v4-micro-note');
     for(let i=0;i<await notes.count();i++){
@@ -37,23 +39,23 @@ try {
         const cs=getComputedStyle(el), lh=parseFloat(cs.lineHeight), h=el.getBoundingClientRect().height;
         return {text:el.textContent.trim(),fontSize:parseFloat(cs.fontSize),color:cs.color,fontWeight:cs.fontWeight,lines:lh>0?h/lh:0};
       });
-      if(info.fontWeight!=='400') throw new Error(\`\${label}: micro-note became bold: \${info.text}\`);
-      if(label.startsWith('mobile') && info.lines>2.12) throw new Error(\`\${label}: micro-note exceeds 2 lines (\${info.lines.toFixed(2)}): \${info.text}\`);
+      if(info.fontWeight!=='400') throw new Error(label+': micro-note became bold: '+info.text);
+      if(label.startsWith('mobile') && info.lines>2.12) throw new Error(label+': micro-note exceeds 2 lines ('+info.lines.toFixed(2)+'): '+info.text);
     }
 
     for(const n of [2,3,5]){
-      const d=page.locator(\`[data-v4-layer="\${n}"] .v4-layer-details\`);
-      if(await d.getAttribute('open')!==null) throw new Error(\`\${label}: Layer \${n} details must remain collapsed\`);
-      if(!(await d.locator('summary').innerText()).includes('Xem cách tính')) throw new Error(\`\${label}: Layer \${n} Xem cách tính missing\`);
+      const d=page.locator('[data-v4-layer="'+n+'"] .v4-layer-details');
+      if(await d.getAttribute('open')!==null) throw new Error(label+': Layer '+n+' details must remain collapsed');
+      if(!(await d.locator('summary').innerText()).includes('Xem cách tính')) throw new Error(label+': Layer '+n+' Xem cách tính missing');
     }
     const legal=page.locator('.v4-legal');
-    if(await legal.getAttribute('open')!==null) throw new Error(\`\${label}: legal disclosure must remain collapsed\`);
+    if(await legal.getAttribute('open')!==null) throw new Error(label+': legal disclosure must remain collapsed');
     await legal.locator('summary').click();
-    if(!(await legal.innerText()).includes('Tham số đang dùng:')) throw new Error(\`\${label}: legal parameters missing\`);
-    if(!(await legal.innerText()).includes('Nguồn pháp lý chính:')) throw new Error(\`\${label}: legal sources missing\`);
+    if(!(await legal.innerText()).includes('Tham số đang dùng:')) throw new Error(label+': legal parameters missing');
+    if(!(await legal.innerText()).includes('Nguồn pháp lý chính:')) throw new Error(label+': legal sources missing');
 
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth-innerWidth);
-    if(overflow>2) throw new Error(\`\${label}: horizontal overflow \${overflow}\`);
+    if(overflow>2) throw new Error(label+': horizontal overflow '+overflow);
     await page.close();
   }
   console.log('PASS V4 six microcopy regression');
