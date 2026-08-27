@@ -5,7 +5,7 @@ const expected = {
   privacy: 'Dữ liệu bạn nhập được gửi tới máy chủ để tính, không lưu vào cơ sở dữ liệu. Chỉ khi bấm "Lưu" mới giữ trên trình duyệt của bạn.',
   insurance: 'Chưa biết mức đóng bảo hiểm? Chọn "Chưa rõ" - tool tạm lấy lương offer làm căn cứ BH, nên kết quả Lớp 4 và Lớp 5 có thể cao hơn thực tế. Nếu HR cho biết mức riêng, chọn "Tôi biết mức cụ thể".',
   layer2: 'Quy cả hai phương án về cùng 12 tháng làm việc. Không phải số tiền từ hôm nay đến 31/12.',
-  layer3Title: 'Lớp 3 · Thời gian bạn bỏ ra để có mức thu nhập đó',
+  layer3Title: 'LỚP 3 · Thời gian bạn bỏ ra để có mức thu nhập đó',
   layer3: 'Giả định 176h/tháng; đi lại và OT được cộng vào thời gian. Ngày phép chỉ giảm thời gian bỏ ra, không cộng thành tiền.',
   layer5: 'Dùng mức lương làm căn cứ đóng BH đã nhập ở trên. Tool chỉ mô phỏng số tiền, không kiểm tra điều kiện hưởng.',
   switching: 'So sánh phần còn lại của năm từ ngày sau khi nghỉ đến 31/12: ở lại nhận bao nhiêu, sang offer mới nhận bao nhiêu. Chưa mô phỏng quyết toán thuế khi đổi nơi làm việc.'
