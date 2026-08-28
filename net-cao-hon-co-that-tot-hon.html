@@ -731,8 +731,8 @@ host.addEventListener("click",function(e){
 
 document.getElementById("switchEnabledSeg").addEventListener("click",function(e){const b=e.target.closest("button");if(!b)return;state.switching.enabled=b.getAttribute("data-v")==="on";state.switching.enabledExplicit=true;markDirty();renderSwitchingInputs();scheduleCalculation()});
 const swHost=document.getElementById("switchFields");
-swHost.addEventListener("input",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k||el.tagName==="SELECT"||el.type==="date")return;if(["currentBonusIfStay","currentBonusIfLeave","newBonusCustom"].includes(k)){const f=grp(el.value);el.value=f;state.switching[k]=f.replace(/,/g,"")}else state.switching[k]=el.value;markDirty();scheduleCalculation()});
-swHost.addEventListener("change",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k)return;if(el.tagName==="SELECT"){state.switching[k]=el.value;if(k==="currentBonusRule")state.switching.currentBonusRuleExplicit=true}else if(el.type==="date")state.switching[k]=el.value;else return;markDirty();if(k==="currentBonusRule"||k==="newBonusRule"||k==="onboardDate")renderSwitchingInputs();if(k==="onboardDate")renderSolverInputs();scheduleCalculation()});
+swHost.addEventListener("input",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k||el.tagName==="SELECT"||el.type==="date")return;if(["currentGuaranteedIfStay","currentGuaranteedIfLeave","newGuaranteedCustom","currentPerformanceIfStay","currentPerformanceIfLeave","newPerformanceCustom"].includes(k)){const f=grp(el.value);el.value=f;state.switching[k]=f.replace(/,/g,"")}else state.switching[k]=el.value;markDirty();scheduleCalculation()});
+swHost.addEventListener("change",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k)return;if(el.tagName==="SELECT")state.switching[k]=el.value;else if(el.type==="date")state.switching[k]=el.value;else return;markDirty();if(["currentGuaranteedRule","newGuaranteedRule","currentPerformanceRule","newPerformanceRule","onboardDate"].includes(k))renderSwitchingInputs();if(k==="onboardDate")renderSolverInputs();scheduleCalculation()});
 
 document.getElementById("solverEnabledSeg").addEventListener("click",function(e){const b=e.target.closest("button");if(!b)return;state.solver.enabled=b.getAttribute("data-v")==="on";if(state.solver.enabled){state.switching.enabled=true;state.switching.enabledExplicit=true;renderSwitchingInputs()}markDirty();renderSolverInputs();scheduleCalculation()});
 const solverHost=document.getElementById("solverFields");
@@ -746,7 +746,7 @@ document.getElementById("solverResult").addEventListener("click",function(e){con
 function commitV3ControlOnBlur(el){
  if(!el||el.tagName==="SELECT"||el.type==="checkbox"||el.tagName==="BUTTON")return false;
  const sw=el.getAttribute("data-sw");
- if(sw){if(["currentBonusIfStay","currentBonusIfLeave","newBonusCustom"].includes(sw)){const f=grp(el.value);el.value=f;state.switching[sw]=f.replace(/,/g,"")}else state.switching[sw]=el.value;return true}
+ if(sw){if(["currentGuaranteedIfStay","currentGuaranteedIfLeave","newGuaranteedCustom","currentPerformanceIfStay","currentPerformanceIfLeave","newPerformanceCustom"].includes(sw)){const f=grp(el.value);el.value=f;state.switching[sw]=f.replace(/,/g,"")}else state.switching[sw]=el.value;return true}
  const sol=el.getAttribute("data-sol");
  if(sol){if(el.hasAttribute("data-sol-money")){const f=grp(el.value);el.value=f;state.solver[sol]=f.replace(/,/g,"")}else state.solver[sol]=el.value;return true}
  const cur=el.getAttribute("data-current");
