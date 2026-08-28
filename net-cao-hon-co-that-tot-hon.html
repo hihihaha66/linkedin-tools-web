@@ -86,6 +86,138 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
  .v4-layer-details>summary{padding:7px 0 4px}
 }
 
+/* V4 control-size contract.
+   Geometry is consistent; typography keeps a small hierarchy by control type.
+   Older V2/V3 component rules above may change layout/width, but should not
+   redefine the interactive control height in V4. */
+.v4{
+ --v4-control-h:42px;
+ --v4-control-h-dense:40px;
+ --v4-control-radius:8px;
+ --v4-control-font-input:16px;
+ --v4-control-font-select:15px;
+ --v4-control-font-seg:14px;
+}
+.v4 input[type=text],
+.v4 input[type=number],
+.v4 input[type=date],
+.v4 select{
+ box-sizing:border-box;
+ height:var(--v4-control-h);
+ min-height:var(--v4-control-h);
+ border-radius:var(--v4-control-radius);
+ padding-top:0;
+ padding-bottom:0;
+}
+.v4 input[type=text],
+.v4 input[type=number],
+.v4 input[type=date]{
+ font-size:var(--v4-control-font-input);
+ line-height:1.2;
+}
+.v4 select{
+ font-size:var(--v4-control-font-select);
+ line-height:1.2;
+}
+.v4 .seg{
+ box-sizing:border-box;
+ height:var(--v4-control-h);
+ min-height:var(--v4-control-h);
+ border-radius:var(--v4-control-radius);
+}
+.v4 .seg button{
+ box-sizing:border-box;
+ height:100%;
+ min-height:0;
+ padding:0 8px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ font-size:var(--v4-control-font-seg);
+ line-height:1.15;
+}
+
+/* Dense comparison matrices may be slightly tighter on desktop only. */
+.v4 .offer-mcell input[type=text],
+.v4 .offer-mcell input[type=number],
+.v4 .offer-mcell input[type=date],
+.v4 .offer-mcell select,
+.v4 .offer-mcell .seg,
+.v4 .bh-control input,
+.v4 .bh-control select,
+.v4 .bh-control .seg{
+ height:var(--v4-control-h-dense);
+ min-height:var(--v4-control-h-dense);
+}
+.v4 .prob-duration-input select{
+ height:var(--v4-control-h-dense);
+ min-height:var(--v4-control-h-dense);
+ font-size:var(--v4-control-font-select);
+}
+.v4 .suffix-row .suffix{
+ line-height:1;
+}
+
+/* Mobile: every interactive box uses the same 44px geometry. */
+@media(max-width:540px){
+ .v4{
+  --v4-control-h:44px;
+  --v4-control-h-dense:44px;
+  --v4-control-font-input:16px;
+  --v4-control-font-select:15px;
+  --v4-control-font-seg:14px;
+ }
+ .v4 input[type=text],
+ .v4 input[type=number],
+ .v4 input[type=date],
+ .v4 select,
+ .v4 .seg,
+ .v4 .offer-mcell input[type=text],
+ .v4 .offer-mcell input[type=number],
+ .v4 .offer-mcell input[type=date],
+ .v4 .offer-mcell select,
+ .v4 .offer-mcell .seg,
+ .v4 .bh-control input,
+ .v4 .bh-control select,
+ .v4 .bh-control .seg,
+ .v4 .prob-duration-input select{
+  height:44px!important;
+  min-height:44px!important;
+ }
+ .v4 input[type=text],
+ .v4 input[type=number],
+ .v4 input[type=date],
+ .v4 .offer-mcell input[type=text],
+ .v4 .offer-mcell input[type=number],
+ .v4 .offer-mcell input[type=date],
+ .v4 .bh-control input{
+  font-size:16px!important;
+ }
+ .v4 select,
+ .v4 .offer-mcell select,
+ .v4 .bh-control select,
+ .v4 .prob-duration-input select{
+  font-size:15px!important;
+  line-height:1.2!important;
+ }
+ .v4 .seg button,
+ .v4 .offer-mcell .seg button,
+ .v4 .offer-mcell .seg.three button,
+ .v4 .bh-control .seg button,
+ .v4 .ctx .seg button{
+  height:100%!important;
+  min-height:0!important;
+  padding:0 6px!important;
+  font-size:14px!important;
+  line-height:1.12!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  white-space:normal;
+ }
+ .v4 .prob-duration-input{gap:6px}
+}
+
 </style>
 </head>
 <body class="v4">
