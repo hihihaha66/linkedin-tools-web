@@ -190,17 +190,17 @@ function hasInput(v){return v!==null&&v!==undefined&&String(v).trim()!==""}
 function hasPositiveValue(v){if(!hasInput(v))return false;const n=Number(String(v).replace(/,/g,""));return Number.isFinite(n)&&n>0}
 function shouldOpenBenefits(o){return hasPositiveValue(o.guaranteedBonusMonths)||hasPositiveValue(o.performanceBonusValue)||hasPositiveValue(o.fixedAllowance)||hasPositiveValue(o.paidLeaveDays)}
 function ensureOfferShape(o,n,legacy){
- const src=o||{},oldTrial=legacy&&src.probationEnabled==null&&(hasPositiveValue(src.probPct)||hasPositiveValue(src.probDurationValue)||hasPositiveValue(src.probMon)||src.probInsurance==="yes"),trialState=["unknown","yes","no"].includes(src.probationEnabled)?src.probationEnabled:(oldTrial?"yes":"unknown"),probPct=src.probPct??null;
+ const src=o||{},oldTrialEvidence=legacy&&(src.probationEnabled==="yes"||hasPositiveValue(src.probPct)||hasPositiveValue(src.probDurationValue)||hasPositiveValue(src.probMon)||src.probInsurance==="yes"),trialState=legacy?(oldTrialEvidence?"yes":"unknown"):(["unknown","yes","no"].includes(src.probationEnabled)?src.probationEnabled:"unknown"),probPct=src.probPct??null;
  const oldOt=hasInput(src.ot)?Number(String(src.ot).replace(/,/g,"")):NaN,otMonthly=hasInput(src.otMonthly)?src.otMonthly:(Number.isFinite(oldOt)&&oldOt>=0?Math.round(oldOt*UI_WKS*100)/100:null);
  const probDurationValue=hasInput(src.probDurationValue)?src.probDurationValue:(src.probMon??null),probDurationUnit=src.probDurationUnit==='days'?'days':'months';
  const bhMode=["unknown","salary","custom"].includes(src.bhMode)?src.bhMode:(legacy?(src.base==="custom"?"custom":"salary"):"unknown");
  const otType=["weekday","rest","mixed"].includes(src.otType)?src.otType:"weekday",otDefaultFactor=otType==="rest"?200:150;
  const otFactor=hasInput(src.otFactor)?src.otFactor:otDefaultFactor;
- return{name:String(src.name||n),gross:src.gross??null,payType:src.payType==="net"?"net":"gross",base:bhMode==="custom"?"custom":"full",bhMode,customBase:src.customBase??null,days:src.days??null,commute:src.commute??null,otMonthly,otPaid:["unknown","yes","no"].includes(src.otPaid)?src.otPaid:"unknown",otType,otFactor,
+ return{name:String(src.name||n),gross:src.gross??null,payType:src.payType==="net"?"net":"gross",base:bhMode==="custom"?"custom":"full",bhMode,customBase:src.customBase??null,days:src.days??null,commute:src.commute??null,otMonthly,otPaid:legacy?(src.otPaid==="yes"?"yes":"unknown"):(["unknown","yes","no"].includes(src.otPaid)?src.otPaid:"unknown"),otType,otFactor,
   otBreakdownWeekday:src.otBreakdownWeekday??null,otBreakdownRest:src.otBreakdownRest??null,otBreakdownHoliday:src.otBreakdownHoliday??null,
   otFactorWeekday:hasInput(src.otFactorWeekday)?src.otFactorWeekday:150,otFactorRest:hasInput(src.otFactorRest)?src.otFactorRest:200,otFactorHoliday:hasInput(src.otFactorHoliday)?src.otFactorHoliday:300,
   otBaseMode:src.otBaseMode==="custom"?"custom":"offer",otBaseAmount:src.otBaseAmount??null,
-  probationEnabled:trialState,probPct,probDurationValue,probDurationUnit,probInsurance:["unknown","yes","no"].includes(src.probInsurance)?src.probInsurance:"unknown",probJobType:["manager","college","intermediate","other"].includes(src.probJobType)?src.probJobType:"unknown",
+  probationEnabled:trialState,probPct,probDurationValue,probDurationUnit,probInsurance:legacy?(src.probInsurance==="yes"?"yes":"unknown"):(["unknown","yes","no"].includes(src.probInsurance)?src.probInsurance:"unknown"),probJobType:["manager","college","intermediate","other"].includes(src.probJobType)?src.probJobType:"unknown",
   guaranteedBonusMonths:src.guaranteedBonusMonths??null,performanceBonusType:src.performanceBonusType==="amount"?"amount":"months",performanceBonusValue:src.performanceBonusValue??src.targetBonusMonths??null,
   fixedAllowance:src.fixedAllowance??null,allowanceBh:["yes","no"].includes(src.allowanceBh)?src.allowanceBh:"unknown",paidLeaveDays:src.paidLeaveDays??null};
 }
