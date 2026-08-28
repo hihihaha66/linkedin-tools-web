@@ -302,7 +302,7 @@ function blankCurrent(){const o=blank("Công việc hiện tại");o.probationEn
 function ensureSolver(x){const raw=x||{},v=Object.assign(blankSolver(),raw);v.enabled=raw.enabled===true;v.templateOffer=["0","1","both"].includes(raw.templateOffer)?raw.templateOffer:"0";v.goalNoLoss=raw.goalNoLoss===true;v.goalMonthlyNet=raw.goalMonthlyNet===true;v.goalAnnualFixed=raw.goalAnnualFixed===true;delete v.goalBreakEven;delete v.breakEvenMonths;return v}
 function ensureSwitching(x){
  const raw=x||{},legacy=Number(raw.switchingVersion)!==2,v=Object.assign(blankSwitch(),legacy?{}:raw);
- v.enabled=raw.enabled!==false;v.enabledExplicit=raw.enabledExplicit===true;v.targetOffer=raw.targetOffer==="1"?"1":"0";v.switchingVersion=2;
+ v.enabled=raw.enabled!==false;v.enabledExplicit=raw.enabledExplicit===true;v.targetOffer=raw.targetOffer==="1"?"1":"0";v.lastWorkingDate=String(raw.lastWorkingDate||"").slice(0,10);v.onboardDate=String(raw.onboardDate||"").slice(0,10);v.switchingVersion=2;
  if(legacy){v.legacyBonusIfStay=raw.currentBonusIfStay??null}
  else{
   v.currentGuaranteedRule=["unknown","lost","time","full","custom"].includes(raw.currentGuaranteedRule)?raw.currentGuaranteedRule:"unknown";
