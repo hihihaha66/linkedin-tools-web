@@ -78,6 +78,12 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
  .v4-insurance-note{margin-top:7px}
  .v4-layer-note{margin-bottom:6px}
  .v4-switch-note{margin-top:3px}
+ /* Keep collapsed result layers visually tight on mobile. The previous
+    14px bottom padding + 14px margin + 14px next-layer top padding stacked
+    into a large empty band below "Xem cách tính". */
+ .v4-layer{padding:8px 0 0;margin-bottom:6px}
+ .v4-layer+.v4-layer{padding-top:6px}
+ .v4-layer-details>summary{padding:7px 0 4px}
 }
 
 </style>
