@@ -163,7 +163,7 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
 <button class="btn ghost tiny" id="backupBtn">↓ Tải dữ liệu (.json)</button>
 <span class="save-state" id="saveState"></span>
 </div>
-<details class="v4-legal"><summary>Giả định & nguồn pháp lý</summary><div class="v4-legal-body"><div class="disclaim">Đây là công cụ mô phỏng để so sánh, không thay thế tư vấn payroll/pháp lý. Dữ liệu các phương án được gửi tới máy chủ để tính toán. Ứng dụng không ghi nội dung phương án vào cơ sở dữ liệu; nếu bấm Lưu, dữ liệu được giữ trên trình duyệt của bạn. “Phụ cấp cố định” trong tool được hiểu là khoản trả thêm ngoài mức lương offer và chịu thuế TNCN. Căn cứ BH dùng theo lựa chọn ở từng offer; nếu để “Chưa rõ”, tool tạm lấy mức lương offer làm mức dùng để tính BH, còn mức cụ thể bạn nhập luôn được ưu tiên. Thưởng hiệu suất chỉ được cộng ở dòng “Nếu có thêm thưởng hiệu suất” và phụ thuộc kết quả thực tế. Tiền OT là khoản ước tính từ mức lương dùng để tính OT, số giờ và hệ số theo loại ngày bạn nhập; cách payroll thực tế có thể khác. Ngày phép được dùng để giảm thời gian bạn bỏ ra khi tính giá trị/giờ, không cộng trực tiếp vào thu nhập năm. Phần thời điểm chuyển việc dùng net/30 cho ngày lẻ, không mô phỏng quyết toán thuế khi đổi nơi làm việc và vẫn phụ thuộc chính sách thưởng thực tế của từng công ty.</div>
+<details class="v4-legal"><summary>Giả định & nguồn pháp lý</summary><div class="v4-legal-body"><div class="disclaim">Đây là công cụ mô phỏng để so sánh, không thay thế tư vấn payroll/pháp lý. Dữ liệu các phương án được gửi tới máy chủ để tính toán. Ứng dụng không ghi nội dung phương án vào cơ sở dữ liệu; nếu bấm Lưu, dữ liệu được giữ trên trình duyệt của bạn. “Phụ cấp cố định” trong tool được hiểu là khoản trả thêm ngoài mức lương offer và chịu thuế TNCN. Căn cứ BH dùng theo lựa chọn ở từng offer; nếu để “Chưa rõ”, các kết quả phụ thuộc BH/thuế sẽ ở trạng thái “Chưa đủ dữ liệu” cho đến khi bạn xác nhận. Thưởng hiệu suất chỉ được cộng ở dòng “Nếu có thêm thưởng hiệu suất” và phụ thuộc kết quả thực tế. Tiền OT là khoản ước tính từ mức lương dùng để tính OT, số giờ và hệ số theo loại ngày bạn nhập; cách payroll thực tế có thể khác. Ngày phép được dùng để giảm thời gian bạn bỏ ra khi tính giá trị/giờ, không cộng trực tiếp vào thu nhập năm. Phần thời điểm chuyển việc tính tháng đầy đủ theo đúng Net tháng và chỉ dùng Net/30 cho phần tháng lẻ; mốc ngày hòa vốn từ số tháng dùng quy ước 30 ngày/tháng. Không mô phỏng quyết toán thuế khi đổi nơi làm việc và vẫn phụ thuộc chính sách thưởng thực tế của từng công ty.</div>
 <p class="src"><b>Tham số đang dùng:</b> PIT 5 bậc 5% - 10% - 20% - 30% - 35% theo các ngưỡng 10 - 30 - 60 - 100 triệu đồng/tháng và miễn thuế toàn bộ tiền lương làm thêm giờ: áp dụng cho thu nhập tiền lương, tiền công của kỳ tính thuế 2026. Giảm trừ gia cảnh 15,5 triệu/tháng cho bản thân và 6,2 triệu/tháng/người phụ thuộc: hiệu lực từ 01/01/2026. Lương tối thiểu vùng từ 01/01/2026: I 5,31 triệu; II 4,73 triệu; III 4,14 triệu; IV 3,70 triệu. NLĐ đóng BH chuẩn 10,5%; căn cứ BHXH/BHYT tối đa 50,6 triệu/tháng từ 01/07/2026; BHTN tối đa 20× lương tối thiểu vùng. Trợ cấp thất nghiệp 60% bình quân 6 tháng đóng BHTN, tối đa 5× LTT vùng; thai sản theo bình quân 6 tháng đóng BHXH; ốm đau thông thường = căn cứ BHXH ÷ 24 × 75% × số ngày. Nguồn pháp lý chính: Bộ luật Lao động 45/2019/QH14; NĐ 145/2020/NĐ-CP; Luật Thuế TNCN 109/2025/QH15; Nghị quyết 110/2025/UBTVQH15; Luật BHXH 41/2024/QH15; NĐ 158/2025/NĐ-CP; Luật Việc làm 74/2025/QH15; NĐ 293/2025/NĐ-CP.</p></div></details>
 </div>
 <script>
@@ -275,7 +275,7 @@ function renderInputs(){
  const probDurationCell=function(o,i){if(!probOn(o))return dash;const st=probDurationStatus(o),strong=st.kind==='invalid'||st.kind==='warning',ph=o.probDurationUnit==='days'?'VD: 60':'VD: 2';return '<div class="prob-duration-input">'+textInput(i,'probDurationValue',o,ph,'decimal',false,'',st.kind==='invalid'?'aria-invalid="true"':'')+'<select data-i="'+i+'" data-k="probDurationUnit"><option value="months" '+(o.probDurationUnit==='months'?'selected':'')+'>Tháng</option><option value="days" '+(o.probDurationUnit==='days'?'selected':'')+'>Ngày</option></select></div><p class="benefit-note prob-duration-help" data-probdur-help="'+i+'" style="'+(st.kind==='valid'?'display:none':(strong?'color:var(--clay);font-weight:600':''))+'">'+st.text+'</p>'};
  const jobCell=function(o,i){if(!probOn(o))return dash;return '<select data-i="'+i+'" data-k="probJobType"><option value="unknown" '+(o.probJobType==='unknown'?'selected':'')+'>Chưa rõ</option><option value="manager" '+(o.probJobType==='manager'?'selected':'')+'>Quản lý doanh nghiệp · tối đa 180 ngày</option><option value="college" '+(o.probJobType==='college'?'selected':'')+'>Cao đẳng trở lên · tối đa 60 ngày</option><option value="intermediate" '+(o.probJobType==='intermediate'?'selected':'')+'>Trung cấp / kỹ thuật / nghiệp vụ · tối đa 30 ngày</option><option value="other" '+(o.probJobType==='other'?'selected':'')+'>Công việc khác · tối đa 6 ngày làm việc</option></select>'};
  const otWrap=function(kind,i,controls){return '<div class="ot-config-cell" data-ot-cell="'+kind+'-'+i+'"><span class="offer-mna ot-cell-dash">-</span><div class="ot-cell-controls" style="display:none">'+controls+'</div></div>'};
- const otPaidCell=function(o,i){return otWrap('paid',i,seg(i,'otPaid',o.otPaid,[['no','Không'],['yes','Có']]));};
+ const otPaidCell=function(o,i){return otWrap('paid',i,seg(i,'otPaid',o.otPaid,[['unknown','Chưa rõ'],['no','Không'],['yes','Có']],true));};
  const otTypeCell=function(o,i){return otWrap('type',i,'<select data-i="'+i+'" data-k="otType"><option value="weekday" '+(o.otType==='weekday'?'selected':'')+'>Ngày thường</option><option value="rest" '+(o.otType==='rest'?'selected':'')+'>Ngày nghỉ hằng tuần</option><option value="mixed" '+(o.otType==='mixed'?'selected':'')+'>Nhiều loại</option></select>');};
  const otFactorCell=function(o,i){const min=o.otType==='rest'?200:150;return otWrap('factor',i,textInput(i,'otFactor',o,'VD: '+min,'decimal',false,'%')+'<p class="ot-inline-help" data-ot-factor-help="'+i+'-otFactor">'+esc(otFactorText(o,'otFactor',min))+'</p>');};
  const otMixedCell=function(o,i,hourKey,factorKey,min,showHelp){return otWrap('mixed',i,'<div class="ot-mini-pair">'+textInput(i,hourKey,o,'VD: 4','decimal',false,'giờ')+textInput(i,factorKey,o,'VD: '+min,'decimal',false,'%')+'</div><p class="ot-inline-help" data-ot-factor-help="'+i+'-'+factorKey+'">'+esc(otFactorText(o,factorKey,min))+'</p>'+(showHelp?'<p class="ot-inline-help" data-ot-mixed-help="'+i+'">'+esc(otMixedText(o))+'</p>':''));};
@@ -287,9 +287,9 @@ function renderInputs(){
  html+=row('Con số trong offer là',seg(0,'pay',A.payType,[['gross','Gross (trước trừ)'],['net','Net (về tay)']]),seg(1,'pay',B.payType,[['gross','Gross (trước trừ)'],['net','Net (về tay)']]));
  html+=row('Lương / tháng',textInput(0,'gross',A,'VD: 25,000,000','numeric',true,'đ'),textInput(1,'gross',B,'VD: 30,000,000','numeric',true,'đ'));
  html+=row('Công ty dùng mức nào để đóng BH?',bhCell(A,0),bhCell(B,1));
- html+=row('Lên văn phòng / tuần',textInput(0,'days',A,'VD: 5','decimal',false,'buổi'),textInput(1,'days',B,'VD: 5','decimal',false,'buổi'));
- html+=row('Di chuyển 1 chiều',textInput(0,'commute',A,'VD: 45','decimal',false,'phút'),textInput(1,'commute',B,'VD: 45','decimal',false,'phút'));
- html+=row('Làm thêm giờ (OT) trung bình / tháng',otHoursCell(A,0),otHoursCell(B,1));
+ html+=row('Lên văn phòng / tuần',textInput(0,'days',A,'VD: 5','decimal',false,'buổi'),textInput(1,'days',B,'VD: 5','decimal',false,'buổi'),'Nhập 0 nếu không lên văn phòng; để trống = chưa biết.');
+ html+=row('Di chuyển 1 chiều',textInput(0,'commute',A,'VD: 45','decimal',false,'phút'),textInput(1,'commute',B,'VD: 45','decimal',false,'phút'),'Nhập 0 nếu không có thời gian di chuyển; để trống = chưa biết.');
+ html+=row('Làm thêm giờ (OT) trung bình / tháng',otHoursCell(A,0),otHoursCell(B,1),'Nhập 0 nếu không OT; để trống = chưa biết.');
  html+=row('OT có được trả tiền không?',otPaidCell(A,0),otPaidCell(B,1),'','ot-paid-row');
  html+=row('OT chủ yếu rơi vào',otTypeCell(A,0),otTypeCell(B,1),'','ot-type-row');
  html+=row('Hệ số OT',otFactorCell(A,0),otFactorCell(B,1),'','ot-factor-row');
@@ -297,20 +297,20 @@ function renderInputs(){
  html+=row('OT ngày nghỉ hằng tuần',otMixedCell(A,0,'otBreakdownRest','otFactorRest',200,false),otMixedCell(B,1,'otBreakdownRest','otFactorRest',200,false),'','ot-mixed-rest-row');
  html+=row('OT ngày lễ/Tết',otMixedCell(A,0,'otBreakdownHoliday','otFactorHoliday',300,true),otMixedCell(B,1,'otBreakdownHoliday','otFactorHoliday',300,true),'','ot-mixed-holiday-row');
  html+=row('Mức lương dùng để tính OT',otBaseCell(A,0),otBaseCell(B,1),'','ot-base-row');
- html+=row('Có giai đoạn thử việc cần tính riêng?',seg(0,'probationEnabled',A.probationEnabled,[['no','Không'],['yes','Có']]),seg(1,'probationEnabled',B.probationEnabled,[['no','Không'],['yes','Có']]));
+ html+=row('Có giai đoạn thử việc cần tính riêng?',seg(0,'probationEnabled',A.probationEnabled,[['unknown','Chưa rõ'],['no','Không'],['yes','Có']],true),seg(1,'probationEnabled',B.probationEnabled,[['unknown','Chưa rõ'],['no','Không'],['yes','Có']],true),'Chưa rõ thì Net tháng vẫn có thể tính nếu đủ dữ liệu, nhưng thu nhập 12 tháng/chuyển việc sẽ để Chưa đủ dữ liệu.');
  if(anyTrial){
   html+=row('Nhóm công việc của vị trí',jobCell(A,0),jobCell(B,1));
   html+=row('Thời gian thử việc',probDurationCell(A,0),probDurationCell(B,1));
   html+=row('Lương thử việc (% mức lương offer)',probOn(A)?textInput(0,'probPct',A,'Bắt buộc nhập','decimal',false,'%')+'<p class="benefit-note">'+(hasInput(A.probPct)?'':'Đang thiếu % lương thử việc.')+'</p>':dash,probOn(B)?textInput(1,'probPct',B,'Bắt buộc nhập','decimal',false,'%')+'<p class="benefit-note">'+(hasInput(B.probPct)?'':'Đang thiếu % lương thử việc.')+'</p>':dash);
-  html+=row('Trong thời gian thử việc có đóng BH bắt buộc?',probOn(A)?seg(0,'probInsurance',A.probInsurance,[['no','Không'],['yes','Có']]):dash,probOn(B)?seg(1,'probInsurance',B.probInsurance,[['no','Không'],['yes','Có']]):dash);
+  html+=row('Trong thời gian thử việc có đóng BH bắt buộc?',probOn(A)?seg(0,'probInsurance',A.probInsurance,[['unknown','Chưa rõ'],['no','Không'],['yes','Có']],true):dash,probOn(B)?seg(1,'probInsurance',B.probInsurance,[['unknown','Chưa rõ'],['no','Không'],['yes','Có']],true):dash);
  }
  html+='</div>';
  html+='<details class="benefits compare-benefits"'+(open?' open':'')+'><summary>Thưởng, phụ cấp & phúc lợi</summary><div class="benefits-body"><div class="offer-matrix">'+head(false);
- html+=row('Thưởng đảm bảo / năm (tháng lương)',textInput(0,'guaranteedBonusMonths',A,'VD: 1','decimal',false,'tháng'),textInput(1,'guaranteedBonusMonths',B,'VD: 1','decimal',false,'tháng'));
- html+=row('Thưởng hiệu suất / năm',perfCell(A,0),perfCell(B,1));
- html+=row('Phụ cấp cố định ngoài mức lương trên / tháng',textInput(0,'fixedAllowance',A,'VD: 1,000,000','numeric',true,'đ'),textInput(1,'fixedAllowance',B,'VD: 1,000,000','numeric',true,'đ'));
+ html+=row('Thưởng đảm bảo / năm (tháng lương)',textInput(0,'guaranteedBonusMonths',A,'VD: 1','decimal',false,'tháng'),textInput(1,'guaranteedBonusMonths',B,'VD: 1','decimal',false,'tháng'),'Không có thì để trống - tool hiểu là 0.');
+ html+=row('Thưởng hiệu suất / năm',perfCell(A,0),perfCell(B,1),'Không có thì để trống - tool hiểu là 0.');
+ html+=row('Phụ cấp cố định ngoài mức lương trên / tháng',textInput(0,'fixedAllowance',A,'VD: 1,000,000','numeric',true,'đ'),textInput(1,'fixedAllowance',B,'VD: 1,000,000','numeric',true,'đ'),'Không có thì để trống - tool hiểu là 0.');
  html+=row('Phụ cấp này có tính vào căn cứ BH?',seg(0,'allowanceBh',A.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true),seg(1,'allowanceBh',B.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true));
- html+=row('Ngày phép / năm',textInput(0,'paidLeaveDays',A,'VD: 12','decimal',false,'ngày'),textInput(1,'paidLeaveDays',B,'VD: 12','decimal',false,'ngày'));
+ html+=row('Ngày phép / năm',textInput(0,'paidLeaveDays',A,'VD: 12','decimal',false,'ngày'),textInput(1,'paidLeaveDays',B,'VD: 12','decimal',false,'ngày'),'Nhập 0 nếu không có; để trống = chưa biết và tool chưa tính giá trị/giờ.');
  html+='</div></div></details>';
  document.getElementById('offersIn').innerHTML=html;
  syncOfferCount();
@@ -341,10 +341,10 @@ function renderCurrentInputs(){
  html+=row('Lương hiện tại ghi theo',sg('payType',o.payType,[['gross','Gross (trước trừ)'],['net','Net (về tay)']]));
  html+=row('Lương / tháng',inp('gross',o.gross,'VD: 20,000,000','đ',true));
  html+=row('Công ty dùng mức nào để đóng BH?',bh);
- html+=row('Lên văn phòng / tuần',inp('days',o.days,'VD: 5','buổi'));
- html+=row('Di chuyển 1 chiều',inp('commute',o.commute,'VD: 45','phút'));
- html+=row('Làm thêm giờ (OT) trung bình / tháng',inp('otMonthly',o.otMonthly,'VD: 8','giờ')+'<p class="ot-current-help" data-current-ot-guard>'+esc(otGuardrailText(o))+'</p>');
- html+=row('OT có được trả tiền không?',sg('otPaid',o.otPaid,[['no','Không'],['yes','Có']]),'','current-ot-row','data-current-ot-row="paid"'+(active?'':' hidden'));
+ html+=row('Lên văn phòng / tuần',inp('days',o.days,'VD: 5','buổi'),'Nhập 0 nếu không lên văn phòng; để trống = chưa biết.');
+ html+=row('Di chuyển 1 chiều',inp('commute',o.commute,'VD: 45','phút'),'Nhập 0 nếu không có thời gian di chuyển; để trống = chưa biết.');
+ html+=row('Làm thêm giờ (OT) trung bình / tháng',inp('otMonthly',o.otMonthly,'VD: 8','giờ')+'<p class="ot-current-help" data-current-ot-guard>'+esc(otGuardrailText(o))+'</p>','Nhập 0 nếu không OT; để trống = chưa biết.');
+ html+=row('OT có được trả tiền không?',sg('otPaid',o.otPaid,[['unknown','Chưa rõ'],['no','Không'],['yes','Có']],true),'','current-ot-row','data-current-ot-row="paid"'+(active?'':' hidden'));
  html+=row('OT chủ yếu rơi vào','<select data-current="otType"><option value="weekday" '+(o.otType==='weekday'?'selected':'')+'>Ngày thường</option><option value="rest" '+(o.otType==='rest'?'selected':'')+'>Ngày nghỉ hằng tuần</option><option value="mixed" '+(o.otType==='mixed'?'selected':'')+'>Nhiều loại</option></select>','','current-ot-row','data-current-ot-row="type"'+(paid?'':' hidden'));
  html+=row('Hệ số OT',inp('otFactor',o.otFactor,'VD: '+factorMin,'%')+'<p class="ot-current-help" data-current-ot-factor>'+esc(otFactorText(o,'otFactor',factorMin))+'</p>','','current-ot-row','data-current-ot-row="factor"'+(paid&&!mixed?'':' hidden'));
  html+=row('OT ngày thường','<div class="ot-mini-pair">'+inp('otBreakdownWeekday',o.otBreakdownWeekday,'VD: 4','giờ')+inp('otFactorWeekday',o.otFactorWeekday,'VD: 150','%')+'</div>','','current-ot-row','data-current-ot-row="mixed-weekday"'+(mixed?'':' hidden'));
@@ -354,11 +354,11 @@ function renderCurrentInputs(){
  html+=row('Mức lương dùng để tính OT',otBase,'','current-ot-row','data-current-ot-row="base"'+(paid?'':' hidden'));
  html+='</div>';
  html+='<details class="benefits compare-benefits v3-current-benefits"'+(benefitsOpen?' open':'')+'><summary>Thưởng, phụ cấp & phúc lợi</summary><div class="benefits-body"><div class="offer-matrix v3-current-matrix">'+head();
- html+=row('Thưởng đảm bảo / năm (tháng lương)',inp('guaranteedBonusMonths',o.guaranteedBonusMonths,'VD: 1','tháng'));
- html+=row('Thưởng hiệu suất / năm','<div class="control-stack">'+sg('performanceBonusType',o.performanceBonusType,[['months','Tháng lương'],['amount','Số tiền']])+'<div class="sub-input">'+inp('performanceBonusValue',o.performanceBonusValue,perfAmount?'VD: 60,000,000':'VD: 2',perfAmount?'đ':'tháng',perfAmount)+'</div></div>');
- html+=row('Phụ cấp cố định ngoài mức lương trên / tháng',inp('fixedAllowance',o.fixedAllowance,'VD: 1,000,000','đ',true));
+ html+=row('Thưởng đảm bảo / năm (tháng lương)',inp('guaranteedBonusMonths',o.guaranteedBonusMonths,'VD: 1','tháng'),'Không có thì để trống - tool hiểu là 0.');
+ html+=row('Thưởng hiệu suất / năm','<div class="control-stack">'+sg('performanceBonusType',o.performanceBonusType,[['months','Tháng lương'],['amount','Số tiền']])+'<div class="sub-input">'+inp('performanceBonusValue',o.performanceBonusValue,perfAmount?'VD: 60,000,000':'VD: 2',perfAmount?'đ':'tháng',perfAmount)+'</div></div>','Không có thì để trống - tool hiểu là 0.');
+ html+=row('Phụ cấp cố định ngoài mức lương trên / tháng',inp('fixedAllowance',o.fixedAllowance,'VD: 1,000,000','đ',true),'Không có thì để trống - tool hiểu là 0.');
  html+=row('Phụ cấp này có tính vào căn cứ BH?',sg('allowanceBh',o.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true));
- html+=row('Ngày phép / năm',inp('paidLeaveDays',o.paidLeaveDays,'VD: 12','ngày'));
+ html+=row('Ngày phép / năm',inp('paidLeaveDays',o.paidLeaveDays,'VD: 12','ngày'),'Nhập 0 nếu không có; để trống = chưa biết và tool chưa tính giá trị/giờ.');
  html+='</div></div></details>';
  host.innerHTML=html;syncCurrentOtVisibility();
 }
