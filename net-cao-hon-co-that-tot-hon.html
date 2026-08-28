@@ -193,7 +193,7 @@ function ensureOfferShape(o,n,legacy){
  const src=o||{},oldTrial=legacy&&src.probationEnabled==null&&(hasPositiveValue(src.probPct)||hasPositiveValue(src.probDurationValue)||hasPositiveValue(src.probMon)||src.probInsurance==="yes"),trialState=["unknown","yes","no"].includes(src.probationEnabled)?src.probationEnabled:(oldTrial?"yes":"unknown"),probPct=src.probPct??null;
  const oldOt=hasInput(src.ot)?Number(String(src.ot).replace(/,/g,"")):NaN,otMonthly=hasInput(src.otMonthly)?src.otMonthly:(Number.isFinite(oldOt)&&oldOt>=0?Math.round(oldOt*UI_WKS*100)/100:null);
  const probDurationValue=hasInput(src.probDurationValue)?src.probDurationValue:(src.probMon??null),probDurationUnit=src.probDurationUnit==='days'?'days':'months';
- const bhMode=["unknown","salary","custom"].includes(src.bhMode)?src.bhMode:(src.base==="custom"?"custom":"salary");
+ const bhMode=["unknown","salary","custom"].includes(src.bhMode)?src.bhMode:(legacy?(src.base==="custom"?"custom":"salary"):"unknown");
  const otType=["weekday","rest","mixed"].includes(src.otType)?src.otType:"weekday",otDefaultFactor=otType==="rest"?200:150;
  const otFactor=hasInput(src.otFactor)?src.otFactor:otDefaultFactor;
  return{name:String(src.name||n),gross:src.gross??null,payType:src.payType==="net"?"net":"gross",base:bhMode==="custom"?"custom":"full",bhMode,customBase:src.customBase??null,days:src.days??null,commute:src.commute??null,otMonthly,otPaid:["unknown","yes","no"].includes(src.otPaid)?src.otPaid:"unknown",otType,otFactor,
