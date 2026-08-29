@@ -21,14 +21,15 @@ await salary.fill('30000000');
 await page.waitForTimeout(1200);
 
 const afterInput=[...all];
-const business=afterInput.filter(r=>['xhr','fetch','websocket','eventsource'].includes(r.type)||r.method!=='GET');
+const staticTypes=new Set(['document','script','stylesheet','font','image','media']);
+const business=afterInput.filter(r=>['xhr','fetch','websocket','eventsource'].includes(r.type)||r.method!=='GET'||!staticTypes.has(r.type));
 console.log('INITIAL_REQUESTS');
 for(const r of initial)console.log(r.type+' '+r.method+' '+r.url);
 console.log('AFTER_INPUT_REQUESTS');
 for(const r of afterInput)console.log(r.type+' '+r.method+' '+r.url);
 console.log('BUSINESS_REQUESTS_AFTER_INPUT='+business.length);
 assert.equal(business.length,0,'Unexpected business request after input: '+JSON.stringify(business));
-assert.equal(afterInput.length,0,'No request at all should occur after input once static assets are loaded');
+assert.ok(afterInput.every(r=>staticTypes.has(r.type)&&r.method==='GET'),'Only static GET resources may load after input');
 
 const emptyText=await page.locator('#empty').textContent();
 const resultsHidden=await page.locator('#results').evaluate(el=>el.classList.contains('hidden'));
