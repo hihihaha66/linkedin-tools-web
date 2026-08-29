@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-BaGKAIaMDWxTPEb5xoLk96shSNLNk/eOJvhTwekgrIs='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-WRxCCrNTxtV6YrGXXsgBjVozRQ/lEwskaldfu9kyuII='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -650,7 +650,7 @@ function v4CompactLayers(){
  v4EnsureInsight('tdelta','So thời gian bỏ ra và giá trị nhận lại trên mỗi giờ.');
  const l4=(p4&&p4.values.length>1&&new Set(p4.values).size===1)?'Các phương án đang có cùng mức dùng để tính BH.':'Căn cứ BH khác nhau có thể làm quyền lợi an sinh khác nhau, trong giới hạn trần.';
  v4EnsureInsight('l4insight',l4);
- const l5=document.getElementById('l5insight');if(l5){const simOn=hasInput(state.sickDays)||state.mat==='show';if(simOn)l5.textContent='Kết quả mô phỏng dựa trên căn cứ BH đã nhập; điều kiện hưởng thực tế chưa được kiểm tra.';else{l5.innerHTML='<button type="button" class="btn ghost tiny" id="enableBhSimFromL5">Bật mô phỏng tại đây</button>';const cta=l5.querySelector('#enableBhSimFromL5');if(cta)cta.addEventListener('click',enableBhSimFromL5)}l5.style.display=''}
+ const l5=document.getElementById('l5insight');if(l5){const simOn=hasInput(state.sickDays)||state.mat==='show';if(simOn)l5.textContent='Kết quả mô phỏng dựa trên căn cứ BH đã nhập; điều kiện hưởng thực tế chưa được kiểm tra.';else{let cta=l5.querySelector('#enableBhSimFromL5');if(!cta){l5.innerHTML='<button type="button" class="btn ghost tiny" id="enableBhSimFromL5">Bật mô phỏng tại đây</button>';cta=l5.querySelector('#enableBhSimFromL5');if(cta)cta.addEventListener('click',enableBhSimFromL5)}}l5.style.display=''}
 }
 function syncV4ConditionalHelp(){
  const el=document.getElementById('v4ConditionalHelp');if(!el)return;
