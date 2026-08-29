@@ -56,10 +56,17 @@ const bhCta=page.locator('#enableBhSimFromL5');
 assert.equal(await bhCta.count(),1,'Layer 5 CTA must exist before simulation is enabled');
 await bhCta.click();
 await page.waitForTimeout(500);
-assert.equal(await page.locator('#bhSim').evaluate(el=>el.open),true,'B7 CTA must open BH simulation controls');
-assert.equal(await page.locator('#sickDays').inputValue(),'0','B7 CTA must activate existing simulation state with explicit 0 sick days');
-assert.ok((await page.locator('#bhSummaryState').textContent()).includes('0 ngày ốm'),'BH summary must reflect enabled state');
-assert.equal(await page.locator('#enableBhSimFromL5').count(),0,'Layer 5 CTA must disappear after simulation is enabled');
+const b7State={
+  open:await page.locator('#bhSim').evaluate(el=>el.open),
+  sickDays:await page.locator('#sickDays').inputValue(),
+  summary:await page.locator('#bhSummaryState').textContent(),
+  ctaCount:await page.locator('#enableBhSimFromL5').count()
+};
+console.log('B7_STATE='+JSON.stringify(b7State));
+assert.equal(b7State.open,true,'B7 CTA must open BH simulation controls');
+assert.equal(b7State.sickDays,'0','B7 CTA must activate existing simulation state with explicit 0 sick days');
+assert.ok(b7State.summary.includes('0 ngày ốm'),'BH summary must reflect enabled state');
+assert.equal(b7State.ctaCount,0,'Layer 5 CTA must disappear after simulation is enabled');
 assert.equal(await page.locator('#sickDays').isVisible(),true,'Sick-days field must be visible after activation');
 assert.equal(await page.locator('#matSeg').isVisible(),true,'Maternity control must be visible after activation');
 
