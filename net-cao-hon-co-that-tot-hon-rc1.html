@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-wBPHT1Cu9G6z9mkB7BZK3tf5Tz1/zl3LoYtaSmQ3/v4='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-7wqvMizgldJqkUIweLkAz6P/MRoguOvJQGy1hmsJ8t0='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -258,7 +258,7 @@ input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;
 <div class="offers-in one-offer" id="offersIn"></div>
 <div id="v4ConditionalHelp" class="v4-conditional-help" style="display:none"></div>
 <p class="v4-micro-note v4-insurance-note">Chưa biết mức đóng bảo hiểm? Chọn "Chưa rõ" — tool tạm lấy lương offer làm căn cứ BH. Khi đó quyền lợi ở Lớp 4–5 có thể cao hơn thực tế, còn Net ở Lớp 1 có thể thấp hơn thực tế một chút. Nếu HR cho biết mức riêng, chọn "Tôi biết mức cụ thể".</p>
-<div id="empty" class="empty">Nhập lương cho ít nhất một phương án để bắt đầu.</div>
+<div id="empty" class="empty">Nhập lương để bắt đầu</div>
 <div class="results hidden" id="results">
 <div class="v3-results-head"><div id="v3Summary"></div><h2 class="v3-mode-title" id="v3ModeTitle"></h2><div class="v3-pairs" id="v3Pairs"></div><p class="v3-pair-note" id="v3PairHint"></p></div>
 <div class="layer v4-layer" data-v4-layer="1"><p class="lnum">Lớp 1 · <b>Tiền về tay mỗi tháng</b></p><div class="v4-layer-main" id="l1main"></div><div class="delta v4-layer-insight" id="l1delta"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="l1cols"></div></details></div>
@@ -663,7 +663,7 @@ function syncV4ConditionalHelp(){
 
 function applyResult(data){
  const empty=document.getElementById("empty"),results=document.getElementById("results"),solverLayer=document.getElementById("solverLayer");renderV3ResultHead(data||{});document.getElementById("solverResult").innerHTML=(data&&data.layer6Html)||"";solverLayer.style.display=data&&data.showLayer6?"":"none";
- if(!data||!data.hasResults){empty.style.display="";empty.textContent=state.solver&&state.solver.enabled?"Lớp 6 có thể tính dù mức lương của cấu trúc đã chọn đang để trống; xem kết quả bên dưới.":"Nhập lương cho ít nhất một phương án để bắt đầu.";results.classList.add("hidden");return}
+ if(!data||!data.hasResults){empty.style.display="";empty.textContent=state.solver&&state.solver.enabled?"Lớp 6 có thể tính dù mức lương của cấu trúc đã chọn đang để trống; xem kết quả bên dưới.":"Nhập lương để bắt đầu";results.classList.add("hidden");return}
  empty.style.display="none";results.classList.remove("hidden");
  document.getElementById("l1cols").innerHTML=data.l1cols||"";const d1=document.getElementById("l1delta");d1.innerHTML=data.l1delta||"";d1.style.display=data.showL1Delta?"":"none";
  document.getElementById("annualcols").innerHTML=data.annualcols||"";const ad=document.getElementById("annualdelta");ad.innerHTML=data.annualdelta||"";ad.style.display=data.showAnnualDelta?"":"none";
