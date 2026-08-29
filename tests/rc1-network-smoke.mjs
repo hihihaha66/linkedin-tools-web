@@ -51,6 +51,18 @@ assert.equal((await page.locator('#empty').textContent())?.trim(),'Nhập lươn
 await salary.fill('30000000');
 await page.waitForTimeout(800);
 
+// B7: CTA must activate simulation state, not only scroll/open.
+const bhCta=page.locator('#enableBhSimFromL5');
+assert.equal(await bhCta.count(),1,'Layer 5 CTA must exist before simulation is enabled');
+await bhCta.click();
+await page.waitForTimeout(500);
+assert.equal(await page.locator('#bhSim').evaluate(el=>el.open),true,'B7 CTA must open BH simulation controls');
+assert.equal(await page.locator('#sickDays').inputValue(),'0','B7 CTA must activate existing simulation state with explicit 0 sick days');
+assert.ok((await page.locator('#bhSummaryState').textContent()).includes('0 ngày ốm'),'BH summary must reflect enabled state');
+assert.equal(await page.locator('#enableBhSimFromL5').count(),0,'Layer 5 CTA must disappear after simulation is enabled');
+assert.equal(await page.locator('#sickDays').isVisible(),true,'Sick-days field must be visible after activation');
+assert.equal(await page.locator('#matSeg').isVisible(),true,'Maternity control must be visible after activation');
+
 // 2.1 segmented control remains Thêm/Bỏ qua with the final label.
 const currentBox=page.locator('#currentBox');
 assert.ok((await currentBox.textContent()).includes('Đưa công việc hiện tại vào so sánh?'));
