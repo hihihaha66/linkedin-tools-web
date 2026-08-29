@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="referrer" content="no-referrer" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-WRxCCrNTxtV6YrGXXsgBjVozRQ/lEwskaldfu9kyuII='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<title>Net cao hơn có thật tốt hơn? - V4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,600;8..60,700&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#F6F4EE;--paper-2:#EFEBE0;--ink:#23211C;--ink-soft:#5A5648;--moss:#2F5E54;--moss-soft:#3C7064;--clay:#9B4A3A;--line:#D9D3C4;--radius:10px;--serif:'Source Serif 4',Georgia,'Times New Roman',serif;--sans:'Be Vietnam Pro','Segoe UI',Arial,sans-serif;--mono:'IBM Plex Mono',Consolas,'Courier New',monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.55;-webkit-font-smoothing:antialiased}.wrap{max-width:920px;margin:0 auto;padding:28px 20px 80px}header h1{font-family:var(--serif);font-weight:700;font-size:clamp(27px,5.5vw,40px);line-height:1.12;margin:0 0 8px;letter-spacing:-.01em}header p.sub{margin:0;color:var(--ink-soft);font-size:15px;max-width:72ch}.rule{height:1px;background:var(--line);border:0;margin:22px 0}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:4px 0 18px;align-items:center}.toolbar-bottom{margin:24px 0 8px;padding-top:16px;border-top:1px solid var(--line)}.save-state{font-family:var(--mono);font-size:12px;color:var(--ink-soft)}button.btn{font-family:var(--sans);font-size:14px;cursor:pointer;padding:10px 16px;border-radius:8px;border:1px solid var(--moss);background:var(--moss);color:#fff}button.btn.ghost{background:transparent;color:var(--moss)}button.btn.tiny{padding:6px 10px;font-size:13px}button.btn.danger{border-color:var(--clay);color:var(--clay);background:transparent}.btn.danger.clear-armed{background:var(--clay);color:#fff;border-color:var(--clay);font-weight:700;box-shadow:0 0 0 3px rgba(155,74,58,.16)}.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--moss);margin:0 0 4px}h2.sec{font-family:var(--serif);font-weight:600;font-size:22px;margin:0 0 4px}p.hint{color:var(--ink-soft);font-size:14px;margin:0 0 16px;max-width:74ch}.ctx{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;align-items:stretch;margin-bottom:12px}.ctx .field{min-width:0;margin:0;display:flex;flex-direction:column}.ctx .field>label{min-height:38px;display:block;margin-bottom:5px;line-height:1.3}.ctx-label-main,.ctx-label-sub{display:block}.ctx-label-sub{color:var(--ink-soft)}.ctx .suffix-row{width:100%}.ctx .suffix-row input{padding-right:58px}.ctx input[type=number],.ctx select,.ctx .seg{height:40px;min-height:40px}.ctx .seg button{height:38px;padding:0 8px;display:flex;align-items:center;justify-content:center}.offers-in{display:flex;gap:16px;flex-wrap:wrap}.offer-in{flex:1;min-width:290px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px}.offer-in .name-in{width:100%;font-family:var(--serif);font-size:19px;font-weight:600;color:var(--ink);border:0;border-bottom:1px solid var(--line);background:transparent;padding:2px 0 8px;margin-bottom:16px}.offer-in .name-in:focus{outline:none;border-bottom-color:var(--moss)}label{display:block;font-size:13px;color:var(--ink-soft);margin:0 0 5px}.field{margin:0 0 14px}input[type=text],input[type=number],input[type=date],select{width:100%;padding:10px 12px;font-family:var(--mono);font-size:16px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:8px}select{font-family:var(--sans)}input:focus,select:focus{outline:2px solid var(--moss-soft);outline-offset:1px;background:#fff}.suffix-row{position:relative}.suffix-row .suffix{position:absolute;right:12px;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:13px;color:var(--ink-soft);pointer-events:none}.suffix-row input{padding-right:54px}.seg{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--paper)}.seg button{flex:1;border:0;background:transparent;padding:10px 8px;font-family:var(--sans);font-size:13.5px;color:var(--ink-soft);cursor:pointer;border-right:1px solid var(--line);line-height:1.25}.seg button:last-child{border-right:0}.seg button.on{background:var(--moss);color:#fff;font-weight:500}.sub-input{margin-top:10px}.duo{display:flex;gap:10px}.duo .field,.duo input{flex:1;min-width:0}.prob-wrap{margin-top:2px;margin-bottom:14px;padding:12px 11px 2px;background:var(--paper);border:1px solid var(--line);border-radius:8px}.prob-wrap label{margin-bottom:7px}.benefit-note{font-size:11.5px;color:var(--ink-soft);line-height:1.5;margin:7px 0 12px}.benefits{border-top:1px solid var(--line);margin-top:4px;padding-top:4px}.benefits summary{list-style:none;cursor:pointer;color:var(--moss);font-family:var(--sans);font-size:13.5px;font-weight:600;padding:9px 0;display:flex;align-items:center;gap:7px}.benefits summary::-webkit-details-marker{display:none}.benefits summary:before{content:'＋';font-family:var(--mono);font-size:16px}.benefits[open] summary:before{content:'−'}.benefits-body{padding-top:7px}.mini-label{font-family:var(--mono);font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--ink-soft);margin:2px 0 8px}.bh-sim-wrap{margin:2px 0 14px}.bh-sim{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:0 12px}.bh-sim summary{list-style:none;cursor:pointer;color:var(--moss);font-family:var(--sans);font-size:14px;font-weight:600;padding:10px 0;display:flex;align-items:center;gap:7px}.bh-sim summary::-webkit-details-marker{display:none}.bh-sim summary:before{content:'＋';font-family:var(--mono);font-size:16px;flex:0 0 auto}.bh-sim[open] summary:before{content:'−'}.bh-summary-title{white-space:nowrap}.bh-summary-state{margin-left:auto;padding-left:10px;min-width:0;text-align:right;color:var(--ink-soft);font-family:var(--mono);font-size:10.5px;font-weight:500;line-height:1.3}.bh-sim-body{border-top:1px solid var(--line);padding:7px 0 9px}.bh-compact-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(130px,.72fr);gap:12px;align-items:center;padding:7px 0}.bh-compact-row+.bh-compact-row{border-top:1px dotted var(--line)}.bh-compact-row label{margin:0;font-size:12.5px;color:var(--ink);line-height:1.4}.bh-control{min-width:0}.bh-control input,.bh-control .seg{height:38px;min-height:38px}.bh-control .seg button{padding:7px 6px}.bh-shared-note{margin:7px 0 0;padding-top:7px;border-top:1px solid var(--line);font-size:10.8px;line-height:1.45;color:var(--ink-soft)}.switch-box{margin:16px 0 20px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px}.switch-head{display:flex;gap:18px;justify-content:space-between;align-items:flex-start}.switch-copy{min-width:0;flex:1}.switch-copy .hint{margin-bottom:0}.switch-toggle{width:210px;flex:0 0 210px}.switch-fields{margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}.switch-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px}.switch-wide{grid-column:1/-1}
+.switch-bonus-section{margin-top:14px;padding-top:12px;border-top:1px solid var(--line)}
+.switch-bonus-section>.eyebrow{margin:0 0 8px}
+.switch-bonus-matrix{border:1px solid var(--line);border-radius:9px;overflow:hidden;background:#fff}
+.switch-bonus-row{display:grid;grid-template-columns:minmax(135px,.9fr) repeat(2,minmax(0,1fr));align-items:stretch;border-bottom:1px solid var(--line)}
+.switch-bonus-row:last-child{border-bottom:0}
+.switch-bonus-row.head{background:var(--paper-2);font-family:var(--mono);font-size:10.5px;letter-spacing:.045em;text-transform:uppercase;color:var(--ink-soft);font-weight:600}
+.switch-bonus-label,.switch-bonus-cell{min-width:0;padding:8px 9px;display:flex;align-items:center}
+.switch-bonus-label{font-size:12px;line-height:1.35;color:var(--ink)}
+.switch-bonus-cell{border-left:1px solid var(--line)}
+.switch-bonus-row.head .switch-bonus-label,.switch-bonus-row.head .switch-bonus-cell{padding-top:7px;padding-bottom:7px}
+.switch-bonus-control{width:100%;min-width:0}
+.switch-bonus-control input,.switch-bonus-control select{width:100%;height:36px;min-height:36px;font-size:12.5px;padding:0 8px;border-radius:8px;box-sizing:border-box}
+.switch-bonus-control.suffix-row input{padding-right:24px}
+.switch-bonus-control.suffix-row .suffix{right:7px;font-size:9.5px}
+.switch-bonus-na{display:block;width:100%;text-align:center;color:var(--ink-soft);font-family:var(--mono)}
+.switch-bonus-note{margin:7px 2px 0;font-size:10.5px;line-height:1.45;color:var(--ink-soft)}.switch-result{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px}.switch-result h4{font-family:var(--serif);font-size:17px;margin:0 0 3px;font-weight:600}.switch-result .subt{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px}.switch-result .row{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:5px 0;border-bottom:1px dotted var(--line)}.switch-result .row .v{font-family:var(--mono);white-space:nowrap}.switch-result .tot{margin-top:8px;padding-top:9px;border-top:1px solid var(--line);font-weight:600;display:flex;justify-content:space-between;gap:12px;font-size:13.5px}.switch-result .tot .v{font-family:var(--mono);white-space:nowrap}.switch-result .row>*{min-width:0}.switch-result .row.row-wrap .v{white-space:normal;overflow-wrap:anywhere;text-align:right;max-width:68%}.switch-scenarios{margin:10px 0 12px;padding:10px;background:var(--paper-2);border-radius:8px}.switch-scenario-title{font-size:12px;font-weight:600;color:var(--moss);margin-bottom:5px}.switch-scenario-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(145px,.9fr);gap:10px;padding:7px 0;border-bottom:1px dotted var(--line);font-size:12.5px;align-items:start}.switch-scenario-row:last-of-type{border-bottom:0}.switch-scenario-row small{display:block;color:var(--ink-soft);font-size:10.5px;line-height:1.45;margin-top:2px}.switch-scenario-row .v{font-family:var(--mono);text-align:right;white-space:normal;overflow-wrap:anywhere;min-width:0}.switch-scenario-row.combined{font-weight:600}.switch-scenario-note{font-size:10.5px;color:var(--ink-soft);line-height:1.45;margin:7px 0 0;padding-top:6px;border-top:1px solid var(--line)}.solver-box{margin:22px 0 20px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px}.solver-head{display:block}.solver-copy{min-width:0}.solver-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:10px}.solver-toggle>label{margin:0}.solver-toggle>.seg{width:210px;flex:0 0 210px}.solver-fields{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.solver-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}.solver-wide{grid-column:1/-1}.solver-goal{border:1px solid var(--line);border-radius:8px;padding:10px;background:var(--paper)}.solver-goal-head{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;color:var(--ink);font-weight:500}.solver-goal-head input{margin-top:3px;flex:0 0 auto}.solver-goal .sub-input{margin-top:7px}.solver-goal .sub-input[aria-disabled='true']{opacity:.48;pointer-events:none}.solver-note{font-size:11px;line-height:1.5;color:var(--ink-soft);margin:8px 0 0}.solver-layer{margin-top:14px}.solver-result{background:#fff;border-top:1px solid var(--line);padding-top:15px}.solver-result h3{font-family:var(--serif);font-size:20px;margin:0 0 4px}.solver-sub,.solver-foot{font-size:12px;color:var(--ink-soft);line-height:1.5}.solver-hero{background:var(--moss);color:#fff;border-radius:9px;padding:14px 16px;margin:12px 0}.solver-hero span,.solver-hero small{display:block}.solver-hero span{font-size:11px;text-transform:uppercase;letter-spacing:.05em;opacity:.85}.solver-hero strong{display:block;font-family:var(--mono);font-size:21px;line-height:1.25;margin:4px 0}.solver-hero small{font-size:11px;opacity:.9}.solver-row{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dotted var(--line);font-size:12.5px}.solver-row .v{font-family:var(--mono);text-align:right;white-space:normal;overflow-wrap:anywhere}.solver-breakdown,.solver-scenarios,.solver-buffer,.solver-annotations,.solver-needs{margin-top:12px;padding:10px 12px;background:var(--paper-2);border-radius:8px}.solver-scenarios p,.solver-buffer p{font-size:10.5px;color:var(--ink-soft);margin:7px 0 0}.solver-premium{font-size:13px}.solver-annotations .ok{color:var(--moss)}.solver-annotations .under{color:var(--clay)}.solver-needs ul{margin:6px 0 0;padding-left:18px;font-size:12px}.solver-foot{margin-top:12px}.diag-card{padding:12px}.diag-card>p{font-size:11.5px;line-height:1.55;color:var(--ink-soft);margin:6px 0 10px}.diag-item,.diag-constraint{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px dotted var(--line)}.diag-item:last-of-type,.diag-constraint:last-of-type{border-bottom:0}.diag-copy{min-width:0;flex:1}.diag-copy>b{display:block;font-size:12.5px;line-height:1.4;color:var(--ink)}.diag-path{display:block;font-family:var(--mono);font-size:10.5px;line-height:1.45;color:var(--moss);margin-top:2px}.diag-copy>small{display:block;font-size:10.8px;line-height:1.5;color:var(--ink-soft);margin-top:3px}.diag-action{flex:0 0 auto;border:1px solid var(--moss);border-radius:7px;background:#fff;color:var(--moss);font:600 11px var(--sans);padding:6px 9px;cursor:pointer;white-space:nowrap}.diag-action:active{transform:translateY(1px)}.diag-start{padding-top:9px}.diag-start .diag-action{width:100%}.diag-symbol{font-family:var(--mono);font-size:15px;font-weight:700;flex:0 0 18px;text-align:center}.diag-constraint.ok .diag-symbol{color:var(--moss)}.diag-constraint.block .diag-symbol{color:var(--clay)}.diag-constraint .diag-action{min-width:82px}.diag-focus{outline:3px solid var(--moss)!important;outline-offset:3px!important;background:#fff!important;transition:outline-color .2s ease}.no-solution{border-left:3px solid var(--clay)}.assumption-card-wrap{margin:0 0 20px}.assumption-card{background:#fff;border:1px solid var(--line);border-left:4px solid var(--clay);border-radius:var(--radius);padding:15px 16px}.assumption-title{font-family:var(--serif);font-size:17px;font-weight:600;margin-bottom:2px}.assumption-sub{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px}.assumption-group{font-size:13px;margin-top:8px}.assumption-group b{font-size:12.5px}.assumption-group ul{margin:5px 0 0;padding-left:20px}.assumption-group li{margin:3px 0}.assumption-group.assumed b{color:var(--clay)}.assumption-group.confirm b{color:var(--moss)}.switch-callout{font-size:13.5px;font-weight:600;background:var(--paper-2);border-radius:7px;padding:9px 10px;margin:10px 0}.switch-details{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}.switch-details summary{cursor:pointer;color:var(--moss);font-size:12.5px;font-weight:600;list-style:none}.calc-summary::-webkit-details-marker{display:none}.calc-summary::before{content:'＋';font-family:var(--mono);display:inline-block;margin-right:6px}.calc-summary[aria-disabled='true']::before{content:''}details[open]>.calc-summary::before{content:'−'}.switch-detail-body{padding-top:7px}.switch-box-results{margin:26px 0 20px}.switch-box-results #switchLayer{padding-top:16px;border-top:1px solid var(--line)}.switch-box-results .switch-result{border:0;border-radius:0;padding:0;background:transparent}.switch-assumptions{margin-top:14px;padding:11px 12px;background:var(--paper-2);border-left:3px solid var(--moss);border-radius:7px;font-size:12.5px}.switch-assumptions>b{color:var(--moss)}.switch-assumptions ul{margin:6px 0 0;padding-left:19px}.switch-assumptions li{margin:3px 0}.assumption-card-wrap{margin-top:22px}.results{margin-top:6px}.results.hidden{display:none}.layer{margin-bottom:20px}.layer .lnum{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--moss);margin:0 0 8px;display:flex;align-items:baseline;gap:8px}.layer .lnum b{font-size:15px;color:var(--ink);font-family:var(--serif);font-weight:600;letter-spacing:0;text-transform:none}.cols{display:flex;gap:14px;flex-wrap:wrap}.col{flex:1;min-width:230px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px}.col.win{border-color:var(--moss);border-width:1.5px}.col .cname{font-family:var(--serif);font-size:17px;font-weight:600;margin:0 0 2px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}.col .flag{font-family:var(--mono);font-size:10px;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:20px;background:rgba(47,94,84,.12);color:var(--moss)}.col .big,.basis .big{font-family:var(--mono);font-size:24px;line-height:1.15;color:var(--ink);margin-top:8px}.col .big .u,.basis .big .u{font-size:14px;color:var(--ink-soft)}.col .cap,.basis .cap{font-size:13px;color:var(--ink-soft);margin-top:2px}.col .brk{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}.col .brk .line{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:3px 0}.col .brk .line .v{font-family:var(--mono);white-space:nowrap}.col .brk .line.muted{color:var(--ink-soft)}.delta{background:var(--paper-2);border-radius:8px;padding:13px 15px;margin-top:12px;font-size:14px}.delta b{font-family:var(--mono);font-weight:600}.delta .up{color:var(--clay)}.delta .down{color:var(--moss)}.basis{flex:1;min-width:230px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px}.basis h4{font-family:var(--serif);font-size:16px;margin:0 0 3px;font-weight:600}.basis .subt{font-size:12.5px;color:var(--ink-soft);margin:0 0 10px}.basis .row{display:flex;justify-content:space-between;gap:12px;font-size:13px;padding:4px 0;border-bottom:1px dotted var(--line)}.basis .row:last-child{border-bottom:0}.basis .row .v{font-family:var(--mono);white-space:nowrap}.basis .tot{margin-top:8px;padding-top:8px;border-top:1px solid var(--line);font-weight:600;display:flex;justify-content:space-between;gap:12px;font-size:13.5px}.basis .tot .v{font-family:var(--mono);white-space:nowrap}.scenario-box{margin-top:12px;padding-top:9px;border-top:1px solid var(--line)}.scenario{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:4px 0}.scenario .v{font-family:var(--mono);white-space:nowrap}.scenario.muted{color:var(--ink-soft)}.events{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}.events .erow{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:8px;padding:11px 15px;border-bottom:1px solid var(--line);font-size:14px;align-items:baseline}.events .erow:last-child{border-bottom:0}.events .erow.head{background:var(--paper-2);font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft)}.events .erow .lbl{color:var(--ink)}.events .erow .lbl small{display:block;color:var(--ink-soft);font-size:12px}.events .erow .va,.events .erow .vb{font-family:var(--mono)}.events .erow .capped{color:var(--clay);font-size:11px}.verdict{margin-top:18px;padding:20px;border-radius:var(--radius);background:var(--moss);color:#fff}.verdict h3{font-family:var(--serif);margin:0 0 10px;font-size:20px;font-weight:600}.verdict p{margin:0 0 10px;font-size:14.5px;opacity:.96}.verdict p:last-child{margin-bottom:0}.verdict .hl{font-family:var(--mono);font-weight:600}.disclaim{font-size:13px;color:var(--ink-soft);background:var(--paper-2);border-radius:8px;padding:13px 15px;margin-top:18px}.src{font-size:12px;color:var(--ink-soft);margin-top:22px;border-top:1px solid var(--line);padding-top:14px;line-height:1.6}.src b{color:var(--ink-soft)}.empty{color:var(--ink-soft);font-size:14px;background:#fff;border:1px dashed var(--line);border-radius:var(--radius);padding:22px;text-align:center}.warn{color:var(--clay)}
+@media(max-width:760px){.ctx{grid-template-columns:repeat(2,minmax(0,1fr))}.switch-head{flex-direction:column}.switch-toggle{width:100%;flex-basis:auto}}
+@media(max-width:540px){.solver-box{padding:12px;margin:16px 0}.v4-layer>.lnum,.v4-layer-agenda{padding:8px 10px;font-size:10px;gap:6px}.v4-layer>.lnum b,.v4-layer-agenda b{font-size:13.5px;line-height:1.3}.solver-head{display:block}.solver-toggle{width:100%;margin-top:9px}.solver-grid{grid-template-columns:1fr;gap:8px}.solver-wide{grid-column:auto}.solver-result h3{font-size:18px}.solver-hero{padding:12px}.solver-hero strong{font-size:18px}.solver-row{display:grid;grid-template-columns:minmax(0,48%) minmax(0,52%);gap:8px}.solver-row .v{min-width:0}.solver-breakdown,.solver-scenarios,.solver-buffer,.solver-annotations,.solver-needs{padding:9px}.switch-result{padding:12px}.switch-result h4{font-size:16px;line-height:1.35}.switch-result .subt{font-size:11.5px;line-height:1.5}.switch-result .row{display:grid;grid-template-columns:minmax(0,43%) minmax(0,57%);gap:8px;font-size:12px;align-items:start}.switch-result .row .v{min-width:0;white-space:normal;text-align:right;overflow-wrap:anywhere}.switch-result .row.row-wrap{grid-template-columns:minmax(0,34%) minmax(0,66%)}.switch-result .row.row-wrap .v{max-width:none}.switch-result .tot{font-size:12.5px;gap:8px}.switch-result .tot .v{white-space:normal;text-align:right;overflow-wrap:anywhere}.switch-callout{font-size:12.5px;line-height:1.45}.switch-scenarios{padding:8px;margin:8px 0 10px}.switch-scenario-row{grid-template-columns:1fr;gap:3px;padding:6px 0}.switch-scenario-row .v{text-align:left;font-size:11.5px}.switch-scenario-title{font-size:11.5px}.switch-scenario-note{font-size:9.8px}.switch-detail-body{min-width:0}.switch-detail-body [style*="display:flex"]{min-width:0}.verdict{padding:15px}.verdict h3{font-size:18px;line-height:1.35}.verdict p{font-size:13px;line-height:1.55}.verdict [style*="padding:12px 13px"]{padding:10px!important}.verdict ul{padding-left:17px!important}.verdict li{overflow-wrap:anywhere}.events{min-width:0}.events .erow>*{min-width:0;overflow-wrap:anywhere}.basis .row .v,.scenario .v{white-space:normal;overflow-wrap:anywhere;text-align:right}.ctx{grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:8px;margin-bottom:10px}.ctx .field>label{min-height:34px;font-size:11.5px}.ctx input[type=number],.ctx select{font-size:14px;padding:8px 9px}.bh-sim-wrap{margin-bottom:11px}.bh-sim{padding:0 10px}.bh-sim summary{padding:9px 0}.bh-summary-state{font-size:9px}.bh-compact-row{grid-template-columns:minmax(0,1fr) minmax(112px,.82fr);gap:8px;padding:6px 0}.bh-compact-row label{font-size:11.5px}.bh-control input{font-size:14px;padding:8px 9px}.bh-control .seg button{font-size:11.5px;padding:7px 4px}.bh-shared-note{font-size:9.8px;margin-top:6px;padding-top:6px}.duo{flex-direction:column;gap:0}.switch-grid{grid-template-columns:1fr}.switch-wide{grid-column:auto}.col .big{font-size:22px}.events .erow{grid-template-columns:1.4fr 1fr 1fr}.seg button{font-size:12.5px}}
+
+/* V2 Turn 1: one A/B comparison mental model for offer input */
+.offers-in{display:block}.offer-matrix{width:100%;background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden}.offer-mrow{display:grid;grid-template-columns:minmax(160px,1.25fr) repeat(2,minmax(0,1fr));align-items:stretch;border-bottom:1px solid var(--line)}.offer-mrow:last-child{border-bottom:0}.offer-mrow.head{background:var(--paper-2);font-family:var(--mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-soft);align-items:center}.offer-mlabel,.offer-mcell{min-width:0;padding:11px 12px}.offer-mlabel{font-size:13px;color:var(--ink);display:flex;align-items:flex-start}.offer-mcell{border-left:1px solid var(--line)}.offer-mrow.head .offer-mlabel,.offer-mrow.head .offer-mcell{padding-top:9px;padding-bottom:9px}.offer-mcell .name-in{width:100%;font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);border:0;border-bottom:1px solid var(--line);border-radius:0;background:transparent;padding:2px 0 5px}.offer-mcell .name-in:focus{outline:none;border-bottom-color:var(--moss)}.offer-head-name{display:block;font-family:var(--serif);font-size:16px;font-weight:600;color:var(--ink);padding:2px 0 5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.offer-mcell input[type=text],.offer-mcell select{font-size:14px;padding:9px 9px}.offer-mcell .suffix-row .suffix{right:9px;font-size:11px}.offer-mcell .suffix-row input{padding-right:34px}.offer-mcell .suffix-row.unit-wide input{padding-right:64px}.offer-mcell .seg{width:100%}.offer-mcell .seg button{min-width:0;font-size:11.5px;padding:8px 4px;white-space:normal}.offer-mcell .seg.three button{font-size:10.5px;padding-left:2px;padding-right:2px}.offer-mcell .sub-input{margin-top:7px}.offer-mcell .benefit-note{font-size:10.5px;margin:5px 0 0}.offer-mnote{grid-column:1/-1;padding:8px 12px 10px;font-size:11.5px;line-height:1.5;color:var(--ink-soft);background:rgba(239,235,224,.36)}.offer-mnote.warn{color:var(--clay)}.offer-mna{color:var(--ink-soft);font-family:var(--mono);display:block;padding:8px 0}.compare-benefits{margin-top:10px;padding:0 12px;background:#fff;border:1px solid var(--line);border-radius:var(--radius)}.compare-benefits summary{padding:11px 0}.compare-benefits .benefits-body{padding:0 0 12px}.compare-benefits .offer-matrix{border-radius:8px}.offer-mcell .control-stack>*+*{margin-top:7px}.prob-duration-input{display:grid;grid-template-columns:minmax(0,1fr) 88px;gap:6px;align-items:start}.prob-duration-input select{min-width:0;padding-left:7px;padding-right:5px}.prob-duration-help{margin-bottom:0!important}
+@media(max-width:540px){.switch-core-grid{grid-template-columns:1fr}.switch-bonus-row{grid-template-columns:34% 33% 33%}.switch-bonus-label,.switch-bonus-cell{padding:7px 6px}.switch-bonus-label{font-size:10.8px;line-height:1.35}.switch-bonus-row.head{font-size:9.2px;letter-spacing:.025em}.switch-bonus-control input,.switch-bonus-control select{height:34px!important;min-height:34px!important;font-size:11px!important;padding-top:0!important;padding-bottom:0!important}.switch-bonus-control.suffix-row input{padding-right:21px!important}.switch-bonus-control.suffix-row .suffix{right:5px;font-size:8.8px}.switch-bonus-note{font-size:9.8px;line-height:1.42;margin-top:6px}.switch-legacy-inline{font-size:9.8px;padding:6px 8px;margin-bottom:7px}.prob-duration-input{grid-template-columns:1fr}.prob-duration-input select{font-size:10.5px}.wrap{padding-left:10px;padding-right:10px}.offer-mrow{grid-template-columns:34% 33% 33%}.offer-mlabel,.offer-mcell{padding:9px 7px}.offer-mlabel{font-size:11.5px;line-height:1.4}.offer-mrow.head .offer-mlabel,.offer-mrow.head .offer-mcell{padding:8px 6px}.offer-mcell .name-in{font-size:13px}.offer-head-name{font-size:13px}.offer-mcell input[type=text],.offer-mcell select{font-size:12.5px;padding:8px 6px}.offer-mcell .suffix-row input{padding-right:24px}.offer-mcell .suffix-row.unit-wide input{padding-right:53px}.offer-mcell .suffix-row .suffix{right:5px;font-size:10px}.offer-mcell .seg button{font-size:10.5px;padding:8px 2px;line-height:1.15}.offer-mcell .seg.three button{font-size:9.5px}.offer-mnote{padding:7px 8px 9px;font-size:10.5px}.events .erow{grid-template-columns:38% 31% 31%;gap:4px;padding:10px 8px;font-size:12.5px}.events .erow.head{font-size:9.5px}.events .erow .lbl small{font-size:10.5px}.events .erow .va,.events .erow .vb{font-size:11.5px;min-width:0;overflow-wrap:anywhere}}
+
+/* V2 Turn 4: OT progressive disclosure inside the persistent A/B matrix */
+.ot-mini-pair{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px}.ot-inline-help{font-size:10.5px;line-height:1.45;margin:5px 0 0;color:var(--clay)}.ot-inline-help:empty{display:none}.ot-config-cell .offer-mna{padding:7px 0}.ot-config-cell select{font-size:12px}.ot-config-cell .control-stack>*+*{margin-top:6px}
+@media(max-width:540px){.ot-mini-pair{grid-template-columns:1fr;gap:4px}.ot-config-cell select{font-size:10px;padding-left:4px;padding-right:3px}.ot-inline-help{font-size:9.5px}.ot-config-cell .suffix-row input{padding-right:22px}}
+
+/* V3: Current Job + up to 2 offers, while detailed matrices remain pairwise. */
+.v3-current-box{margin:14px 0 22px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:14px}.v3-section-head{display:flex;gap:16px;align-items:flex-start;justify-content:space-between}.v3-section-copy{min-width:0;flex:1}.v3-section-actions{flex:0 0 190px}.v3-current-fields{margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}.v3-current-matrix .offer-mrow{grid-template-columns:minmax(160px,1.25fr) minmax(0,1fr)}.v3-current-matrix .offer-mcell{min-width:0}.v3-current-matrix .offer-mrow.head .offer-mcell{background:var(--paper-2)}.v3-current-matrix .offer-mnote{grid-column:1/-1}.v3-current-benefits{margin-top:10px}.v3-current-benefits .offer-matrix{border-radius:8px}.v3-current-benefits .benefits-body{padding:0 0 12px}.v3-current-matrix .current-ot-row[hidden]{display:none}.v3-current-matrix .ot-current-help{font-size:10.5px;line-height:1.45;margin:5px 0 0;color:var(--clay)}.v3-current-matrix .ot-current-help:empty{display:none}.v3-offer-intro{display:flex;gap:16px;justify-content:space-between;align-items:flex-start}.v3-offer-count{flex:0 0 210px}.offers-in.one-offer .offer-mrow{grid-template-columns:minmax(118px,42%) minmax(0,58%)}.offers-in.one-offer .offer-mrow>.offer-mcell:nth-child(3){display:none}.v3-results-head{margin-bottom:14px}.v3-mode-title{font-family:var(--serif);font-size:21px;margin:0 0 9px}.v3-pairs{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 2px}.v3-pair-btn{border:1px solid var(--line);background:#fff;border-radius:999px;padding:7px 10px;font:600 11.5px var(--sans);color:var(--ink);cursor:pointer}.v3-pair-btn.on{border-color:var(--moss);background:rgba(47,94,84,.08);color:var(--moss)}.v3-pair-btn.all{font-weight:700}.v3-pair-note{font-size:10.8px;line-height:1.45;color:var(--ink-soft);margin:5px 0 0}.v3-three-matrix .erow{grid-template-columns:minmax(100px,1.15fr) repeat(3,minmax(0,1fr));gap:6px;padding:10px}.v3-three-matrix .erow>*{min-width:0;overflow-wrap:anywhere}.v3-three-matrix .erow.head span:not(:first-child){white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.v3-three-value{display:block;font-family:var(--mono);font-size:11.5px;line-height:1.35;overflow-wrap:anywhere}.v3-three-value.strong{font-weight:600}.v3-three-value.best{color:var(--moss);font-weight:600}.v3-three-matrix .lbl small{font-size:10px;line-height:1.35}.v3-summary{margin:0 0 14px}.v3-summary-title{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-bottom:7px}.v3-summary-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.v3-summary-card{border:1px solid var(--line);border-radius:9px;padding:10px;background:#fff;min-width:0}.v3-summary-name{font-weight:600;font-size:12px;display:flex;gap:6px;align-items:center;min-width:0}.v3-badge{font:600 9px var(--mono);padding:2px 5px;border-radius:999px;background:var(--paper-2);color:var(--moss)}.v3-summary-card strong{display:block;font:600 14px var(--mono);margin:5px 0}.v3-summary-card span:not(.v3-badge){display:block;font-size:10.5px;line-height:1.45;color:var(--ink-soft);overflow-wrap:anywhere}.v3-baseline-note{padding:8px 10px;border-radius:7px;background:var(--paper-2);font-size:11px;line-height:1.5;color:var(--ink-soft)}.v3-solver-wrap{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.v3-solver-wrap>.solver-foot{grid-column:1/-1}.v3-solver-card{min-width:0}.solver-actual{font-size:12px;line-height:1.5}.v3-hidden{display:none!important}
+@media(max-width:700px){.v3-section-head,.v3-offer-intro{display:block}.v3-section-actions,.v3-offer-count{width:auto;margin-top:10px}.v3-summary-grid{grid-template-columns:1fr}.v3-summary-card{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:3px 8px;align-items:start}.v3-summary-card strong{margin:0;text-align:right}.v3-summary-card span:not(.v3-badge){grid-column:1/-1}.v3-solver-wrap{grid-template-columns:1fr}.v3-solver-wrap>.solver-foot{grid-column:auto}}
+@media(max-width:540px){.v3-current-box{padding:11px;margin:12px 0 16px}.v3-current-matrix .offer-mrow{grid-template-columns:minmax(104px,39%) minmax(0,61%)}.v3-current-matrix .offer-mlabel,.v3-current-matrix .offer-mcell{padding:9px 7px}.v3-current-matrix .offer-mrow.head .offer-mlabel,.v3-current-matrix .offer-mrow.head .offer-mcell{padding:8px 6px}.v3-current-matrix .ot-current-help{font-size:9.5px}.v3-mode-title{font-size:18px}.v3-pair-btn{font-size:10.5px;padding:6px 8px}.v3-summary-card{padding:8px}.offers-in.one-offer .offer-mrow{grid-template-columns:minmax(104px,39%) minmax(0,61%)}.ctx{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.ctx .field>label{min-height:38px;font-size:11.5px;line-height:1.3}.ctx input[type=number],.ctx select{font-size:14px;padding-left:9px;padding-right:9px}.ctx .suffix-row input{padding-right:48px}.ctx .suffix-row .suffix{font-size:10.5px;right:8px}.diag-item,.diag-constraint{align-items:flex-start;gap:7px}.diag-action{font-size:10.5px;padding:6px 7px}.diag-copy>b{font-size:12px}.diag-path{font-size:10px}.diag-constraint .diag-action{min-width:72px}.v3-three-matrix .erow{grid-template-columns:minmax(82px,1.08fr) repeat(3,minmax(0,1fr));gap:4px;padding:8px 5px;font-size:10px}.v3-three-matrix .erow.head{font-size:8.5px}.v3-three-value{font-size:9.6px}.v3-three-matrix .lbl small{font-size:8.5px}.v3-pair-note{font-size:9.8px}}
+
+
+/* Unit-field contract: suffix is stable in empty, filled and cleared states. */
+.suffix-row .suffix{opacity:1;visibility:visible}
+.suffix-row[data-unit-field="1"] .suffix{color:var(--ink-soft)}
+
+/* V3 mobile input hygiene: the suffix is the canonical unit; examples stay compact. */
+input::placeholder{font-family:var(--mono);font-size:12px;letter-spacing:-.01em;color:#8E8A80;opacity:.72}
+@media(max-width:540px){
+ input[type=text],input[type=number],input[type=date],.offer-mcell input[type=text],.ctx input[type=number],.bh-control input{font-size:16px!important}
+ .offer-mcell input::placeholder{font-size:11px}
+ .offers-in:not(.one-offer) .offer-mcell input::placeholder{font-size:clamp(7px,2.1vw,9px);letter-spacing:-.035em}
+ .ctx input::placeholder,.bh-control input::placeholder{font-size:11px}
+ .offer-mcell .suffix-row input{padding-right:25px}
+ .offer-mcell .suffix-row.unit-wide input{padding-right:38px}
+ .offer-mcell .suffix-row .suffix{right:5px;font-size:9.5px}
+ .ctx .suffix-row input{padding-right:44px}
+ .ctx .suffix-row .suffix{font-size:10px;right:7px}
+ .bh-control .suffix-row input{padding-right:42px}
+ .bh-control .suffix-row .suffix{font-size:10px;right:7px}
+}
+@media(max-width:340px){
+ .offers-in:not(.one-offer) .offer-mcell input::placeholder{font-size:7px;letter-spacing:-.045em}
+ .offers-in:not(.one-offer) .offer-mcell .suffix-row input{padding-left:4px;padding-right:22px}
+ .offers-in:not(.one-offer) .offer-mcell .suffix-row.unit-wide input{padding-right:34px}
+ .offers-in:not(.one-offer) .offer-mcell .suffix-row .suffix{right:3px;font-size:8.5px}
+}
+
+
+/* V4: copy-light presentation. V3 logic/layout primitives are intentionally preserved. */
+/* V4 compact UX: show decision signal first, details on demand. */
+.v4-conditional-help{margin:8px 0 14px;padding:8px 10px;border-left:3px solid var(--moss);background:rgba(47,94,84,.055);font-size:12px;color:var(--ink-soft)}
+.v4-layer{padding:14px 0;margin-bottom:14px}.v4-layer>.lnum,.v4-layer-agenda{margin:0 0 10px;padding:9px 12px;background:var(--moss);color:#fff;border-radius:8px;display:flex;align-items:baseline;gap:8px;font-family:var(--mono);font-size:11px;line-height:1.3;letter-spacing:.07em;text-transform:uppercase}.v4-layer>.lnum b,.v4-layer-agenda b{color:#fff;font-family:var(--serif);font-size:15px;font-weight:600;letter-spacing:0;text-transform:none}.v4-layer-main{margin:0 0 7px}.v4-primary-label{font-size:11px;color:var(--ink-soft);margin-bottom:5px}.v4-primary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px}.v4-primary-option{background:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 10px;min-width:0}.v4-primary-option>span{display:block;font-size:10.5px;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.v4-primary-option>strong{display:block;margin-top:2px;font-family:var(--mono);font-size:15px;line-height:1.35;overflow-wrap:anywhere}.v4-layer-insight{margin:5px 0 8px!important;padding:0!important;background:none!important;border:0!important;font-size:12.5px!important;color:var(--ink-soft)!important}.v4-layer-details{margin-top:6px;border-top:1px solid var(--line)}.v4-layer-details>summary{cursor:pointer;list-style:none;color:var(--moss);font-size:12.5px;font-weight:600;padding:8px 0}.v4-layer-details>summary::-webkit-details-marker{display:none}.v4-layer-details>summary:before{content:'＋';font-family:var(--mono);margin-right:6px}.v4-layer-details[open]>summary:before{content:'−'}.v4-layer-details:not([open])>:not(summary),.switch-details:not([open])>:not(summary){display:none!important}#v3Summary:empty,#v3Pairs:empty,#v3PairHint:empty{display:none!important;margin:0!important;padding:0!important}.v4-layer-details>.cols,.v4-layer-details>.events{padding-top:4px}.v4-backend-detail{margin-top:8px}.v4 .v3-current-box .v3-section-copy,.v4 .v3-offer-intro>div:first-child{align-self:center}
+
+.v4 p.hint{margin-bottom:10px}.v4 .rule{margin:18px 0}.v4 .toolbar{margin-bottom:14px}
+.v4 .v3-current-box{margin-bottom:14px}.v4 .solver-box{margin-top:18px}.v4 .switch-box{margin-top:14px}
+.v4-legal{margin:18px 0 0;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.45);padding:0 12px}
+.v4-legal>summary{cursor:pointer;list-style:none;color:var(--moss);font-weight:600;font-size:13px;padding:10px 0;display:flex;align-items:center;gap:7px}
+.v4-legal>summary::-webkit-details-marker{display:none}.v4-legal>summary:before{content:'＋';font-family:var(--mono);font-size:15px}.v4-legal[open]>summary:before{content:'−'}
+.v4-legal-body{border-top:1px solid var(--line);padding:10px 0 2px}.v4-legal-body .disclaim{margin-top:0}
+.v4-micro-note{margin:4px 0 9px;color:#777267;font-size:11px;line-height:1.38;font-weight:400;letter-spacing:-.01em}
+.v4-header-note{margin-top:5px;max-width:92ch}
+.v4-insurance-note{margin:8px 0 10px}
+.v4-layer-note{margin:0 0 8px}
+.v4-switch-note{margin:3px 0 0}
+@media(max-width:540px){
+ .v4-micro-note{font-size:clamp(7px,2.05vw,9px);line-height:1.28;letter-spacing:-.035em;margin-bottom:7px}
+ .v4-header-note{margin-top:4px}
+ .v4-insurance-note{margin-top:7px}
+ .v4-layer-note{margin-bottom:6px}
+ .v4-switch-note{margin-top:3px}
+ /* Keep collapsed result layers visually tight on mobile. The previous
+    14px bottom padding + 14px margin + 14px next-layer top padding stacked
+    into a large empty band below "Xem cách tính". */
+ .v4-layer{padding:8px 0 0;margin-bottom:6px}
+ .v4-layer+.v4-layer{padding-top:6px}
+ .v4-layer-details>summary{padding:7px 0 4px}
+}
+
+/* V4 mobile control rhythm.
+   Do not force every interactive control to the same size.
+   Keep three visual families consistent instead:
+   1) compact value + suffix fields,
+   2) segmented choices,
+   3) selects/dropdowns. */
+@media(max-width:540px){
+ /* 1) Compact numeric/value fields - reference style for "1 tháng", "3 tháng", "12 ngày", "0 đ". */
+ .v4 .offer-mcell .suffix-row input,
+ .v4 .offer-mcell input[type=text]:not(.name-in),
+ .v4 .offer-mcell input[type=number],
+ .v4 .prob-duration-input input,
+ .v4 .bh-control input{
+  box-sizing:border-box;
+  min-height:0!important;
+  height:38px!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+  font-size:14px!important;
+  line-height:1.15!important;
+  border-radius:8px;
+ }
+ .v4 .offer-mcell .suffix-row .suffix{
+  font-size:10px;
+  line-height:1;
+ }
+ .v4 .bh-control .suffix-row .suffix{
+  font-size:10px;
+  line-height:1;
+ }
+
+ /* Wider form sections may breathe slightly more, while staying compact. */
+ .v4 .switch-grid input[type=text],
+ .v4 .switch-grid input[type=number],
+ .v4 .switch-grid input[type=date],
+ .v4 .solver-box input[type=text],
+ .v4 .solver-box input[type=number],
+ .v4 .solver-box input[type=date],
+ .v4 .ctx input[type=number]{
+  box-sizing:border-box;
+  min-height:0!important;
+  height:40px!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+  font-size:15px!important;
+  line-height:1.15!important;
+  border-radius:8px;
+ }
+
+ /* 2) Segmented controls - visually lighter than numeric fields. */
+ .v4 .offer-mcell .seg,
+ .v4 .bh-control .seg{
+  box-sizing:border-box;
+  min-height:0!important;
+  height:36px!important;
+  border-radius:8px;
+ }
+ .v4 .offer-mcell .seg button,
+ .v4 .offer-mcell .seg.three button,
+ .v4 .bh-control .seg button{
+  height:100%!important;
+  min-height:0!important;
+  padding:0 4px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-size:11.5px!important;
+  line-height:1.1!important;
+  white-space:normal;
+ }
+ .v4 .ctx .seg,
+ .v4 .switch-toggle .seg,
+ .v4 .solver-toggle .seg{
+  min-height:0!important;
+  height:38px!important;
+ }
+ .v4 .ctx .seg button,
+ .v4 .switch-toggle .seg button,
+ .v4 .solver-toggle .seg button{
+  height:100%!important;
+  min-height:0!important;
+  padding:0 6px!important;
+  font-size:12.5px!important;
+  line-height:1.1!important;
+ }
+
+ /* 3) Selects/dropdowns - same compact family as fields, but smaller type. */
+ .v4 .offer-mcell select,
+ .v4 .prob-duration-input select,
+ .v4 .bh-control select{
+  box-sizing:border-box;
+  min-height:0!important;
+  height:38px!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+  font-size:12.5px!important;
+  line-height:1.15!important;
+  border-radius:8px;
+ }
+ .v4 .switch-grid select,
+ .v4 .solver-box select,
+ .v4 .ctx select{
+  box-sizing:border-box;
+  min-height:0!important;
+  height:40px!important;
+  padding-top:0!important;
+  padding-bottom:0!important;
+  font-size:14px!important;
+  line-height:1.15!important;
+  border-radius:8px;
+ }
+
+ /* Keep the two probation-duration controls visually paired without making them oversized. */
+ .v4 .prob-duration-input{gap:6px}
+}
+</style>
+</head>
+<body class="v4">
+<div class="wrap">
+<header>
+<h1>Net cao hơn có thật tốt hơn?</h1>
+<p class="sub">So sánh công việc hiện tại với 1-2 offer theo tiền, thời gian, bảo hiểm và tác động khi chuyển việc - để bạn thấy mình đang đổi gì lấy gì. Tool không kết luận offer nào tốt hơn — chỉ giúp bạn thấy rõ mình đang đánh đổi gì.</p>
+<p class="v4-micro-note v4-header-note">Mọi tính toán chạy ngay trên trình duyệt của bạn — dữ liệu lương không được gửi đi đâu. Bấm "Lưu" thì dữ liệu chỉ được giữ trên trình duyệt này.</p>
+</header>
+<div class="toolbar toolbar-top">
+<button class="btn ghost tiny" id="importBtn">↑ Nhập dữ liệu (.json)</button>
+<input type="file" id="importInput" accept="application/json" style="display:none">
+<button class="btn danger tiny" id="clearBtn">Xoá hết</button>
+</div>
+<div id="migrationNotice" class="assumption-note" style="display:none;margin-top:10px"></div>
+<hr class="rule">
+<p class="eyebrow">Bối cảnh chung</p>
+<div class="ctx">
+<div class="field"><label for="deps"><span class="ctx-label-main">Người phụ thuộc</span></label><div class="suffix-row" data-unit-field="1"><input type="number" id="deps" min="0" step="1" inputmode="numeric" placeholder="Nhập 0 nếu không có"><span class="suffix">người</span></div><p class="benefit-note">Bắt buộc nhập — điền 0 nếu không có. Dùng để tính thuế TNCN.</p></div>
+<div class="field"><label for="region"><span class="ctx-label-main">Vùng lương tối thiểu (ảnh hưởng trần BHTN)</span></label><select id="region"><option value="I">Vùng I</option><option value="II">Vùng II</option><option value="III">Vùng III</option><option value="IV">Vùng IV</option></select></div>
+</div>
+<div class="bh-sim-wrap">
+<p class="eyebrow">Mô phỏng quyền lợi BHXH</p>
+<details class="bh-sim" id="bhSim">
+<summary><span class="bh-summary-title">Ốm đau, thai sản</span><span class="bh-summary-state" id="bhSummaryState">Chưa bật mô phỏng</span></summary>
+<div class="bh-sim-body">
+<div class="bh-compact-row"><label for="sickDays">Số ngày nghỉ ốm</label><div class="bh-control"><div class="suffix-row" data-unit-field="1"><input type="number" id="sickDays" min="0" step="1" inputmode="numeric" placeholder="VD: 5"><span class="suffix">ngày</span></div></div></div>
+<div class="bh-compact-row"><label>Xét chế độ thai sản (LĐ nữ)</label><div class="bh-control"><div class="seg" id="matSeg"><button data-v="show">Có</button><button data-v="hide" class="on">Không</button></div></div></div>
+
+</div>
+</details>
+</div>
+<div class="v3-current-box" id="currentBox">
+  <div class="v3-section-head"><div class="v3-section-copy"><p class="eyebrow">Mốc so sánh</p><h2 class="sec">Công việc hiện tại</h2><p class="v4-micro-note v4-layer-note">Thêm nếu bạn muốn biết offer mới có đáng để rời chỗ hiện tại không; bỏ qua nếu chỉ so các offer với nhau.</p></div><div class="v3-section-actions"><label>Đưa công việc hiện tại vào so sánh?</label><div class="seg" id="currentEnabledSeg"><button data-v="on">Thêm</button><button data-v="off" class="on">Bỏ qua</button></div></div></div>
+  <div class="v3-current-fields" id="currentFields" style="display:none"></div>
+</div>
+<div class="v3-offer-intro"><div><p class="eyebrow">Offer mới</p><h2 class="sec">Nhập offer đang cân nhắc</h2><p class="v4-micro-note v4-layer-note">Nhập gross hay net đều được — chọn đúng loại ở từng offer, tool tự quy đổi.</p></div><div class="v3-offer-count"><label>Bạn đang có</label><div class="seg" id="offerCountSeg"><button data-v="1" class="on">1 offer</button><button data-v="2">2 offer</button></div></div></div>
+<div class="offers-in one-offer" id="offersIn"></div>
+<div id="v4ConditionalHelp" class="v4-conditional-help" style="display:none"></div>
+<p class="v4-micro-note v4-insurance-note">Chưa biết mức đóng bảo hiểm? Chọn "Chưa rõ" — tool tạm lấy lương offer làm căn cứ BH. Khi đó quyền lợi ở Lớp 4–5 có thể cao hơn thực tế, còn Net ở Lớp 1 có thể thấp hơn thực tế một chút. Nếu HR cho biết mức riêng, chọn "Tôi biết mức cụ thể".</p>
+<div id="empty" class="empty">Nhập lương để bắt đầu</div>
+<div class="results hidden" id="results">
+<div class="v3-results-head"><div id="v3Summary"></div><h2 class="v3-mode-title" id="v3ModeTitle"></h2><div class="v3-pairs" id="v3Pairs"></div><p class="v3-pair-note" id="v3PairHint"></p></div>
+<div class="layer v4-layer" data-v4-layer="1"><p class="lnum">Lớp 1 · <b>Tiền về tay mỗi tháng</b></p><div class="v4-layer-main" id="l1main"></div><div class="delta v4-layer-insight" id="l1delta"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="l1cols"></div></details></div>
+<div class="layer v4-layer" data-v4-layer="2"><p class="lnum">Lớp 2 · <b>Nếu làm đủ 12 tháng</b></p><p class="v4-micro-note v4-layer-note">Quy cả hai phương án về cùng 12 tháng làm việc. Không phải số tiền từ hôm nay đến 31/12.</p><div class="v4-layer-main" id="annualmain"></div><div class="delta v4-layer-insight" id="annualdelta"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="annualcols"></div></details></div>
+<div class="layer v4-layer" data-v4-layer="3"><p class="lnum">Lớp 3 · <b>Thời gian bạn bỏ ra để có mức thu nhập đó</b></p><p class="v4-micro-note v4-layer-note">Giả định 176h/tháng; đi lại và OT được cộng vào thời gian. Ngày phép hưởng lương được trừ khỏi tổng thời gian bạn phải làm trong năm vì bạn vẫn nhận lương nhưng không phải làm việc trong những ngày đó. Tool không coi ngày phép là một khoản tiền cộng thêm.</p><div class="v4-layer-main" id="tmain"></div><div class="delta v4-layer-insight" id="tdelta"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="tcols"></div></details></div>
+<div class="layer v4-layer" data-v4-layer="4"><p class="lnum">Lớp 4 · <b>Căn cứ đóng bảo hiểm</b></p><div class="v4-layer-main" id="l2main"></div><div class="v4-layer-insight" id="l4insight"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="cols" id="l2basis"></div></details></div>
+<div class="layer v4-layer" data-v4-layer="5"><p class="lnum">Lớp 5 · <b>Nếu có biến cố</b></p><p class="v4-micro-note v4-layer-note">Dùng mức lương làm căn cứ đóng BH đã nhập ở trên. Tool chỉ mô phỏng số tiền, không kiểm tra điều kiện hưởng.</p><div class="v4-layer-main" id="l3main"></div><div class="v4-layer-insight" id="l5insight"></div><details class="v4-layer-details"><summary>Xem cách tính</summary><div class="events" id="l3events"></div></details></div>
+<div class="switch-box switch-box-results">
+  <div class="switch-head">
+    <div class="switch-copy">
+      <p class="eyebrow">Thời điểm chuyển việc</p>
+      <h2 class="sec">Nếu chuyển việc thì sao?</h2>
+      <p class="v4-micro-note v4-switch-note">So sánh phần còn lại của năm từ ngày sau khi nghỉ đến 31/12: ở lại nhận bao nhiêu, sang offer mới nhận bao nhiêu. Chưa mô phỏng quyết toán thuế khi đổi nơi làm việc.</p>
+    </div>
+    <div class="switch-toggle">
+      <label>Tính thêm tác động khi chuyển việc</label>
+      <div class="seg" id="switchEnabledSeg"><button data-v="on" class="on">Tính thêm</button><button data-v="off">Bỏ qua</button></div>
+    </div>
+  </div>
+  <div class="switch-fields" id="switchFields" style="display:none"></div>
+  <div id="switchLayer" style="display:none;margin-top:16px"><div id="switchingResult"></div></div>
+</div>
+<div class="assumption-card-wrap" id="assumptionLayer" style="display:none"><div id="assumptionContent"></div></div>
+<div class="verdict" id="verdict"></div>
+</div>
+<div class="solver-box" id="solverBox">
+  <div class="solver-head">
+    <div class="solver-copy"><p class="v4-layer-agenda">Lớp 6 · <b>Mức lương tối thiểu để đạt mục tiêu tài chính</b></p><p class="v4-micro-note v4-layer-note">Chọn mục tiêu tài chính, tool tính ngược ra mức lương tối thiểu bạn cần thương lượng; các điều kiện khác của offer (BH, thưởng, OT, thử việc) giữ nguyên.</p></div>
+    <div class="solver-toggle"><label>Bật Lớp 6</label><div class="seg" id="solverEnabledSeg"><button data-v="on">Tính</button><button data-v="off" class="on">Bỏ qua</button></div></div>
+  </div>
+  <div class="solver-fields" id="solverFields" style="display:none"></div>
+  <div class="solver-layer" id="solverLayer" style="display:none"><div id="solverResult"></div></div>
+</div>
+<div class="toolbar toolbar-bottom">
+<button class="btn" id="saveBtn">Lưu</button>
+<button class="btn ghost tiny" id="exportBtn">↓ Xuất kết quả (.txt)</button>
+<button class="btn ghost tiny" id="backupBtn">↓ Tải dữ liệu (.json)</button>
+<span class="save-state" id="saveState"></span>
+</div>
+<details class="v4-legal"><summary>Giả định & nguồn pháp lý</summary><div class="v4-legal-body"><div class="disclaim">Đây là công cụ mô phỏng để so sánh, không thay thế tư vấn payroll/pháp lý. Mọi tính toán được thực hiện trên trình duyệt của bạn, dữ liệu không được gửi tới máy chủ nào; nếu bấm Lưu, dữ liệu được giữ trên trình duyệt của bạn. “Phụ cấp cố định” trong tool được hiểu là khoản trả thêm ngoài mức lương offer và chịu thuế TNCN. Căn cứ BH dùng theo lựa chọn ở từng offer; nếu để "Chưa rõ", tool tạm lấy mức lương offer làm căn cứ BH; mức cụ thể bạn nhập luôn được ưu tiên. Thưởng hiệu suất chỉ được cộng ở dòng “Nếu có thêm thưởng hiệu suất” và phụ thuộc kết quả thực tế. Tiền OT là khoản ước tính từ mức lương dùng để tính OT, số giờ và hệ số theo loại ngày bạn nhập; cách payroll thực tế có thể khác. Ngày phép được dùng để giảm thời gian bạn bỏ ra khi tính giá trị/giờ, không cộng trực tiếp vào thu nhập năm. Phần chuyển việc so hai phương án tại cùng mốc 31/12: tháng đầy đủ tính theo đúng Net tháng, chỉ phần tháng lẻ dùng Net/30; thưởng đảm bảo và thưởng hiệu suất được tách thành các kịch bản riêng. Tool không suy ra một mốc “hòa vốn” từ thưởng cuối năm. Không mô phỏng quyết toán thuế khi đổi nơi làm việc và vẫn phụ thuộc chính sách thưởng thực tế của từng công ty.</div>
+<p class="src"><b>Tham số đang dùng:</b> PIT 5 bậc 5% - 10% - 20% - 30% - 35% theo các ngưỡng 10 - 30 - 60 - 100 triệu đồng/tháng và miễn thuế toàn bộ tiền lương làm thêm giờ: áp dụng cho thu nhập tiền lương, tiền công của kỳ tính thuế 2026. Giảm trừ gia cảnh 15,5 triệu/tháng cho bản thân và 6,2 triệu/tháng/người phụ thuộc: hiệu lực từ 01/01/2026. Lương tối thiểu vùng từ 01/01/2026: I 5,31 triệu; II 4,73 triệu; III 4,14 triệu; IV 3,70 triệu. NLĐ đóng BH chuẩn 10,5%; căn cứ BHXH/BHYT tối đa 50,6 triệu/tháng từ 01/07/2026; BHTN tối đa 20× lương tối thiểu vùng. Trợ cấp thất nghiệp 60% bình quân 6 tháng đóng BHTN, tối đa 5× LTT vùng; thai sản theo bình quân 6 tháng đóng BHXH; ốm đau thông thường = căn cứ BHXH ÷ 24 × 75% × số ngày. Nguồn pháp lý chính: Bộ luật Lao động 45/2019/QH14; NĐ 145/2020/NĐ-CP; Luật Thuế TNCN 109/2025/QH15; Nghị quyết 110/2025/UBTVQH15; Luật BHXH 41/2024/QH15; NĐ 158/2025/NĐ-CP; Luật Việc làm 74/2025/QH15; NĐ 293/2025/NĐ-CP.</p></div></details>
+</div>
+<script src="calc-engine.js"></script>
+<script>
+"use strict";
+(function(){
+const KEY="net-cao-hon-v4-state";
+const LEGACY_KEY="net-cao-hon-v3-state";
+const UI_WKS=4.33;
+const canStore=(function(){try{const t="__v4_state";localStorage.setItem(t,"1");localStorage.removeItem(t);return true}catch(e){return false}})();
+function blank(n){return{name:n,gross:null,payType:"gross",base:"full",bhMode:"unknown",customBase:null,days:null,commute:null,otMonthly:null,otPaid:"unknown",otType:"weekday",otFactor:150,otBreakdownWeekday:null,otBreakdownRest:null,otBreakdownHoliday:null,otFactorWeekday:150,otFactorRest:200,otFactorHoliday:300,otBaseMode:"offer",otBaseAmount:null,probationEnabled:"unknown",probPct:null,probDurationValue:null,probDurationUnit:"months",probInsurance:"unknown",probJobType:"unknown",guaranteedBonusMonths:null,performanceBonusType:"months",performanceBonusValue:null,fixedAllowance:null,allowanceBh:"unknown",paidLeaveDays:null}}
+function blankSwitch(){return{enabled:true,enabledExplicit:false,switchingVersion:2,targetOffer:"0",lastWorkingDate:"",onboardDate:"",currentGuaranteedIfStay:null,currentGuaranteedRule:"unknown",currentGuaranteedIfLeave:null,newGuaranteedRule:"unknown",newGuaranteedCustom:null,currentPerformanceIfStay:null,currentPerformanceRule:"unknown",currentPerformanceIfLeave:null,newPerformanceRule:"unknown",newPerformanceCustom:null}}
+function blankSolver(){return{enabled:false,templateOffer:"0",goalNoLoss:false,noLossBuffer:0,goalMonthlyNet:false,targetMonthlyNet:null,goalAnnualFixed:false,targetAnnualFixed:null}}
+function blankCurrent(){const o=blank("Công việc hiện tại");o.probationEnabled="no";o.probInsurance="yes";return o}
+function ensureSolver(x){const raw=x||{},v=Object.assign(blankSolver(),raw);v.enabled=raw.enabled===true;v.templateOffer=["0","1","both"].includes(raw.templateOffer)?raw.templateOffer:"0";v.goalNoLoss=raw.goalNoLoss===true;v.goalMonthlyNet=raw.goalMonthlyNet===true;v.goalAnnualFixed=raw.goalAnnualFixed===true;delete v.goalBreakEven;delete v.breakEvenMonths;return v}
+function ensureSwitching(x){
+ const raw=x||{},legacy=Number(raw.switchingVersion)!==2,v=Object.assign(blankSwitch(),legacy?{}:raw);
+ v.enabled=raw.enabled!==false;v.enabledExplicit=raw.enabledExplicit===true;v.targetOffer=raw.targetOffer==="1"?"1":"0";v.lastWorkingDate=String(raw.lastWorkingDate||"").slice(0,10);v.onboardDate=String(raw.onboardDate||"").slice(0,10);v.switchingVersion=2;
+ if(!legacy){
+  v.currentGuaranteedRule=["unknown","lost","time","full","custom"].includes(raw.currentGuaranteedRule)?raw.currentGuaranteedRule:"unknown";
+  v.newGuaranteedRule=["unknown","time","full","none","custom"].includes(raw.newGuaranteedRule)?raw.newGuaranteedRule:"unknown";
+  v.currentPerformanceRule=["unknown","lost","time","full","custom"].includes(raw.currentPerformanceRule)?raw.currentPerformanceRule:"unknown";
+  v.newPerformanceRule=["unknown","time","full","none","custom"].includes(raw.newPerformanceRule)?raw.newPerformanceRule:"unknown";
+ }
+ delete v.legacyBonusIfStay;delete v.currentBonusIfStay;delete v.currentBonusRule;delete v.currentBonusIfLeave;delete v.newBonusRule;delete v.newBonusCustom;
+ return v
+}
+function ensureCurrent(o,legacy){const v=ensureOfferShape(o,"Công việc hiện tại",legacy);v.probationEnabled="no";v.probPct=null;v.probDurationValue=null;v.probDurationUnit="months";v.probInsurance="yes";v.probJobType="unknown";return v}
+function ensureComparison(x){const raw=x||{},ok=v=>["current","0","1"].includes(v)?v:null;return{left:ok(raw.left),right:ok(raw.right),mode:raw.mode==="all"?"all":"pair"}}
+let state={schemaVersion:4,deps:null,region:"I",sickDays:null,mat:"hide",currentJobEnabled:false,currentJob:blankCurrent(),offerCount:1,offers:[blank("Offer A"),blank("Offer B")],comparison:{left:null,right:null,mode:"pair"},switching:blankSwitch(),solver:blankSolver()};
+let dirty=false,requestSeq=0,debounceTimer=null,activeController=null,lastRequestBody=null,lastResult=null;
+function grp(raw){let s=String(raw==null?"":raw).replace(/[^\d]/g,"");if(s==="")return"";s=s.replace(/^0+(?=\d)/,"");return s.replace(/\B(?=(\d{3})+(?!\d))/g,",")}
+function guardedMoney(raw,previous){const s=String(raw==null?"":raw).trim();if(s==="")return"";if(s.includes("-")||/[A-Za-zÀ-ỹ]/.test(s))return grp(previous==null?"":previous);return grp(s)}
+function guardedNumber(raw,previous){const s=String(raw==null?"":raw).trim();if(s==="")return"";if(!/^\d+(?:[.,]\d*)?$/.test(s))return previous==null?"":String(previous);const n=Number(s.replace(",","."));return Number.isFinite(n)&&n>=0?s:(previous==null?"":String(previous))}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function hasInput(v){return v!==null&&v!==undefined&&String(v).trim()!==""}
+function hasPositiveValue(v){if(!hasInput(v))return false;const n=Number(String(v).replace(/,/g,""));return Number.isFinite(n)&&n>0}
+function shouldOpenBenefits(o){return hasPositiveValue(o.guaranteedBonusMonths)||hasPositiveValue(o.performanceBonusValue)||hasPositiveValue(o.fixedAllowance)||hasPositiveValue(o.paidLeaveDays)}
+function ensureOfferShape(o,n,legacy){
+ const src=o||{},oldTrialEvidence=legacy&&(src.probationEnabled==="yes"||hasPositiveValue(src.probPct)||hasPositiveValue(src.probDurationValue)||hasPositiveValue(src.probMon)||src.probInsurance==="yes"),trialState=legacy?(oldTrialEvidence?"yes":"unknown"):(["unknown","yes","no"].includes(src.probationEnabled)?src.probationEnabled:"unknown"),probPct=src.probPct??null;
+ const oldOt=hasInput(src.ot)?Number(String(src.ot).replace(/,/g,"")):NaN,otMonthly=hasInput(src.otMonthly)?src.otMonthly:(Number.isFinite(oldOt)&&oldOt>=0?Math.round(oldOt*UI_WKS*100)/100:null);
+ const probDurationValue=hasInput(src.probDurationValue)?src.probDurationValue:(src.probMon??null),probDurationUnit=src.probDurationUnit==='days'?'days':'months';
+ const bhMode=["unknown","salary","custom"].includes(src.bhMode)?src.bhMode:(legacy?(src.base==="custom"?"custom":"salary"):"unknown");
+ const otType=["weekday","rest","mixed"].includes(src.otType)?src.otType:"weekday",otDefaultFactor=otType==="rest"?200:150;
+ const otFactor=hasInput(src.otFactor)?src.otFactor:otDefaultFactor;
+ return{name:String(src.name||n),gross:src.gross??null,payType:src.payType==="net"?"net":"gross",base:bhMode==="custom"?"custom":"full",bhMode,customBase:src.customBase??null,days:src.days??null,commute:src.commute??null,otMonthly,otPaid:legacy?(src.otPaid==="yes"?"yes":"unknown"):(["unknown","yes","no"].includes(src.otPaid)?src.otPaid:"unknown"),otType,otFactor,
+  otBreakdownWeekday:src.otBreakdownWeekday??null,otBreakdownRest:src.otBreakdownRest??null,otBreakdownHoliday:src.otBreakdownHoliday??null,
+  otFactorWeekday:hasInput(src.otFactorWeekday)?src.otFactorWeekday:150,otFactorRest:hasInput(src.otFactorRest)?src.otFactorRest:200,otFactorHoliday:hasInput(src.otFactorHoliday)?src.otFactorHoliday:300,
+  otBaseMode:src.otBaseMode==="custom"?"custom":"offer",otBaseAmount:src.otBaseAmount??null,
+  probationEnabled:trialState,probPct,probDurationValue,probDurationUnit,probInsurance:legacy?(src.probInsurance==="yes"?"yes":"unknown"):(["unknown","yes","no"].includes(src.probInsurance)?src.probInsurance:"unknown"),probJobType:["manager","college","intermediate","other"].includes(src.probJobType)?src.probJobType:"unknown",
+  guaranteedBonusMonths:src.guaranteedBonusMonths??null,performanceBonusType:src.performanceBonusType==="amount"?"amount":"months",performanceBonusValue:src.performanceBonusValue??src.targetBonusMonths??null,
+  fixedAllowance:src.fixedAllowance??null,allowanceBh:["yes","no"].includes(src.allowanceBh)?src.allowanceBh:"unknown",paidLeaveDays:src.paidLeaveDays??null};
+}
+function isV2Legacy(d){return d&&Array.isArray(d.offers)&&d.offers.some(o=>o&&["probInsurance","probationEnabled","probJobType","guaranteedBonusMonths","targetBonusMonths","performanceBonusValue","fixedAllowance","allowanceBh","paidLeaveDays","otPaid","otFactor"].some(k=>Object.prototype.hasOwnProperty.call(o,k)))}
+
+function otNumber(v){if(!hasInput(v))return 0;const n=Number(String(v).replace(/,/g,''));return Number.isFinite(n)?Math.max(0,n):0}
+function otActive(o){return otNumber(o.otMonthly)>0}
+function otPaidActive(o){return otActive(o)&&o.otPaid==='yes'}
+function otGuardrailText(o){
+ const h=otNumber(o.otMonthly);if(!(h>0))return'';const annual=h*12,parts=[];
+ if(h>40)parts.push('Vượt mốc 40 giờ/tháng');
+ if(annual>300)parts.push('nếu duy trì 12 tháng ≈ '+Math.round(annual)+' giờ/năm, vượt 300 giờ/năm');
+ else if(annual>200)parts.push('nếu duy trì 12 tháng ≈ '+Math.round(annual)+' giờ/năm, vượt 200 giờ/năm; một số trường hợp có thể đến 300 giờ/năm');
+ return parts.join('; ')+(parts.length?'.':'');
+}
+function otMixedText(o){
+ if(!(otPaidActive(o)&&o.otType==='mixed'))return'';const total=otNumber(o.otBreakdownWeekday)+otNumber(o.otBreakdownRest)+otNumber(o.otBreakdownHoliday),target=otNumber(o.otMonthly);
+ return Math.abs(total-target)<=0.05?'':'Đã phân bổ '+Number(total.toFixed(2))+'/'+Number(target.toFixed(2))+' giờ. Tổng 3 loại cần bằng OT/tháng.';
+}
+function otFactorText(o,key,min){const v=otNumber(o[key]);return v>0&&v<min?'Mức tối thiểu của loại ngày này là '+min+'%.':''}
+function syncOtInline(i){
+ const o=state.offers[i],g=document.querySelector('[data-ot-guard="'+i+'"]');if(g){g.textContent=otGuardrailText(o);g.style.display=g.textContent?'':'none'}
+ const m=document.querySelector('[data-ot-mixed-help="'+i+'"]');if(m){m.textContent=otMixedText(o);m.style.display=m.textContent?'':'none'}
+ [['otFactor',o.otType==='rest'?200:150],['otFactorWeekday',150],['otFactorRest',200],['otFactorHoliday',300]].forEach(([key,min])=>{const h=document.querySelector('[data-ot-factor-help="'+i+'-'+key+'"]');if(h){h.textContent=otFactorText(o,key,min);h.style.display=h.textContent?'':'none'}})
+}
+function syncOtPaidVisibility(){
+ const activeOffers=state.offerCount===2?state.offers:[state.offers[0]],anyOt=activeOffers.some(otActive),anyPaid=activeOffers.some(otPaidActive),anySingle=activeOffers.some(o=>otPaidActive(o)&&o.otType!=='mixed'),anyMixed=activeOffers.some(o=>otPaidActive(o)&&o.otType==='mixed');
+ const toggle=(sel,on)=>{const el=document.querySelector(sel);if(el)el.style.display=on?'grid':'none'};
+ toggle('#offersIn .ot-paid-row',anyOt);toggle('#offersIn .ot-type-row',anyPaid);toggle('#offersIn .ot-factor-row',anySingle);toggle('#offersIn .ot-mixed-weekday-row',anyMixed);toggle('#offersIn .ot-mixed-rest-row',anyMixed);toggle('#offersIn .ot-mixed-holiday-row',anyMixed);toggle('#offersIn .ot-base-row',anyPaid);
+ state.offers.forEach((o,i)=>{
+  const modes={paid:otActive(o),type:otPaidActive(o),factor:otPaidActive(o)&&o.otType!=='mixed',mixed:otPaidActive(o)&&o.otType==='mixed',base:otPaidActive(o)};
+  Object.entries(modes).forEach(([kind,on])=>{document.querySelectorAll('[data-ot-cell="'+kind+'-'+i+'"]').forEach(cell=>{const dash=cell.querySelector('.ot-cell-dash'),controls=cell.querySelector('.ot-cell-controls');if(dash)dash.style.display=on?'none':'';if(controls)controls.style.display=on?'':'none'})});
+  syncOtInline(i);
+ });
+}
+
+
+const PROB_LIMITS={manager:{days:180,months:6,label:'180 ngày'},college:{days:60,months:2,label:'60 ngày'},intermediate:{days:30,months:1,label:'30 ngày'},other:{days:6,months:6/22,label:'6 ngày làm việc'}};
+function probDurationNumber(o){if(!hasInput(o.probDurationValue))return NaN;const n=Number(String(o.probDurationValue).replace(/,/g,''));return Number.isFinite(n)?n:NaN}
+function probDurationMonthsForApi(o){const n=probDurationNumber(o);if(!Number.isFinite(n))return null;if(o.probDurationUnit==='days')return n/(o.probJobType==='other'?22:30);return n}
+function probDurationStatus(o){
+ if(!hasInput(o.probDurationValue))return{kind:'empty',text:'Khi chọn Có, thời gian thử việc cần lớn hơn 0.'};
+ const n=probDurationNumber(o);if(!(n>0))return{kind:'invalid',text:'Thời gian thử việc phải lớn hơn 0.'};
+ const limit=PROB_LIMITS[o.probJobType];if(!limit)return{kind:'valid',text:''};
+ const tooLong=o.probDurationUnit==='days'?n>limit.days+1e-9:n>limit.months+1e-9;
+ if(!tooLong)return{kind:'valid',text:''};
+ const shown=Number.isInteger(n)?String(n):String(Number(n.toFixed(2)));
+ return{kind:'warning',text:o.probDurationUnit==='days'?('Bạn nhập '+shown+' ngày; nhóm này tối đa '+limit.label+'.'):('Thời gian bạn nhập vượt giới hạn '+limit.label+' của nhóm đã chọn.')};
+}
+function syncProbDurationInline(i){
+ const o=state.offers[i],el=document.querySelector('input[data-i="'+i+'"][data-k="probDurationValue"]'),help=document.querySelector('[data-probdur-help="'+i+'"]');if(!el||!help)return;
+ const st=probDurationStatus(o),strong=st.kind==='invalid'||st.kind==='warning';
+ if(st.kind==='invalid')el.setAttribute('aria-invalid','true');else el.removeAttribute('aria-invalid');
+ help.textContent=st.text;help.style.display=st.kind==='valid'?'none':'';help.style.color=strong?'var(--clay)':'';help.style.fontWeight=strong?'600':'';
+}
+
+
+function unitInputHtml(attrs,value,placeholder,suffix,inputmode='decimal',money=false,extra=''){
+ const v=money?grp(value==null?'':value):esc(value==null?'':value),unit=String(suffix||''),wide=unit.length>2?' unit-wide':'';
+ return '<div class="suffix-row'+wide+'" data-unit-field="1"><input type="text" '+attrs+' inputmode="'+inputmode+'" placeholder="'+esc(placeholder||'')+'" value="'+v+'" '+(extra||'')+'>'+(unit?'<span class="suffix" aria-hidden="true">'+esc(unit)+'</span>':'')+'</div>';
+}
+
+function renderInputs(){
+ const previousBenefits=document.querySelector('#offersIn .compare-benefits'),benefitsWasOpen=!!(previousBenefits&&previousBenefits.open);
+ const A=state.offers[0],B=state.offers[1],dash='<span class="offer-mna">-</span>';
+ const seg=function(i,kind,value,opts,three){return '<div class="seg'+(three?' three':'')+'" data-seg="'+kind+'" data-i="'+i+'">'+opts.map(function(x){return '<button data-v="'+x[0]+'" class="'+(value===x[0]?'on':'')+'">'+x[1]+'</button>'}).join('')+'</div>'};
+ const textInput=function(i,k,o,placeholder,inputmode,money,suffix,extra){return unitInputHtml('data-i="'+i+'" data-k="'+k+'"',o[k],placeholder,suffix,inputmode||'decimal',money,extra||'')};
+ const row=function(label,a,b,note,cls){return '<div class="offer-mrow'+(cls?' '+cls:'')+'"><div class="offer-mlabel">'+label+'</div><div class="offer-mcell">'+a+'</div><div class="offer-mcell">'+b+'</div>'+(note?'<div class="offer-mnote">'+note+'</div>':'')+'</div>'};
+ const head=function(editable){return '<div class="offer-mrow head"><div class="offer-mlabel">Chỉ tiêu</div><div class="offer-mcell">'+(editable?'<input class="name-in" data-i="0" data-k="name" value="'+esc(A.name)+'">':'<span class="offer-head-name" data-offer-head="0">'+esc(A.name)+'</span>')+'</div><div class="offer-mcell">'+(editable?'<input class="name-in" data-i="1" data-k="name" value="'+esc(B.name)+'">':'<span class="offer-head-name" data-offer-head="1">'+esc(B.name)+'</span>')+'</div></div>'};
+ const bhCell=function(o,i){return '<div class="control-stack"><select data-i="'+i+'" data-k="bhMode"><option value="unknown" '+(o.bhMode==='unknown'?'selected':'')+'>Chưa rõ</option><option value="salary" '+(o.bhMode==='salary'?'selected':'')+'>Theo mức lương offer</option><option value="custom" '+(o.bhMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.bhMode==='custom'?'<div class="sub-input">'+textInput(i,'customBase',o,'VD: 10,000,000','numeric',true,'đ')+'</div>':'')+'</div>'};
+ const probOn=function(o){return o.probationEnabled==='yes'};
+ const probDurationCell=function(o,i){if(!probOn(o))return dash;const st=probDurationStatus(o),strong=st.kind==='invalid'||st.kind==='warning',ph=o.probDurationUnit==='days'?'VD: 60':'VD: 2';return '<div class="prob-duration-input">'+textInput(i,'probDurationValue',o,ph,'decimal',false,'',st.kind==='invalid'?'aria-invalid="true"':'')+'<select data-i="'+i+'" data-k="probDurationUnit"><option value="months" '+(o.probDurationUnit==='months'?'selected':'')+'>Tháng</option><option value="days" '+(o.probDurationUnit==='days'?'selected':'')+'>Ngày</option></select></div><p class="benefit-note prob-duration-help" data-probdur-help="'+i+'" style="'+(st.kind==='valid'?'display:none':(strong?'color:var(--clay);font-weight:600':''))+'">'+st.text+'</p>'};
+ const jobCell=function(o,i){if(!probOn(o))return dash;return '<select data-i="'+i+'" data-k="probJobType"><option value="unknown" '+(o.probJobType==='unknown'?'selected':'')+'>Chưa rõ</option><option value="manager" '+(o.probJobType==='manager'?'selected':'')+'>Quản lý doanh nghiệp · tối đa 180 ngày</option><option value="college" '+(o.probJobType==='college'?'selected':'')+'>Cao đẳng trở lên · tối đa 60 ngày</option><option value="intermediate" '+(o.probJobType==='intermediate'?'selected':'')+'>Trung cấp / kỹ thuật / nghiệp vụ · tối đa 30 ngày</option><option value="other" '+(o.probJobType==='other'?'selected':'')+'>Công việc khác · tối đa 6 ngày làm việc</option></select>'};
+ const otWrap=function(kind,i,controls){return '<div class="ot-config-cell" data-ot-cell="'+kind+'-'+i+'"><span class="offer-mna ot-cell-dash">-</span><div class="ot-cell-controls" style="display:none">'+controls+'</div></div>'};
+ const otPaidCell=function(o,i){return otWrap('paid',i,seg(i,'otPaid',o.otPaid,[['unknown','Chưa rõ'],['no','Không'],['yes','Có']],true));};
+ const otTypeCell=function(o,i){return otWrap('type',i,'<select data-i="'+i+'" data-k="otType"><option value="weekday" '+(o.otType==='weekday'?'selected':'')+'>Ngày thường</option><option value="rest" '+(o.otType==='rest'?'selected':'')+'>Ngày nghỉ hằng tuần</option><option value="mixed" '+(o.otType==='mixed'?'selected':'')+'>Nhiều loại</option></select>');};
+ const otFactorCell=function(o,i){const min=o.otType==='rest'?200:150;return otWrap('factor',i,textInput(i,'otFactor',o,'VD: '+min,'decimal',false,'%')+'<p class="ot-inline-help" data-ot-factor-help="'+i+'-otFactor">'+esc(otFactorText(o,'otFactor',min))+'</p>');};
+ const otMixedCell=function(o,i,hourKey,factorKey,min,showHelp){return otWrap('mixed',i,'<div class="ot-mini-pair">'+textInput(i,hourKey,o,'VD: 4','decimal',false,'giờ')+textInput(i,factorKey,o,'VD: '+min,'decimal',false,'%')+'</div><p class="ot-inline-help" data-ot-factor-help="'+i+'-'+factorKey+'">'+esc(otFactorText(o,factorKey,min))+'</p>'+(showHelp?'<p class="ot-inline-help" data-ot-mixed-help="'+i+'">'+esc(otMixedText(o))+'</p>':''));};
+ const otBaseCell=function(o,i){return otWrap('base',i,'<div class="control-stack"><select data-i="'+i+'" data-k="otBaseMode"><option value="offer" '+(o.otBaseMode==='offer'?'selected':'')+'>Ước tính theo lương offer</option><option value="custom" '+(o.otBaseMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.otBaseMode==='custom'?'<div class="sub-input">'+textInput(i,'otBaseAmount',o,i===0?'VD: 25,000,000':'VD: 30,000,000','numeric',true,'đ')+'</div>':'')+'</div>');};
+ const otHoursCell=function(o,i){return textInput(i,'otMonthly',o,'VD: 8','decimal',false,'giờ')+'<p class="ot-inline-help" data-ot-guard="'+i+'">'+esc(otGuardrailText(o))+'</p>';};
+ const perfCell=function(o,i){const amount=o.performanceBonusType==='amount';return '<div class="control-stack">'+seg(i,'performanceBonusType',o.performanceBonusType,[['months','Tháng lương'],['amount','Số tiền']])+'<div class="sub-input">'+textInput(i,'performanceBonusValue',o,amount?'VD: 60,000,000':'VD: 3',amount?'numeric':'decimal',amount,amount?'đ':'tháng')+'</div></div>'};
+ const anyTrial=probOn(A)||(state.offerCount===2&&probOn(B)),open=benefitsWasOpen||shouldOpenBenefits(A)||(state.offerCount===2&&shouldOpenBenefits(B));
+ let html='<div class="offer-matrix">'+head(true);
+ html+=row('Con số trong offer là',seg(0,'pay',A.payType,[['gross','Gross (trước trừ)'],['net','Net (về tay)']]),seg(1,'pay',B.payType,[['gross','Gross (trước trừ)'],['net','Net (về tay)']]));
+ html+=row('Lương / tháng',textInput(0,'gross',A,'VD: 25,000,000','numeric',true,'đ'),textInput(1,'gross',B,'VD: 30,000,000','numeric',true,'đ'));
+ html+=row('Công ty dùng mức nào để đóng BH?',bhCell(A,0),bhCell(B,1));
+ html+=row('Lên văn phòng / tuần',textInput(0,'days',A,'VD: 5','decimal',false,'buổi'),textInput(1,'days',B,'VD: 5','decimal',false,'buổi'),'Nhập 0 nếu không lên văn phòng; để trống = chưa biết.');
+ html+=row('Di chuyển 1 chiều',textInput(0,'commute',A,'VD: 45','decimal',false,'phút'),textInput(1,'commute',B,'VD: 45','decimal',false,'phút'),'Nhập 0 nếu không có thời gian di chuyển; để trống = chưa biết.');
+ html+=row('Làm thêm giờ (OT) trung bình / tháng',otHoursCell(A,0),otHoursCell(B,1),'Nhập 0 nếu không OT; để trống = chưa biết.');
+ html+=row('OT có được trả tiền không?',otPaidCell(A,0),otPaidCell(B,1),'','ot-paid-row');
+ html+=row('OT chủ yếu rơi vào',otTypeCell(A,0),otTypeCell(B,1),'','ot-type-row');
+ html+=row('Hệ số OT',otFactorCell(A,0),otFactorCell(B,1),'','ot-factor-row');
+ html+=row('OT ngày thường',otMixedCell(A,0,'otBreakdownWeekday','otFactorWeekday',150,false),otMixedCell(B,1,'otBreakdownWeekday','otFactorWeekday',150,false),'','ot-mixed-weekday-row');
+ html+=row('OT ngày nghỉ hằng tuần',otMixedCell(A,0,'otBreakdownRest','otFactorRest',200,false),otMixedCell(B,1,'otBreakdownRest','otFactorRest',200,false),'','ot-mixed-rest-row');
+ html+=row('OT ngày lễ/Tết',otMixedCell(A,0,'otBreakdownHoliday','otFactorHoliday',300,true),otMixedCell(B,1,'otBreakdownHoliday','otFactorHoliday',300,true),'','ot-mixed-holiday-row');
+ html+=row('Mức lương dùng để tính OT',otBaseCell(A,0),otBaseCell(B,1),'','ot-base-row');
+ html+=row('Có giai đoạn thử việc cần tính riêng?',seg(0,'probationEnabled',A.probationEnabled,[['unknown','Chưa rõ'],['no','Không'],['yes','Có']],true),seg(1,'probationEnabled',B.probationEnabled,[['unknown','Chưa rõ'],['no','Không'],['yes','Có']],true),'Chưa rõ thì Net tháng vẫn có thể tính nếu đủ dữ liệu, nhưng thu nhập 12 tháng/chuyển việc sẽ để Chưa đủ dữ liệu.');
+ if(anyTrial){
+  html+=row('Nhóm công việc của vị trí',jobCell(A,0),jobCell(B,1));
+  html+=row('Thời gian thử việc',probDurationCell(A,0),probDurationCell(B,1));
+  html+=row('Lương thử việc (% mức lương offer)',probOn(A)?textInput(0,'probPct',A,'Bắt buộc nhập','decimal',false,'%')+'<p class="benefit-note">'+(hasInput(A.probPct)?'':'Đang thiếu % lương thử việc.')+'</p>':dash,probOn(B)?textInput(1,'probPct',B,'Bắt buộc nhập','decimal',false,'%')+'<p class="benefit-note">'+(hasInput(B.probPct)?'':'Đang thiếu % lương thử việc.')+'</p>':dash);
+  html+=row('Trong thời gian thử việc có đóng BH bắt buộc?',probOn(A)?seg(0,'probInsurance',A.probInsurance,[['unknown','Chưa rõ'],['no','Không'],['yes','Có']],true):dash,probOn(B)?seg(1,'probInsurance',B.probInsurance,[['unknown','Chưa rõ'],['no','Không'],['yes','Có']],true):dash);
+ }
+ html+='</div>';
+ html+='<details class="benefits compare-benefits"'+(open?' open':'')+'><summary>Thưởng, phụ cấp & phúc lợi</summary><div class="benefits-body"><div class="offer-matrix">'+head(false);
+ html+=row('Thưởng đảm bảo / năm (tháng lương)',textInput(0,'guaranteedBonusMonths',A,'VD: 1','decimal',false,'tháng'),textInput(1,'guaranteedBonusMonths',B,'VD: 1','decimal',false,'tháng'),'Không có thì để trống - tool hiểu là 0.');
+ html+=row('Thưởng hiệu suất / năm',perfCell(A,0),perfCell(B,1),'Không có thì để trống - tool hiểu là 0.');
+ html+=row('Phụ cấp cố định ngoài mức lương trên / tháng',textInput(0,'fixedAllowance',A,'VD: 1,000,000','numeric',true,'đ'),textInput(1,'fixedAllowance',B,'VD: 1,000,000','numeric',true,'đ'),'Không có thì để trống - tool hiểu là 0.');
+ html+=row('Phụ cấp này có tính vào căn cứ BH?',seg(0,'allowanceBh',A.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true),seg(1,'allowanceBh',B.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true));
+ html+=row('Ngày phép / năm',textInput(0,'paidLeaveDays',A,'VD: 12','decimal',false,'ngày'),textInput(1,'paidLeaveDays',B,'VD: 12','decimal',false,'ngày'),'Nhập 0 nếu không có; để trống = chưa biết và tool chưa tính giá trị/giờ.');
+ html+='</div></div></details>';
+ document.getElementById('offersIn').innerHTML=html;
+ syncOfferCount();
+ syncOtPaidVisibility();
+}
+
+
+function syncCurrentOtVisibility(){
+ const o=state.currentJob,active=otNumber(o.otMonthly)>0,paid=active&&o.otPaid==='yes',mixed=paid&&o.otType==='mixed';
+ const show=(kind,on)=>document.querySelectorAll('#currentFields [data-current-ot-row="'+kind+'"]').forEach(x=>x.hidden=!on);
+ show('paid',active);show('type',paid);show('factor',paid&&!mixed);show('mixed-weekday',mixed);show('mixed-rest',mixed);show('mixed-holiday',mixed);show('base',paid);
+ const guard=document.querySelector('#currentFields [data-current-ot-guard]');if(guard)guard.textContent=otGuardrailText(o);
+ const factor=document.querySelector('#currentFields [data-current-ot-factor]');if(factor){const min=o.otType==='rest'?200:150;factor.textContent=otFactorText(o,'otFactor',min)}
+ const mixedHelp=document.querySelector('#currentFields [data-current-ot-mixed]');if(mixedHelp)mixedHelp.textContent=otMixedText(o);
+}
+
+function renderCurrentInputs(){
+ const host=document.getElementById('currentFields'),benefitsOpen=!!host.querySelector('.v3-current-benefits')?.open,seg=document.getElementById('currentEnabledSeg'),o=state.currentJob=ensureCurrent(state.currentJob);
+ [].forEach.call(seg.children,b=>b.classList.toggle('on',b.getAttribute('data-v')===(state.currentJobEnabled?'on':'off')));
+ host.style.display=state.currentJobEnabled?'':'none';if(!state.currentJobEnabled){host.innerHTML='';return}
+ const sg=(k,val,opts,three=false)=>'<div class="seg'+(three?' three':'')+'" data-current-seg="'+k+'">'+opts.map(x=>'<button data-v="'+x[0]+'" class="'+(val===x[0]?'on':'')+'">'+x[1]+'</button>').join('')+'</div>';
+ const inp=(k,v,ph,suf='',money=false)=>unitInputHtml('data-current="'+k+'"',v,ph,suf,money?'numeric':'decimal',money);
+ const row=(label,cell,note='',cls='',attrs='')=>'<div class="offer-mrow'+(cls?' '+cls:'')+'" '+attrs+'><div class="offer-mlabel">'+label+'</div><div class="offer-mcell">'+cell+'</div>'+(note?'<div class="offer-mnote">'+note+'</div>':'')+'</div>';
+ const head=()=>'<div class="offer-mrow head"><div class="offer-mlabel">Chỉ tiêu</div><div class="offer-mcell"><input class="name-in" data-current="name" value="'+esc(o.name||'Công việc hiện tại')+'" aria-label="Tên công việc hiện tại"></div></div>';
+ const bh='<div class="control-stack"><select data-current="bhMode"><option value="unknown" '+(o.bhMode==='unknown'?'selected':'')+'>Chưa rõ</option><option value="salary" '+(o.bhMode==='salary'?'selected':'')+'>Theo mức lương hiện tại</option><option value="custom" '+(o.bhMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.bhMode==='custom'?'<div class="sub-input">'+inp('customBase',o.customBase,'VD: 10,000,000','đ',true)+'</div>':'')+'</div>';
+ const perfAmount=o.performanceBonusType==='amount',active=otNumber(o.otMonthly)>0,paid=active&&o.otPaid==='yes',mixed=paid&&o.otType==='mixed',factorMin=o.otType==='rest'?200:150;
+ let html='<div class="offer-matrix v3-current-matrix">'+head();
+ html+=row('Lương hiện tại ghi theo',sg('payType',o.payType,[['gross','Gross (trước trừ)'],['net','Net (về tay)']]));
+ html+=row('Lương / tháng',inp('gross',o.gross,'VD: 20,000,000','đ',true));
+ html+=row('Công ty dùng mức nào để đóng BH?',bh);
+ html+=row('Lên văn phòng / tuần',inp('days',o.days,'VD: 5','buổi'),'Nhập 0 nếu không lên văn phòng; để trống = chưa biết.');
+ html+=row('Di chuyển 1 chiều',inp('commute',o.commute,'VD: 45','phút'),'Nhập 0 nếu không có thời gian di chuyển; để trống = chưa biết.');
+ html+=row('Làm thêm giờ (OT) trung bình / tháng',inp('otMonthly',o.otMonthly,'VD: 8','giờ')+'<p class="ot-current-help" data-current-ot-guard>'+esc(otGuardrailText(o))+'</p>','Nhập 0 nếu không OT; để trống = chưa biết.');
+ html+=row('OT có được trả tiền không?',sg('otPaid',o.otPaid,[['unknown','Chưa rõ'],['no','Không'],['yes','Có']],true),'','current-ot-row','data-current-ot-row="paid"'+(active?'':' hidden'));
+ html+=row('OT chủ yếu rơi vào','<select data-current="otType"><option value="weekday" '+(o.otType==='weekday'?'selected':'')+'>Ngày thường</option><option value="rest" '+(o.otType==='rest'?'selected':'')+'>Ngày nghỉ hằng tuần</option><option value="mixed" '+(o.otType==='mixed'?'selected':'')+'>Nhiều loại</option></select>','','current-ot-row','data-current-ot-row="type"'+(paid?'':' hidden'));
+ html+=row('Hệ số OT',inp('otFactor',o.otFactor,'VD: '+factorMin,'%')+'<p class="ot-current-help" data-current-ot-factor>'+esc(otFactorText(o,'otFactor',factorMin))+'</p>','','current-ot-row','data-current-ot-row="factor"'+(paid&&!mixed?'':' hidden'));
+ html+=row('OT ngày thường','<div class="ot-mini-pair">'+inp('otBreakdownWeekday',o.otBreakdownWeekday,'VD: 4','giờ')+inp('otFactorWeekday',o.otFactorWeekday,'VD: 150','%')+'</div>','','current-ot-row','data-current-ot-row="mixed-weekday"'+(mixed?'':' hidden'));
+ html+=row('OT ngày nghỉ hằng tuần','<div class="ot-mini-pair">'+inp('otBreakdownRest',o.otBreakdownRest,'VD: 4','giờ')+inp('otFactorRest',o.otFactorRest,'VD: 200','%')+'</div>','','current-ot-row','data-current-ot-row="mixed-rest"'+(mixed?'':' hidden'));
+ html+=row('OT ngày lễ/Tết','<div class="ot-mini-pair">'+inp('otBreakdownHoliday',o.otBreakdownHoliday,'VD: 4','giờ')+inp('otFactorHoliday',o.otFactorHoliday,'VD: 300','%')+'</div><p class="ot-current-help" data-current-ot-mixed>'+esc(otMixedText(o))+'</p>','','current-ot-row','data-current-ot-row="mixed-holiday"'+(mixed?'':' hidden'));
+ const otBase='<div class="control-stack"><select data-current="otBaseMode"><option value="offer" '+(o.otBaseMode==='offer'?'selected':'')+'>Ước tính theo lương hiện tại</option><option value="custom" '+(o.otBaseMode==='custom'?'selected':'')+'>Tôi biết mức cụ thể</option></select>'+(o.otBaseMode==='custom'?'<div class="sub-input">'+inp('otBaseAmount',o.otBaseAmount,'VD: 20,000,000','đ',true)+'</div>':'')+'</div>';
+ html+=row('Mức lương dùng để tính OT',otBase,'','current-ot-row','data-current-ot-row="base"'+(paid?'':' hidden'));
+ html+='</div>';
+ html+='<details class="benefits compare-benefits v3-current-benefits"'+(benefitsOpen?' open':'')+'><summary>Thưởng, phụ cấp & phúc lợi</summary><div class="benefits-body"><div class="offer-matrix v3-current-matrix">'+head();
+ html+=row('Thưởng đảm bảo / năm (tháng lương)',inp('guaranteedBonusMonths',o.guaranteedBonusMonths,'VD: 1','tháng'),'Không có thì để trống - tool hiểu là 0.');
+ html+=row('Thưởng hiệu suất / năm','<div class="control-stack">'+sg('performanceBonusType',o.performanceBonusType,[['months','Tháng lương'],['amount','Số tiền']])+'<div class="sub-input">'+inp('performanceBonusValue',o.performanceBonusValue,perfAmount?'VD: 60,000,000':'VD: 2',perfAmount?'đ':'tháng',perfAmount)+'</div></div>','Không có thì để trống - tool hiểu là 0.');
+ html+=row('Phụ cấp cố định ngoài mức lương trên / tháng',inp('fixedAllowance',o.fixedAllowance,'VD: 1,000,000','đ',true),'Không có thì để trống - tool hiểu là 0.');
+ html+=row('Phụ cấp này có tính vào căn cứ BH?',sg('allowanceBh',o.allowanceBh,[['unknown','Chưa rõ'],['yes','Có'],['no','Không']],true));
+ html+=row('Ngày phép / năm',inp('paidLeaveDays',o.paidLeaveDays,'VD: 12','ngày'),'Nhập 0 nếu không có; để trống = chưa biết và tool chưa tính giá trị/giờ.');
+ html+='</div></div></details>';
+ host.innerHTML=html;syncCurrentOtVisibility();
+}
+function syncOfferCount(){const seg=document.getElementById('offerCountSeg');[].forEach.call(seg.children,b=>b.classList.toggle('on',b.getAttribute('data-v')===String(state.offerCount)));document.getElementById('offersIn').classList.toggle('one-offer',state.offerCount!==2)}
+function renderV3ResultHead(data){document.getElementById('v3Summary').innerHTML=data&&data.summaryHtml||'';document.getElementById('v3ModeTitle').textContent=data&&data.modeTitle||'';const host=document.getElementById('v3Pairs'),hint=document.getElementById('v3PairHint');host.innerHTML='';hint.textContent='';const opts=(data&&data.availableOptions)||[],pair=data&&data.comparison||{},allMode=data&&data.comparisonMode==='all';if(opts.length<3)return;const all=document.createElement('button');all.type='button';all.className='v3-pair-btn all'+(allMode?' on':'');all.textContent='Cả 3';all.dataset.view='all';host.appendChild(all);for(let i=0;i<opts.length;i++)for(let j=i+1;j<opts.length;j++){const a=opts[i],b=opts[j],btn=document.createElement('button');btn.type='button';btn.className='v3-pair-btn'+(!allMode&&((pair.left===a.id&&pair.right===b.id)||(pair.left===b.id&&pair.right===a.id))?' on':'');btn.textContent=a.name+' ↔ '+b.name;btn.dataset.view='pair';btn.dataset.left=a.id;btn.dataset.right=b.id;host.appendChild(btn)}hint.textContent=''}
+
+function switchingCurrentNetStatus(v){
+ const raw=String(v==null?'':v).replace(/,/g,'').trim();if(raw==='')return{kind:'empty',text:''};
+ const n=Number(raw);if(!Number.isFinite(n)||n<=0)return{kind:'invalid',text:'Net hiện tại phải lớn hơn 0.'};
+ if(n<1000000)return{kind:'warning',text:'Bạn đang nhập '+Math.round(n).toLocaleString('en-US')+'đ. Ô này nhập theo đồng. Ví dụ 22 triệu = 22,000,000đ.'};
+ return{kind:'valid',text:''};
+}
+function syncSwitchCurrentNetInline(el){
+ const help=document.querySelector('[data-current-net-help]');if(!el||!help)return;
+ const st=switchingCurrentNetStatus(el.value),strong=st.kind==='invalid'||st.kind==='warning';
+ if(st.kind==='invalid')el.setAttribute('aria-invalid','true');else el.removeAttribute('aria-invalid');
+ help.textContent=st.text;help.style.display=st.text?'':'none';help.style.color=strong?'var(--clay)':'';help.style.fontWeight=strong?'600':'';
+}
+
+function renderSwitchingInputs(){
+ const sw=state.switching=ensureSwitching(state.switching),seg=document.getElementById('switchEnabledSeg');[].forEach.call(seg.children,b=>b.classList.toggle('on',b.getAttribute('data-v')===(sw.enabled?'on':'off')));const box=document.getElementById('switchFields');if(!sw.enabled){box.style.display='none';box.innerHTML='';return}box.style.display='block';
+ const candidates=[['0',state.offers[0].name||'Offer A']];if(state.offerCount===2)candidates.push(['1',state.offers[1].name||'Offer B']);if(!candidates.some(x=>x[0]===sw.targetOffer))sw.targetOffer=candidates[0][0];
+ const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(String(sw.onboardDate||'')),onboardMonth=m?Number(m[2]):null,monthsCount=onboardMonth?13-onboardMonth:null;
+ const currentRuleOptions=v=>'<option value="unknown" '+(v==='unknown'?'selected':'')+'>Chưa rõ</option><option value="lost" '+(v==='lost'?'selected':'')+'>Mất toàn bộ</option><option value="time" '+(v==='time'?'selected':'')+'>Theo thời gian làm</option><option value="full" '+(v==='full'?'selected':'')+'>Vẫn nhận đủ</option><option value="custom" '+(v==='custom'?'selected':'')+'>Nhập số cụ thể</option>';
+ const newRuleOptions=v=>'<option value="unknown" '+(v==='unknown'?'selected':'')+'>Chưa rõ</option><option value="time" '+(v==='time'?'selected':'')+'>Theo số tháng</option><option value="full" '+(v==='full'?'selected':'')+'>Nhận đủ</option><option value="none" '+(v==='none'?'selected':'')+'>Không nhận</option><option value="custom" '+(v==='custom'?'selected':'')+'>Nhập số cụ thể</option>';
+ const moneyCell=(key,value)=>'<div class="switch-bonus-control suffix-row"><input type="text" data-sw="'+key+'" inputmode="numeric" placeholder="VD: 60,000,000" value="'+grp(value==null?'':value)+'"><span class="suffix">đ</span></div>';
+ const selectCell=(key,value,html)=>'<div class="switch-bonus-control"><select data-sw="'+key+'">'+html(value)+'</select></div>';
+ const dash='<span class="switch-bonus-na">—</span>';
+ const hasOldCustom=sw.currentGuaranteedRule==='custom'||sw.currentPerformanceRule==='custom';
+ const hasNewCustom=sw.newGuaranteedRule==='custom'||sw.newPerformanceRule==='custom';
+ const oldCustomRow=hasOldCustom
+   ?'<div class="switch-bonus-row"><div class="switch-bonus-label">Số vẫn nhận nếu nghỉ</div><div class="switch-bonus-cell">'+(sw.currentGuaranteedRule==='custom'?moneyCell('currentGuaranteedIfLeave',sw.currentGuaranteedIfLeave):dash)+'</div><div class="switch-bonus-cell">'+(sw.currentPerformanceRule==='custom'?moneyCell('currentPerformanceIfLeave',sw.currentPerformanceIfLeave):dash)+'</div></div>'
+   :'';
+ const newCustomRow=hasNewCustom
+   ?'<div class="switch-bonus-row"><div class="switch-bonus-label">Số nhận bên mới</div><div class="switch-bonus-cell">'+(sw.newGuaranteedRule==='custom'?moneyCell('newGuaranteedCustom',sw.newGuaranteedCustom):dash)+'</div><div class="switch-bonus-cell">'+(sw.newPerformanceRule==='custom'?moneyCell('newPerformanceCustom',sw.newPerformanceCustom):dash)+'</div></div>'
+   :'';
+ const usesMonthRule=sw.currentGuaranteedRule==='time'||sw.currentPerformanceRule==='time'||sw.newGuaranteedRule==='time'||sw.newPerformanceRule==='time';
+ const monthNote=usesMonthRule?(onboardMonth?'Theo số tháng: onboard tháng '+onboardMonth+' → tính '+monthsCount+'/12 từ tháng '+onboardMonth+' đến tháng 12, tính trọn tháng onboard.':'Theo số tháng: tính từ tháng onboard đến 31/12 và tính trọn tháng onboard.'):'';
+ box.innerHTML='<div class="switch-grid switch-core-grid">'
+  +(!state.currentJobEnabled?'<p class="v3-baseline-note switch-wide" style="color:var(--clay)"><b>Thiếu mốc so sánh:</b> thêm Công việc hiện tại để tính phần chuyển việc.</p>':'')
+  +'<div class="field"><label>Bạn muốn so ở lại với offer nào?</label><select data-sw="targetOffer">'+candidates.map(x=>'<option value="'+x[0]+'" '+(sw.targetOffer===x[0]?'selected':'')+'>'+esc(x[1])+'</option>').join('')+'</select></div>'
+  +'<div class="field"><label>Ngày làm việc cuối cùng ở công ty hiện tại</label><input type="date" data-sw="lastWorkingDate" value="'+esc(sw.lastWorkingDate||'')+'"></div>'
+  +'<div class="field"><label>Ngày onboard công ty mới</label><input type="date" data-sw="onboardDate" value="'+esc(sw.onboardDate||'')+'"></div>'
+  +'</div>'
+  +'<div class="switch-bonus-section">'
+   +'<p class="eyebrow">Thưởng khi so đến 31/12</p>'
+   +'<div class="switch-bonus-matrix">'
+    +'<div class="switch-bonus-row head"><div class="switch-bonus-label">Chỉ tiêu</div><div class="switch-bonus-cell">Thưởng đảm bảo</div><div class="switch-bonus-cell">Thưởng hiệu suất</div></div>'
+    +'<div class="switch-bonus-row"><div class="switch-bonus-label">Ở lại đến 31/12</div><div class="switch-bonus-cell">'+moneyCell('currentGuaranteedIfStay',sw.currentGuaranteedIfStay)+'</div><div class="switch-bonus-cell">'+moneyCell('currentPerformanceIfStay',sw.currentPerformanceIfStay)+'</div></div>'
+    +'<div class="switch-bonus-row"><div class="switch-bonus-label">Nếu nghỉ</div><div class="switch-bonus-cell">'+selectCell('currentGuaranteedRule',sw.currentGuaranteedRule,currentRuleOptions)+'</div><div class="switch-bonus-cell">'+selectCell('currentPerformanceRule',sw.currentPerformanceRule,currentRuleOptions)+'</div></div>'
+    +oldCustomRow
+    +'<div class="switch-bonus-row"><div class="switch-bonus-label">Bên mới năm onboard</div><div class="switch-bonus-cell">'+selectCell('newGuaranteedRule',sw.newGuaranteedRule,newRuleOptions)+'</div><div class="switch-bonus-cell">'+selectCell('newPerformanceRule',sw.newPerformanceRule,newRuleOptions)+'</div></div>'
+    +newCustomRow
+   +'</div>'
+   +(monthNote?'<p class="switch-bonus-note">'+monthNote+'</p>':'')
+  +'</div>';
+}
+function solverYearEndLabelV3(){
+ const raw=String(state.switching&&state.switching.onboardDate||'');
+ const m=/^(\d{4})-\d{2}-\d{2}$/.exec(raw);
+ return m?'31/12/'+m[1]:'31/12 của năm onboard';
+}
+
+function renderSolverInputs(){
+ const box=document.getElementById('solverFields'),sol=state.solver||blankSolver(),seg=document.getElementById('solverEnabledSeg');[].forEach.call(seg.children,b=>b.classList.toggle('on',(sol.enabled?'on':'off')===b.getAttribute('data-v')));box.style.display=sol.enabled?'':'none';if(!sol.enabled){box.innerHTML='';return}
+ const money=(v,ph)=>'<input type="text" data-sol-money inputmode="numeric" placeholder="'+ph+'" value="'+grp(v==null?'':v)+'">',goal=(key,label,field)=>'<div class="solver-goal"><label class="solver-goal-head"><input type="checkbox" data-sol="'+key+'" '+(sol[key]?'checked':'')+'><span>'+label+'</span></label>'+field+'</div>',disabled=k=>sol[k]?'':' aria-disabled="true"';
+ const templates=[['0',state.offers[0].name||'Offer A']];if(state.offerCount===2){templates.push(['1',state.offers[1].name||'Offer B'],['both','Cả hai'])}if(!templates.some(x=>x[0]===sol.templateOffer))sol.templateOffer=templates[0][0];
+ box.innerHTML='<div class="solver-grid">'
+  +'<div class="field solver-wide"><label>Bạn cần tìm mức lương tối thiểu cho offer nào?</label><select data-sol="templateOffer">'+templates.map(x=>'<option value="'+x[0]+'" '+(sol.templateOffer===x[0]?'selected':'')+'>'+esc(x[1])+'</option>').join('')+'</select></div>'
+  +goal('goalNoLoss','Đến '+solverYearEndLabelV3()+', kịch bản thu nhập đảm bảo khi chuyển việc không thấp hơn ở lại','<div class="sub-input"'+disabled('goalNoLoss')+'><label>Muốn cao hơn phương án ở lại ít nhất</label><div class="suffix-row">'+money(sol.noLossBuffer,'VD: 0')+'<span class="suffix">đ</span></div></div>')
+  +goal('goalMonthlyNet','Đạt mục tiêu Net/tháng','<div class="sub-input"'+disabled('goalMonthlyNet')+'><label>Net tối thiểu/tháng</label><div class="suffix-row">'+money(sol.targetMonthlyNet,'VD: 40,000,000')+'<span class="suffix">đ</span></div></div>')
+  +goal('goalAnnualFixed','Đạt mục tiêu Net/năm','<div class="sub-input"'+disabled('goalAnnualFixed')+'><label>Net tối thiểu/năm</label><div class="suffix-row">'+money(sol.targetAnnualFixed,'VD: 500,000,000')+'<span class="suffix">đ</span></div></div>')
+  +(!state.currentJobEnabled?'<p class="solver-note solver-wide" style="color:var(--clay)"><b>Thiếu mốc so sánh:</b> thêm Công việc hiện tại để tính Lớp 6.</p>':'')+'</div>';
+ const m=box.querySelectorAll('[data-sol-money]');if(m[0])m[0].setAttribute('data-sol','noLossBuffer');if(m[1])m[1].setAttribute('data-sol','targetMonthlyNet');if(m[2])m[2].setAttribute('data-sol','targetAnnualFixed');
+}
+function diagnosticSelector(scope,field,idx){
+ if(scope==='current')return field==='root'?'#currentBox':'[data-current="'+field+'"]';
+ if(scope==='offer')return field==='root'?'#offersIn':'[data-i="'+idx+'"][data-k="'+field+'"]';
+ if(scope==='switching')return field==='root'?'.switch-box-results':'[data-sw="'+field+'"]';
+ if(scope==='solver')return field==='goals'?'#solverFields .solver-goal':'[data-sol="'+field+'"]';
+ return null;
+}
+function revealDiagnosticTarget(scope,field,idx,activate){
+ if(scope==='current'){
+  if(activate||!state.currentJobEnabled){state.currentJobEnabled=true;markDirty();renderCurrentInputs();renderSwitchingInputs();}
+  else renderCurrentInputs();
+ }else if(scope==='offer'){
+  if(Number(idx)===1&&state.offerCount!==2){state.offerCount=2;markDirty();}
+  renderInputs();renderSwitchingInputs();renderSolverInputs();
+ }else if(scope==='switching'){
+  if(!state.switching.enabled){state.switching.enabled=true;state.switching.enabledExplicit=true;markDirty();}
+  renderSwitchingInputs();
+ }else if(scope==='solver'){
+  if(!state.solver.enabled){state.solver.enabled=true;state.switching.enabled=true;state.switching.enabledExplicit=true;markDirty();renderSwitchingInputs();}
+  renderSolverInputs();
+ }
+}
+function focusDiagnosticTarget(btn){
+ const scope=btn.getAttribute('data-diag-scope')||'',field=btn.getAttribute('data-diag-field')||'root',idx=btn.getAttribute('data-diag-idx'),activate=btn.getAttribute('data-diag-activate')==='1';
+ revealDiagnosticTarget(scope,field,idx,activate);
+ const selector=diagnosticSelector(scope,field,idx);
+ requestAnimationFrame(()=>requestAnimationFrame(()=>{
+  let target=selector?document.querySelector(selector):null;
+  if(!target&&scope==='offer')target=document.getElementById('offersIn');
+  if(!target&&scope==='current')target=document.getElementById('currentBox');
+  if(!target&&scope==='switching')target=document.querySelector('.switch-box-results');
+  if(!target&&scope==='solver')target=document.getElementById('solverFields');
+  if(!target)return;
+  const details=target.closest('details');if(details&&!details.open)details.open=true;
+  target.scrollIntoView({behavior:'smooth',block:'center'});
+  target.classList.add('diag-focus');
+  if(typeof target.focus==='function'){try{target.focus({preventScroll:true})}catch{target.focus()}}
+  setTimeout(()=>target.classList.remove('diag-focus'),1600);
+ }));
+}
+
+function v4TextOnlyLabel(cell){
+ if(!cell)return'';const c=cell.cloneNode(true);c.querySelectorAll('small').forEach(x=>x.remove());return c.textContent.trim();
+}
+function v4FlattenBackendDetails(host){
+ if(!host)return;host.querySelectorAll('details').forEach(d=>{const box=document.createElement('div');box.className='v4-backend-detail';Array.from(d.children).forEach(ch=>{if(ch.tagName!=='SUMMARY')box.appendChild(ch)});d.replaceWith(box)});
+}
+function v4PrimaryFromHost(hostId,targetId){
+ const host=document.getElementById(hostId),target=document.getElementById(targetId);if(!host||!target)return null;
+ const head=host.querySelector('.erow.head'),row=host.querySelector('.erow:not(.head)');
+ if(!head||!row){target.innerHTML='';v4FlattenBackendDetails(host);return null}
+ const names=Array.from(head.children).slice(1).map(x=>x.textContent.trim());
+ const vals=Array.from(row.children).slice(1),label=v4TextOnlyLabel(row.children[0]);
+ const cards=vals.map((v,i)=>'<div class="v4-primary-option"><span>'+esc(names[i]||('Phương án '+(i+1)))+'</span><strong>'+v.innerHTML+'</strong></div>').join('');
+ target.innerHTML='<div class="v4-primary-label">'+esc(label)+'</div><div class="v4-primary-grid">'+cards+'</div>';
+ const out={label,names,values:vals.map(x=>x.textContent.trim())};v4FlattenBackendDetails(host);return out;
+}
+function v4EnsureInsight(id,text){const el=document.getElementById(id);if(!el)return;if(!el.textContent.trim())el.textContent=text;el.style.display=''}
+function v4CompactLayers(){
+ const p1=v4PrimaryFromHost('l1cols','l1main');
+ const p2=v4PrimaryFromHost('annualcols','annualmain');
+ const p3=v4PrimaryFromHost('tcols','tmain');
+ const p4=v4PrimaryFromHost('l2basis','l2main');
+ const p5=v4PrimaryFromHost('l3events','l3main');
+ v4EnsureInsight('l1delta','So tiền về tay sau BH bắt buộc và thuế.');
+ v4EnsureInsight('annualdelta','So thu nhập cố định nếu làm đủ 12 tháng.');
+ v4EnsureInsight('tdelta','So thời gian bỏ ra và giá trị nhận lại trên mỗi giờ.');
+ const l4=(p4&&p4.values.length>1&&new Set(p4.values).size===1)?'Các phương án đang có cùng mức dùng để tính BH.':'Căn cứ BH khác nhau có thể làm quyền lợi an sinh khác nhau, trong giới hạn trần.';
+ v4EnsureInsight('l4insight',l4);
+ const l5=document.getElementById('l5insight');if(l5){const simOn=hasInput(state.sickDays)||state.mat==='show';if(simOn)l5.textContent='Kết quả mô phỏng dựa trên căn cứ BH đã nhập; điều kiện hưởng thực tế chưa được kiểm tra.';else{let cta=l5.querySelector('#enableBhSimFromL5');if(!cta){l5.innerHTML='<button type="button" class="btn ghost tiny" id="enableBhSimFromL5">Bật mô phỏng tại đây</button>';cta=l5.querySelector('#enableBhSimFromL5');if(cta)cta.addEventListener('click',enableBhSimFromL5)}}l5.style.display=''}
+}
+function syncV4ConditionalHelp(){
+ const el=document.getElementById('v4ConditionalHelp');if(!el)return;
+ const arr=state.offerCount===2?[state.offers[0],state.offers[1]]:[state.offers[0]];if(state.currentJobEnabled)arr.unshift(state.currentJob);
+ const active=o=>{const n=Number(String(o.gross??'').replace(/,/g,''));return Number.isFinite(n)&&n>0};
+ const hasUnknownBh=arr.some(o=>active(o)&&o.bhMode==='unknown');
+ const hasUnknownAllowanceBh=arr.some(o=>active(o)&&hasPositiveValue(o.fixedAllowance)&&o.allowanceBh==='unknown'&&o.bhMode!=='custom');
+ const parts=[];if(hasUnknownBh)parts.push('<b>BH chưa rõ:</b> tool dùng giả định tạm và ghi rõ trong kết quả.');if(hasUnknownAllowanceBh)parts.push('<b>Phụ cấp chưa rõ BH:</b> tool tạm tính Có vào căn cứ BH.');
+ el.innerHTML=parts.join(' ');el.style.display=parts.length?'':'none';
+}
+
+function applyResult(data){
+ const empty=document.getElementById("empty"),results=document.getElementById("results"),solverLayer=document.getElementById("solverLayer");renderV3ResultHead(data||{});document.getElementById("solverResult").innerHTML=(data&&data.layer6Html)||"";solverLayer.style.display=data&&data.showLayer6?"":"none";
+ if(!data||!data.hasResults){empty.style.display="";empty.textContent=state.solver&&state.solver.enabled?"Lớp 6 có thể tính dù mức lương của cấu trúc đã chọn đang để trống; xem kết quả bên dưới.":"Nhập lương để bắt đầu";results.classList.add("hidden");return}
+ empty.style.display="none";results.classList.remove("hidden");
+ document.getElementById("l1cols").innerHTML=data.l1cols||"";const d1=document.getElementById("l1delta");d1.innerHTML=data.l1delta||"";d1.style.display=data.showL1Delta?"":"none";
+ document.getElementById("annualcols").innerHTML=data.annualcols||"";const ad=document.getElementById("annualdelta");ad.innerHTML=data.annualdelta||"";ad.style.display=data.showAnnualDelta?"":"none";
+ document.getElementById("tcols").innerHTML=data.tcols||"";const td=document.getElementById("tdelta");td.innerHTML=data.tdelta||"";td.style.display=data.showTDelta?"":"none";
+ document.getElementById("l2basis").innerHTML=data.l2basis||"";document.getElementById("l3events").innerHTML=data.l3events||"";document.getElementById("verdict").innerHTML=data.verdictHtml||"";
+ const al=document.getElementById("assumptionLayer");document.getElementById("assumptionContent").innerHTML=data.assumptionsHtml||"";al.style.display=data.showAssumptions?"":"none";
+ const sl=document.getElementById("switchLayer");document.getElementById("switchingResult").innerHTML=data.switchingHtml||"";sl.style.display=data.showSwitching?"":"none";
+ v4CompactLayers();syncV4ConditionalHelp();
+}
+function hasAnySalary(){const arr=state.offerCount===2?[...state.offers]:[state.offers[0]];if(state.currentJobEnabled)arr.push(state.currentJob);return arr.some(o=>{const n=Number(String(o.gross??"").replace(/,/g,""));return Number.isFinite(n)&&n>0})}
+function apiState(){
+ const out=JSON.parse(JSON.stringify(state));out.schemaVersion=4;delete out.migrationNotice;
+ const adapt=(o,src,isCurrent)=>{const raw=src.otMonthly,n=hasInput(raw)?Number(String(raw).replace(/,/g,"")):NaN;o.otMonthly=Number.isFinite(n)?n:null;o.ot=Number.isFinite(n)&&n>0?n/UI_WKS:0;o.probMon=isCurrent?0:probDurationMonthsForApi(src);delete o.probDurationValue;delete o.probDurationUnit;o.bhMode=src.bhMode==='custom'?'custom':'salary';o.base=o.bhMode==='custom'?'custom':'full';if(isCurrent){o.probationEnabled='no';o.probInsurance='yes'}};
+ out.offers.forEach((o,i)=>adapt(o,state.offers[i],false));adapt(out.currentJob,state.currentJob,true);return out;
+}
+async function calculateNow(){
+ clearTimeout(debounceTimer);
+ if(!hasAnySalary()&&!(state.solver&&state.solver.enabled)){lastRequestBody=null;lastResult=null;applyResult({hasResults:false});return null}
+ const input=apiState(),body=JSON.stringify(input);
+ if(body===lastRequestBody&&lastResult){applyResult(lastResult);return lastResult}
+ const seq=++requestSeq;
+ try{
+  const data=computeOfferValue(input);if(seq!==requestSeq)return null;lastRequestBody=body;lastResult=data;applyResult(data);return data
+ }catch(e){if(seq===requestSeq){lastRequestBody=null;lastResult=null;applyResult({hasResults:false})}return null}
+}
+function scheduleCalculation(){syncV4ConditionalHelp();clearTimeout(debounceTimer);debounceTimer=setTimeout(calculateNow,600)}
+function markDirty(){dirty=true;updateSaveUI()}
+function updateSaveUI(){const btn=document.getElementById("saveBtn");if(!canStore){btn.style.display="none";document.getElementById("saveState").textContent="Chế độ tạm - dùng Tải dữ liệu để giữ dữ liệu";return}btn.style.display="";if(dirty){btn.textContent="Lưu";document.getElementById("saveState").textContent="● Có thay đổi chưa lưu"}else{btn.textContent="Đã lưu ✓";document.getElementById("saveState").textContent="Đã lưu trên máy này"}}
+function doSave(){if(!canStore)return;try{localStorage.setItem(KEY,JSON.stringify(state));dirty=false;updateSaveUI()}catch(e){document.getElementById("saveState").textContent="Không lưu được - thử Tải dữ liệu"}}
+function normalizeState(d){
+ if(!d||!Array.isArray(d.offers)||d.offers.length!==2)return null;
+ const legacy=Number(d.schemaVersion)!==4;
+ if(!legacy&&(typeof d.currentJobEnabled!=="boolean"||![1,2,"1","2"].includes(d.offerCount)))return null;
+ const region=["I","II","III","IV"].includes(d.region)?d.region:"I",mat=d.mat==="show"?"show":"hide";
+ return{schemaVersion:4,migrationNotice:legacy?"Dữ liệu cũ đã được chuyển sang cấu trúc V4. Hãy kiểm tra lại các trường Chưa rõ, đặc biệt BH, thử việc, OT, ngày phép và số người phụ thuộc trước khi dùng kết quả.":"",deps:d.deps??null,region,sickDays:d.sickDays??null,mat,currentJobEnabled:d.currentJobEnabled===true,currentJob:ensureCurrent(d.currentJob,legacy),offerCount:Number(d.offerCount)===2?2:1,offers:[ensureOfferShape(d.offers[0],"Offer A",legacy),ensureOfferShape(d.offers[1],"Offer B",legacy)],comparison:ensureComparison(d.comparison),switching:ensureSwitching(d.switching),solver:ensureSolver(d.solver)}
+}
+function load(){if(!canStore)return;try{const raw=localStorage.getItem(KEY);if(raw){const d=normalizeState(JSON.parse(raw));if(d)state=d}}catch(e){}}
+function syncBhSummary(){const el=document.getElementById("bhSummaryState");if(!el)return;const n=Number(state.sickDays),parts=[];if(hasInput(state.sickDays)&&Number.isFinite(n)&&n>=0)parts.push(Math.round(n)+" ngày ốm");if(state.mat==="show")parts.push("Thai sản: Có");else if(parts.length)parts.push("Thai sản: Không");el.textContent=parts.length?parts.join(" · "): "Chưa bật mô phỏng"}
+function syncCtx(){const mn=document.getElementById("migrationNotice");if(mn){mn.textContent=state.migrationNotice||"";mn.style.display=state.migrationNotice?"":"none"}document.getElementById("deps").value=state.deps==null?"":state.deps;document.getElementById("region").value=state.region||"I";document.getElementById("sickDays").value=state.sickDays==null?"":state.sickDays;[].forEach.call(document.getElementById("matSeg").children,x=>x.classList.toggle("on",x.getAttribute("data-v")===state.mat));syncBhSummary();const bh=document.getElementById("bhSim");if(bh)bh.open=hasInput(state.sickDays)||state.mat==="show"}
+function isAppleTouchDevice(){return /iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1)}
+async function download(name,text,type){
+ const sourceType=type||"application/octet-stream";
+ if(isAppleTouchDevice()&&typeof File==="function"&&navigator.share&&navigator.canShare){
+  try{
+   const file=new File([text],name,{type:sourceType});
+   if(navigator.canShare({files:[file]})){await navigator.share({files:[file],title:name});return}
+  }catch(e){if(e&&e.name==="AbortError")return}
+ }
+ const blob=new Blob([text],{type:"application/octet-stream"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download=name;a.rel="noopener";a.style.display="none";document.body.appendChild(a);a.click();
+ setTimeout(()=>{a.remove();URL.revokeObjectURL(url)},60000)
+}
+
+document.getElementById('currentEnabledSeg').addEventListener('click',function(e){const b=e.target.closest('button');if(!b)return;state.currentJobEnabled=b.getAttribute('data-v')==='on';markDirty();renderCurrentInputs();renderSwitchingInputs();scheduleCalculation()});
+document.getElementById('offerCountSeg').addEventListener('click',function(e){const b=e.target.closest('button');if(!b)return;state.offerCount=b.getAttribute('data-v')==='2'?2:1;if(state.offerCount===1&&state.switching.targetOffer==='1')state.switching.targetOffer='0';markDirty();renderInputs();renderSwitchingInputs();renderSolverInputs();scheduleCalculation()});
+const currentHost=document.getElementById('currentFields');
+currentHost.addEventListener('input',function(e){const el=e.target,k=el.getAttribute('data-current');if(!k||el.tagName==='SELECT')return;const money=['gross','customBase','fixedAllowance','otBaseAmount'].includes(k)||(k==='performanceBonusValue'&&state.currentJob.performanceBonusType==='amount');if(k==='name')state.currentJob[k]=el.value;else if(money){const f=guardedMoney(el.value,state.currentJob[k]);el.value=f;state.currentJob[k]=f.replace(/,/g,'')}else{const v=guardedNumber(el.value,state.currentJob[k]);el.value=v;state.currentJob[k]=v}if(k==='name'){renderSwitchingInputs();renderSolverInputs()}if(k==='otMonthly'||k.startsWith('otBreakdown')||k.startsWith('otFactor'))syncCurrentOtVisibility();markDirty();scheduleCalculation()});
+currentHost.addEventListener('change',function(e){const el=e.target,k=el.getAttribute('data-current');if(!k||el.tagName!=='SELECT')return;state.currentJob[k]=el.value;markDirty();if(['bhMode','otType','otBaseMode'].includes(k))renderCurrentInputs();scheduleCalculation()});
+currentHost.addEventListener('click',function(e){const b=e.target.closest('[data-current-seg] button');if(!b)return;const wrap=b.closest('[data-current-seg]'),k=wrap.getAttribute('data-current-seg'),v=b.getAttribute('data-v');if(k==='payType')state.currentJob.payType=v;else if(k==='otPaid')state.currentJob.otPaid=v;else if(k==='allowanceBh')state.currentJob.allowanceBh=v;else if(k==='performanceBonusType'){if(state.currentJob.performanceBonusType!==v)state.currentJob.performanceBonusValue=null;state.currentJob.performanceBonusType=v}markDirty();renderCurrentInputs();scheduleCalculation()});
+document.getElementById('v3Pairs').addEventListener('click',function(e){const b=e.target.closest('.v3-pair-btn');if(!b)return;if(b.dataset.view==='all')state.comparison={...state.comparison,mode:'all'};else state.comparison={left:b.dataset.left,right:b.dataset.right,mode:'pair'};markDirty();scheduleCalculation()});
+document.getElementById("deps").addEventListener("input",e=>{const v=guardedNumber(e.target.value,state.deps);e.target.value=v;state.deps=v;markDirty();scheduleCalculation()});
+document.getElementById("region").addEventListener("change",e=>{state.region=e.target.value;markDirty();scheduleCalculation()});
+document.getElementById("sickDays").addEventListener("input",e=>{const v=guardedNumber(e.target.value,state.sickDays);e.target.value=v;state.sickDays=v;syncBhSummary();markDirty();scheduleCalculation()});
+document.getElementById("matSeg").addEventListener("click",function(e){const b=e.target.closest("button");if(!b)return;state.mat=b.getAttribute("data-v");[].forEach.call(this.children,x=>x.classList.toggle("on",x===b));syncBhSummary();markDirty();scheduleCalculation()});
+const host=document.getElementById("offersIn");
+host.addEventListener("input",function(e){
+ const el=e.target;if(el.tagName==="SELECT")return;const iRaw=el.getAttribute("data-i"),k=el.getAttribute("data-k");if(iRaw==null||!k)return;const i=parseInt(iRaw,10);
+ const moneyField=k==="gross"||k==="customBase"||k==="fixedAllowance"||k==="otBaseAmount"||(k==="performanceBonusValue"&&state.offers[i].performanceBonusType==="amount");
+ if(k==="name")state.offers[i][k]=el.value;else if(moneyField){const f=guardedMoney(el.value,state.offers[i][k]);el.value=f;state.offers[i][k]=f.replace(/,/g,"")}else{const v=guardedNumber(el.value,state.offers[i][k]);el.value=v;state.offers[i][k]=v};
+ if(k==="probDurationValue")syncProbDurationInline(i);if(k==="otMonthly"||k.startsWith("otBreakdown")||k.startsWith("otFactor"))syncOtPaidVisibility();
+ markDirty();scheduleCalculation();if(k==="name"){document.querySelectorAll('[data-offer-head="'+i+'"]').forEach(x=>x.textContent=state.offers[i].name);renderSwitchingInputs();renderSolverInputs();}
+});
+host.addEventListener("change",function(e){const el=e.target;if(el.tagName!=="SELECT")return;const iRaw=el.getAttribute("data-i"),k=el.getAttribute("data-k");if(iRaw==null||!k)return;const i=parseInt(iRaw,10),o=state.offers[i],old=o[k];o[k]=el.value;if(k==="otType"&&el.value!=="mixed"){const oldDefault=old==="rest"?200:150,newDefault=el.value==="rest"?200:150,current=otNumber(o.otFactor);if(!hasInput(o.otFactor)||Math.abs(current-oldDefault)<1e-9)o.otFactor=newDefault}markDirty();if(k==="probDurationUnit"||k==="probJobType"||k==="bhMode"||k==="otType"||k==="otBaseMode")renderInputs();scheduleCalculation()});
+host.addEventListener("click",function(e){
+ const b=e.target.closest("[data-seg] button");if(!b)return;const seg=b.closest("[data-seg]"),i=parseInt(seg.getAttribute("data-i"),10),kind=seg.getAttribute("data-seg"),v=b.getAttribute("data-v");
+ if(kind==="base"){state.offers[i].base=v;markDirty();renderInputs();scheduleCalculation();return}
+ if(kind==="pay"){state.offers[i].payType=v;markDirty();renderInputs();scheduleCalculation();return}
+ if(kind==="otPaid"){state.offers[i].otPaid=v;markDirty();renderInputs();scheduleCalculation();return}
+ if(kind==="allowanceBh"){state.offers[i].allowanceBh=v;[].forEach.call(seg.children,x=>x.classList.toggle("on",x===b));markDirty();scheduleCalculation();return}
+ if(kind==="probationEnabled"){state.offers[i].probationEnabled=v;markDirty();renderInputs();scheduleCalculation();return}
+ if(kind==="performanceBonusType"){if(state.offers[i].performanceBonusType!==v)state.offers[i].performanceBonusValue=null;state.offers[i].performanceBonusType=v;markDirty();renderInputs();scheduleCalculation();return}
+ if(kind==="probInsurance"){state.offers[i].probInsurance=v;[].forEach.call(seg.children,x=>x.classList.toggle("on",x===b));markDirty();scheduleCalculation();return}
+});
+
+document.getElementById("switchEnabledSeg").addEventListener("click",function(e){const b=e.target.closest("button");if(!b)return;state.switching.enabled=b.getAttribute("data-v")==="on";state.switching.enabledExplicit=true;markDirty();renderSwitchingInputs();scheduleCalculation()});
+const swHost=document.getElementById("switchFields");
+swHost.addEventListener("input",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k||el.tagName==="SELECT"||el.type==="date")return;if(["currentGuaranteedIfStay","currentGuaranteedIfLeave","newGuaranteedCustom","currentPerformanceIfStay","currentPerformanceIfLeave","newPerformanceCustom"].includes(k)){const f=guardedMoney(el.value,state.switching[k]);el.value=f;state.switching[k]=f.replace(/,/g,"")}else{const v=guardedNumber(el.value,state.switching[k]);el.value=v;state.switching[k]=v}markDirty();scheduleCalculation()});
+swHost.addEventListener("change",function(e){const el=e.target,k=el.getAttribute("data-sw");if(!k)return;if(el.tagName==="SELECT")state.switching[k]=el.value;else if(el.type==="date")state.switching[k]=el.value;else return;markDirty();if(["currentGuaranteedRule","newGuaranteedRule","currentPerformanceRule","newPerformanceRule","onboardDate"].includes(k))renderSwitchingInputs();if(k==="onboardDate")renderSolverInputs();scheduleCalculation()});
+
+document.getElementById("solverEnabledSeg").addEventListener("click",function(e){const b=e.target.closest("button");if(!b)return;state.solver.enabled=b.getAttribute("data-v")==="on";if(state.solver.enabled){state.switching.enabled=true;state.switching.enabledExplicit=true;renderSwitchingInputs()}markDirty();renderSolverInputs();scheduleCalculation()});
+const solverHost=document.getElementById("solverFields");
+solverHost.addEventListener("change",function(e){const el=e.target,k=el.getAttribute("data-sol");if(!k)return;if(el.type==="checkbox")state.solver[k]=el.checked;else if(el.tagName==="SELECT")state.solver[k]=el.value;else return;markDirty();renderSolverInputs();scheduleCalculation()});
+solverHost.addEventListener("input",function(e){const el=e.target,k=el.getAttribute("data-sol");if(!k||el.type==="checkbox"||el.tagName==="SELECT")return;if(el.hasAttribute("data-sol-money")){const f=guardedMoney(el.value,state.solver[k]);el.value=f;state.solver[k]=f.replace(/,/g,"")}else{const v=guardedNumber(el.value,state.solver[k]);el.value=v;state.solver[k]=v}markDirty();scheduleCalculation()});
+
+document.getElementById("solverResult").addEventListener("click",function(e){const b=e.target.closest(".diag-action");if(!b)return;e.preventDefault();focusDiagnosticTarget(b)});
+async function enableBhSimFromL5(){const bh=document.getElementById("bhSim");if(!bh)return;if(!hasInput(state.sickDays)&&state.mat!=="show")state.sickDays=0;markDirty();await calculateNow();syncCtx();bh.open=true;bh.scrollIntoView({behavior:"smooth",block:"center"});const first=document.getElementById("sickDays");if(first)setTimeout(()=>first.focus({preventScroll:true}),350)}
+
+// Mobile browsers can keep the final edit in the focused control until it loses focus.
+// Always re-read the DOM value on blur and calculate immediately; pressing Done/OK must not be required.
+function commitV3ControlOnBlur(el){
+ if(!el||el.tagName==="SELECT"||el.type==="checkbox"||el.tagName==="BUTTON")return false;
+ const sw=el.getAttribute("data-sw");
+ if(sw){if(["currentGuaranteedIfStay","currentGuaranteedIfLeave","newGuaranteedCustom","currentPerformanceIfStay","currentPerformanceIfLeave","newPerformanceCustom"].includes(sw)){const f=guardedMoney(el.value,state.switching[sw]);el.value=f;state.switching[sw]=f.replace(/,/g,"")}else{const v=guardedNumber(el.value,state.switching[sw]);el.value=v;state.switching[sw]=v}return true}
+ const sol=el.getAttribute("data-sol");
+ if(sol){if(el.hasAttribute("data-sol-money")){const f=guardedMoney(el.value,state.solver[sol]);el.value=f;state.solver[sol]=f.replace(/,/g,"")}else{const v=guardedNumber(el.value,state.solver[sol]);el.value=v;state.solver[sol]=v}return true}
+ const cur=el.getAttribute("data-current");
+ if(cur){const money=["gross","customBase","fixedAllowance","otBaseAmount"].includes(cur)||(cur==="performanceBonusValue"&&state.currentJob.performanceBonusType==="amount");if(cur==="name")state.currentJob[cur]=el.value;else if(money){const f=guardedMoney(el.value,state.currentJob[cur]);el.value=f;state.currentJob[cur]=f.replace(/,/g,"")}else{const v=guardedNumber(el.value,state.currentJob[cur]);el.value=v;state.currentJob[cur]=v}return true}
+ const iRaw=el.getAttribute("data-i"),k=el.getAttribute("data-k");
+ if(iRaw!=null&&k){const i=parseInt(iRaw,10);if(Number.isInteger(i)&&state.offers[i]){const money=k==="gross"||k==="customBase"||k==="fixedAllowance"||k==="otBaseAmount"||(k==="performanceBonusValue"&&state.offers[i].performanceBonusType==="amount");if(k==="name")state.offers[i][k]=el.value;else if(money){const f=guardedMoney(el.value,state.offers[i][k]);el.value=f;state.offers[i][k]=f.replace(/,/g,"")}else{const v=guardedNumber(el.value,state.offers[i][k]);el.value=v;state.offers[i][k]=v}if(k==="probDurationValue")syncProbDurationInline(i);return true}}
+ if(el.id==="deps"){const v=guardedNumber(el.value,state.deps);el.value=v;state.deps=v;return true}
+ if(el.id==="sickDays"){const v=guardedNumber(el.value,state.sickDays);el.value=v;state.sickDays=v;syncBhSummary();return true}
+ return false
+}
+document.addEventListener("focusout",function(e){if(!commitV3ControlOnBlur(e.target))return;markDirty();clearTimeout(debounceTimer);calculateNow()});
+
+document.getElementById("saveBtn").addEventListener("click",doSave);
+document.getElementById("exportBtn").addEventListener("click",async function(){const data=await calculateNow();if(!data||!data.exportText)return;download("career-options-v4.txt",data.exportText,"text/plain;charset=utf-8")});
+document.getElementById("backupBtn").addEventListener("click",()=>{const out=JSON.parse(JSON.stringify(state));out.schemaVersion=4;delete out.migrationNotice;download("career-options-v4-du-lieu.json",JSON.stringify(out,null,2),"application/json")});
+document.getElementById("importBtn").addEventListener("click",()=>document.getElementById("importInput").click());
+document.getElementById("importInput").addEventListener("change",function(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=function(){try{const d=normalizeState(JSON.parse(r.result));if(d){state=d;syncCtx();renderCurrentInputs();renderInputs();syncOfferCount();renderSwitchingInputs();renderSolverInputs();markDirty();scheduleCalculation()}else alert("File không đúng định dạng")}catch(err){alert("File không đọc được")}};r.readAsText(f);e.target.value=""});
+function clearAllData(){state={schemaVersion:4,deps:null,region:"I",sickDays:null,mat:"hide",currentJobEnabled:false,currentJob:blankCurrent(),offerCount:1,offers:[blank("Offer A"),blank("Offer B")],comparison:{left:null,right:null},switching:blankSwitch(),solver:blankSolver()};if(canStore)try{localStorage.removeItem(KEY);localStorage.removeItem(LEGACY_KEY)}catch(e){}syncCtx();renderCurrentInputs();renderInputs();syncOfferCount();renderSwitchingInputs();renderSolverInputs();lastRequestBody=null;lastResult=null;activeController=null;dirty=false;updateSaveUI();calculateNow()}
+let clearArmed=false,clearTimer=null;document.getElementById("clearBtn").addEventListener("click",function(){const btn=this;if(!clearArmed){clearArmed=true;btn.textContent="Bấm lại để xoá";btn.classList.add("clear-armed");clearTimer=setTimeout(()=>{clearArmed=false;btn.textContent="Xoá hết";btn.classList.remove("clear-armed")},3000);return}clearTimeout(clearTimer);clearArmed=false;btn.textContent="Xoá hết";btn.classList.remove("clear-armed");clearAllData()});
+window.addEventListener("beforeunload",function(e){if(dirty&&canStore){e.preventDefault();e.returnValue=""}});
+load();syncCtx();renderCurrentInputs();renderInputs();syncOfferCount();renderSwitchingInputs();renderSolverInputs();dirty=false;updateSaveUI();calculateNow();
+})();
+</script>
+</body>
+</html>
