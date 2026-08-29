@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-oNEnPl/mWIyUGJV/240ME+bEHUD7tYNglQmyam6ai+o='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-UJagWUGIOXVqn8Qkp0ItDFNUZtF53gVxO0WJ1io4FH8='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -760,7 +760,7 @@ solverHost.addEventListener("change",function(e){const el=e.target,k=el.getAttri
 solverHost.addEventListener("input",function(e){const el=e.target,k=el.getAttribute("data-sol");if(!k||el.type==="checkbox"||el.tagName==="SELECT")return;if(el.hasAttribute("data-sol-money")){const f=guardedMoney(el.value,state.solver[k]);el.value=f;state.solver[k]=f.replace(/,/g,"")}else{const v=guardedNumber(el.value,state.solver[k]);el.value=v;state.solver[k]=v}markDirty();scheduleCalculation()});
 
 document.getElementById("solverResult").addEventListener("click",function(e){const b=e.target.closest(".diag-action");if(!b)return;e.preventDefault();focusDiagnosticTarget(b)});
-document.getElementById("results").addEventListener("click",function(e){const b=e.target.closest("#enableBhSimFromL5");if(!b)return;const bh=document.getElementById("bhSim");if(!bh)return;if(!hasInput(state.sickDays)&&state.mat!=="show")state.sickDays=0;syncCtx();markDirty();calculateNow();bh.open=true;bh.scrollIntoView({behavior:"smooth",block:"center"});const first=document.getElementById("sickDays");if(first)setTimeout(()=>first.focus({preventScroll:true}),350)});
+document.getElementById("results").addEventListener("click",async function(e){const b=e.target.closest("#enableBhSimFromL5");if(!b)return;const bh=document.getElementById("bhSim");if(!bh)return;if(!hasInput(state.sickDays)&&state.mat!=="show")state.sickDays=0;markDirty();await calculateNow();syncCtx();bh.open=true;bh.scrollIntoView({behavior:"smooth",block:"center"});const first=document.getElementById("sickDays");if(first)setTimeout(()=>first.focus({preventScroll:true}),350)});
 
 // Mobile browsers can keep the final edit in the focused control until it loses focus.
 // Always re-read the DOM value on blur and calculate immediately; pressing Done/OK must not be required.
