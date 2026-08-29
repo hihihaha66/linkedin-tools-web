@@ -644,13 +644,12 @@ function v4CompactLayers(){
  const p3=v4PrimaryFromHost('tcols','tmain');
  const p4=v4PrimaryFromHost('l2basis','l2main');
  const p5=v4PrimaryFromHost('l3events','l3main');
- if(p5&&p5.values.length&&p5.values.every(v=>v==='Chưa bật mô phỏng')){const l5=document.getElementById('l3main');if(l5)l5.innerHTML='<button type="button" class="btn ghost tiny" id="enableBhSimFromL5">Bật mô phỏng tại đây</button>'}
  v4EnsureInsight('l1delta','So tiền về tay sau BH bắt buộc và thuế.');
  v4EnsureInsight('annualdelta','So thu nhập cố định nếu làm đủ 12 tháng.');
  v4EnsureInsight('tdelta','So thời gian bỏ ra và giá trị nhận lại trên mỗi giờ.');
  const l4=(p4&&p4.values.length>1&&new Set(p4.values).size===1)?'Các phương án đang có cùng mức dùng để tính BH.':'Căn cứ BH khác nhau có thể làm quyền lợi an sinh khác nhau, trong giới hạn trần.';
  v4EnsureInsight('l4insight',l4);
- v4EnsureInsight('l5insight','Kết quả mô phỏng dựa trên căn cứ BH đã nhập; điều kiện hưởng thực tế chưa được kiểm tra.');
+ const l5=document.getElementById('l5insight');if(l5){const simOn=hasPositiveValue(state.sickDays)||state.mat==='show';if(simOn)l5.textContent='Kết quả mô phỏng dựa trên căn cứ BH đã nhập; điều kiện hưởng thực tế chưa được kiểm tra.';else l5.innerHTML='<button type="button" class="btn ghost tiny" id="enableBhSimFromL5">Bật mô phỏng tại đây</button>';l5.style.display=''}
 }
 function syncV4ConditionalHelp(){
  const el=document.getElementById('v4ConditionalHelp');if(!el)return;
