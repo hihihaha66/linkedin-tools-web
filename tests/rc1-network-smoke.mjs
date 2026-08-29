@@ -8,7 +8,10 @@ const browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',hea
 const page=await browser.newPage();
 const all=[];
 page.on('request',req=>all.push({url:req.url(),type:req.resourceType(),method:req.method()}));
-await page.goto(url,{waitUntil:'networkidle'});
+page.setDefaultTimeout(15000);
+await page.goto(url,{waitUntil:'domcontentloaded',timeout:20000});
+await page.waitForTimeout(2000);
+assert.equal((await page.locator('h1').textContent())?.trim(),'Net cao hơn có thật tốt hơn?','Preview did not load RC1 page');
 const initial=[...all];
 all.length=0;
 
