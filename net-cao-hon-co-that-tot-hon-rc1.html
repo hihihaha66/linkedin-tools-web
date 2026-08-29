@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="referrer" content="no-referrer" />
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-DyW7r6upxIUsHsCTKFfeoQnlZIBQrz/LbJVt9xVEvGQ='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-oNEnPl/mWIyUGJV/240ME+bEHUD7tYNglQmyam6ai+o='; script-src-attr 'none'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src 'none'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'" />
 <title>Net cao hơn có thật tốt hơn? - V4</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -650,7 +650,7 @@ function v4CompactLayers(){
  v4EnsureInsight('tdelta','So thời gian bỏ ra và giá trị nhận lại trên mỗi giờ.');
  const l4=(p4&&p4.values.length>1&&new Set(p4.values).size===1)?'Các phương án đang có cùng mức dùng để tính BH.':'Căn cứ BH khác nhau có thể làm quyền lợi an sinh khác nhau, trong giới hạn trần.';
  v4EnsureInsight('l4insight',l4);
- const l5=document.getElementById('l5insight');if(l5){const simOn=hasPositiveValue(state.sickDays)||state.mat==='show';if(simOn)l5.textContent='Kết quả mô phỏng dựa trên căn cứ BH đã nhập; điều kiện hưởng thực tế chưa được kiểm tra.';else l5.innerHTML='<button type="button" class="btn ghost tiny" id="enableBhSimFromL5">Bật mô phỏng tại đây</button>';l5.style.display=''}
+ const l5=document.getElementById('l5insight');if(l5){const simOn=hasInput(state.sickDays)||state.mat==='show';if(simOn)l5.textContent='Kết quả mô phỏng dựa trên căn cứ BH đã nhập; điều kiện hưởng thực tế chưa được kiểm tra.';else l5.innerHTML='<button type="button" class="btn ghost tiny" id="enableBhSimFromL5">Bật mô phỏng tại đây</button>';l5.style.display=''}
 }
 function syncV4ConditionalHelp(){
  const el=document.getElementById('v4ConditionalHelp');if(!el)return;
@@ -702,8 +702,8 @@ function normalizeState(d){
  return{schemaVersion:4,migrationNotice:legacy?"Dữ liệu cũ đã được chuyển sang cấu trúc V4. Hãy kiểm tra lại các trường Chưa rõ, đặc biệt BH, thử việc, OT, ngày phép và số người phụ thuộc trước khi dùng kết quả.":"",deps:d.deps??null,region,sickDays:d.sickDays??null,mat,currentJobEnabled:d.currentJobEnabled===true,currentJob:ensureCurrent(d.currentJob,legacy),offerCount:Number(d.offerCount)===2?2:1,offers:[ensureOfferShape(d.offers[0],"Offer A",legacy),ensureOfferShape(d.offers[1],"Offer B",legacy)],comparison:ensureComparison(d.comparison),switching:ensureSwitching(d.switching),solver:ensureSolver(d.solver)}
 }
 function load(){if(!canStore)return;try{const raw=localStorage.getItem(KEY);if(raw){const d=normalizeState(JSON.parse(raw));if(d)state=d}}catch(e){}}
-function syncBhSummary(){const el=document.getElementById("bhSummaryState");if(!el)return;const n=Number(state.sickDays),parts=[];if(Number.isFinite(n)&&n>0)parts.push(Math.round(n)+" ngày ốm");if(state.mat==="show")parts.push("Thai sản: Có");else if(parts.length)parts.push("Thai sản: Không");el.textContent=parts.length?parts.join(" · "): "Chưa bật mô phỏng"}
-function syncCtx(){const mn=document.getElementById("migrationNotice");if(mn){mn.textContent=state.migrationNotice||"";mn.style.display=state.migrationNotice?"":"none"}document.getElementById("deps").value=state.deps==null?"":state.deps;document.getElementById("region").value=state.region||"I";document.getElementById("sickDays").value=state.sickDays==null?"":state.sickDays;[].forEach.call(document.getElementById("matSeg").children,x=>x.classList.toggle("on",x.getAttribute("data-v")===state.mat));syncBhSummary();const bh=document.getElementById("bhSim");if(bh)bh.open=hasPositiveValue(state.sickDays)||state.mat==="show"}
+function syncBhSummary(){const el=document.getElementById("bhSummaryState");if(!el)return;const n=Number(state.sickDays),parts=[];if(hasInput(state.sickDays)&&Number.isFinite(n)&&n>=0)parts.push(Math.round(n)+" ngày ốm");if(state.mat==="show")parts.push("Thai sản: Có");else if(parts.length)parts.push("Thai sản: Không");el.textContent=parts.length?parts.join(" · "): "Chưa bật mô phỏng"}
+function syncCtx(){const mn=document.getElementById("migrationNotice");if(mn){mn.textContent=state.migrationNotice||"";mn.style.display=state.migrationNotice?"":"none"}document.getElementById("deps").value=state.deps==null?"":state.deps;document.getElementById("region").value=state.region||"I";document.getElementById("sickDays").value=state.sickDays==null?"":state.sickDays;[].forEach.call(document.getElementById("matSeg").children,x=>x.classList.toggle("on",x.getAttribute("data-v")===state.mat));syncBhSummary();const bh=document.getElementById("bhSim");if(bh)bh.open=hasInput(state.sickDays)||state.mat==="show"}
 function isAppleTouchDevice(){return /iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1)}
 async function download(name,text,type){
  const sourceType=type||"application/octet-stream";
@@ -760,7 +760,7 @@ solverHost.addEventListener("change",function(e){const el=e.target,k=el.getAttri
 solverHost.addEventListener("input",function(e){const el=e.target,k=el.getAttribute("data-sol");if(!k||el.type==="checkbox"||el.tagName==="SELECT")return;if(el.hasAttribute("data-sol-money")){const f=guardedMoney(el.value,state.solver[k]);el.value=f;state.solver[k]=f.replace(/,/g,"")}else{const v=guardedNumber(el.value,state.solver[k]);el.value=v;state.solver[k]=v}markDirty();scheduleCalculation()});
 
 document.getElementById("solverResult").addEventListener("click",function(e){const b=e.target.closest(".diag-action");if(!b)return;e.preventDefault();focusDiagnosticTarget(b)});
-document.getElementById("results").addEventListener("click",function(e){const b=e.target.closest("#enableBhSimFromL5");if(!b)return;const bh=document.getElementById("bhSim");if(!bh)return;bh.open=true;bh.scrollIntoView({behavior:"smooth",block:"center"});const first=document.getElementById("sickDays");if(first)setTimeout(()=>first.focus({preventScroll:true}),350)});
+document.getElementById("results").addEventListener("click",function(e){const b=e.target.closest("#enableBhSimFromL5");if(!b)return;const bh=document.getElementById("bhSim");if(!bh)return;if(!hasInput(state.sickDays)&&state.mat!=="show")state.sickDays=0;syncCtx();markDirty();calculateNow();bh.open=true;bh.scrollIntoView({behavior:"smooth",block:"center"});const first=document.getElementById("sickDays");if(first)setTimeout(()=>first.focus({preventScroll:true}),350)});
 
 // Mobile browsers can keep the final edit in the focused control until it loses focus.
 // Always re-read the DOM value on blur and calculate immediately; pressing Done/OK must not be required.
