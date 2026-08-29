@@ -32,8 +32,43 @@ assert.equal(business.length,0,'Unexpected business request after input: '+JSON.
 assert.ok(afterInput.every(r=>staticTypes.has(r.type)&&r.method==='GET'),'Only static GET resources may load after input');
 
 const emptyText=await page.locator('#empty').textContent();
-const resultsHidden=await page.locator('#results').evaluate(el=>el.classList.contains('hidden'));
+let resultsHidden=await page.locator('#results').evaluate(el=>el.classList.contains('hidden'));
 console.log('RESULT_STATE='+JSON.stringify({emptyText,resultsHidden}));
 assert.equal(resultsHidden,false,'Results should render locally after valid salary input');
+
+// 1.7 UI bad salary behavior: invalid non-empty keeps last valid; blank returns to exact empty state.
+await salary.fill('abc');
+await page.waitForTimeout(100);
+assert.equal(await salary.inputValue(),'30,000,000','Letter input must keep nearest valid salary');
+await salary.fill('-100');
+await page.waitForTimeout(100);
+assert.equal(await salary.inputValue(),'30,000,000','Negative input must keep nearest valid salary');
+await salary.fill('');
+await page.waitForTimeout(800);
+resultsHidden=await page.locator('#results').evaluate(el=>el.classList.contains('hidden'));
+assert.equal(resultsHidden,true,'Blank salary must hide results');
+assert.equal((await page.locator('#empty').textContent())?.trim(),'Nhập lương để bắt đầu','Blank salary must show exact empty-state copy');
+await salary.fill('30000000');
+await page.waitForTimeout(800);
+
+// 2.1 segmented control remains Thêm/Bỏ qua with the final label.
+const currentBox=page.locator('#currentBox');
+assert.ok((await currentBox.textContent()).includes('Đưa công việc hiện tại vào so sánh?'));
+await page.locator('#currentEnabledSeg button[data-v="on"]').click();
+assert.equal(await page.locator('#currentFields').isVisible(),true,'Thêm must enable currentJobEnabled UI');
+await page.locator('#currentEnabledSeg button[data-v="off"]').click();
+assert.equal(await page.locator('#currentFields').isVisible(),false,'Bỏ qua must disable currentJobEnabled UI');
+
+// 2.2 clear remains two-click; first click is visibly armed and must not erase.
+const clear=page.locator('#clearBtn');
+await clear.click();
+assert.equal((await clear.textContent())?.trim(),'Bấm lại để xoá');
+assert.equal(await clear.evaluate(el=>el.classList.contains('clear-armed')),true,'First click must visibly arm delete');
+assert.equal(await salary.inputValue(),'30,000,000','First clear click must not delete data');
+await clear.click();
+await page.waitForTimeout(200);
+assert.equal((await clear.textContent())?.trim(),'Xoá hết');
+assert.equal(await page.locator('input[data-i="0"][data-k="gross"]').inputValue(),'','Second clear click must delete data');
+
 await browser.close();
 console.log('RC1_NETWORK_SMOKE=PASS');
